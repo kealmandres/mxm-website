@@ -983,15 +983,15 @@ artificial-ingenious .bb-diagnosis-cta-image {
 
 .machine-megamind .why-agentic-section .card h3 {
     font-family: var(--mm-futuristic-font);
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
     color: var(--mm-text-primary);
-    font-weight: normal;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px var(--mm-accent-blue-glow);
 }
 
 .machine-megamind .why-agentic-section .card ul {
-    padding: 0;
-    margin: 0;
+    list-style: none;
+    padding: 0 20px; /* Equal padding left and right */
+    text-align: left;
 }
 
 .machine-megamind .why-agentic-section .section-image {
@@ -1010,7 +1010,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
 .machine-megamind .timeline-step {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 5rem;
     margin-bottom: 4rem;
     position: relative;
@@ -1021,6 +1021,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
     display: flex;
     align-items: flex-start;
     gap: 25px;
+    
 }
 
 .machine-megamind .timeline-step-number {
