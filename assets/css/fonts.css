@@ -1,0 +1,58 @@
+/* 
+ * MxM Website Font Implementation
+ * This CSS file implements the font-face declarations for all required fonts
+ */
+
+/* Uniform Extra Condensed - Light (Default for titles) */
+@font-face {
+  font-family: 'Uniform Extra Condensed';
+  src: url('../fonts/Uniform%20Extra%20Condensed.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Uniform Extra Condensed - Bold (For titles when legibility is compromised) */
+@font-face {
+  font-family: 'Uniform Extra Condensed';
+  src: url('../fonts/UniformExtraCondensed-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Cartograph Mono (For body copy) */
+@font-face {
+  font-family: 'Cartograph Mono';
+  src: url('../fonts/Cartograph%20Mono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Adore Bold (For artistic accents with transparency) */
+@font-face {
+  font-family: 'Adore';
+  src: url('../fonts/AdoreBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Ethnocentric UltraLight Italic (Default for Blonde Bot references) */
+@font-face {
+  font-family: 'Ethnocentric';
+  src: url('../fonts/Ethnocentric%20UltraLight%20Italic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Ethnocentric ExtraLight Italic (For Blonde Bot references when legibility is compromised) */
+@font-face {
+  font-family: 'Ethnocentric';
+  src: url('../fonts/Ethnocentric%20ExtraLight%20Italic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}

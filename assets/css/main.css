@@ -1,0 +1,983 @@
+/* 
+ * MxM Website - Cleaned Main Styles
+ * Removed conflicting animations and redundant effects
+ */
+
+/* Import MxM brand fonts */
+@import url('fonts.css');
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --glass-bg: rgba(20, 20, 25, 0.45);
+  --glass-bg-lighter: rgba(40, 40, 45, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --subtle-glow: rgba(255, 255, 255, 0.03);
+  --accent-blue: rgba(33, 33, 33, 0.8);
+  --accent-teal: rgba(33, 33, 33, 0.7);
+  --accent-indicator: rgba(255, 255, 255, 0.7);
+  --dark-bg: rgba(10, 10, 15, 1);
+}
+
+/* ===== BASE STYLES ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: "Uniform Extra Condensed", sans-serif;
+  background-color: var(--dark-bg);
+  color: rgba(255, 255, 255, 0.9);
+  perspective: 1500px;
+  filter: brightness(1.15) contrast(1.05);
+}
+
+/* ===== CONTAINER & PERFORMANCE OPTIMIZATIONS ===== */
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1500px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(10,10,15,0.4) 0%, var(--dark-bg) 85%);
+  z-index: -1;
+}
+
+.container.transitioning::before {
+  opacity: 0.8;
+}
+
+/* ===== ADDED: FLOATING ELEMENTS CONTAINER FOR ROOM ANIMATIONS ===== */
+.floating-elements-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0; /* MUCH LOWER: Behind active room, but above inactive rooms if any */
+}
+
+/* ===== ROOM STYLES ===== */
+.room {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* REMOVED CONFLICTING TRANSITION - JS handles room navigation */
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  perspective: 1500px;
+  perspective-origin: center center;
+  filter: brightness(1.1);
+  backface-visibility: hidden;
+}
+
+.room.active {
+  opacity: 1;
+  z-index: 2; /* Higher than floating-elements-container */
+  /* REMOVED: animation: quantumMaterialize - conflicts with JS navigation */
+}
+
+/* Refined reflective floor effect */
+.room::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.6));
+  z-index: -1;
+  transform: rotateX(180deg) translateY(100%);
+  transform-origin: bottom;
+  opacity: 0.4;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+/* Dynamic lighting effects */
+.room::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle 80px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+              rgba(255,255,255,0.15) 0%, 
+              rgba(255,255,255,0.05) 30%, 
+              rgba(255,255,255,0) 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.room.active::before {
+  opacity: 1;
+}
+
+/* ===== ROOM BACKGROUND IMAGES ===== */
+#entrance-hall { background-image: url('../images/rooms/entrance-hall.jpg'); }
+#machine-megamind { background-image: url('../images/rooms/artificial-ingenious.jpg'); }
+#artificial-ingenious { background-image: url('../images/rooms/machine-megamind.jpg'); }
+#consults-coded { background-image: url('../images/rooms/consults-coded.jpg'); }
+#back-to-future { background-image: url('../images/rooms/back-to-future.jpg'); }
+#blonde-bot-lair { background-image: url('../images/rooms/blonde-bot-lair.jpg'); }
+#success-gallery { background-image: url('../images/rooms/success-gallery.jpg'); }
+#future-observatory { background-image: url('../images/rooms/observatory-2.png'); }
+#chat-chamber { background-image: url('../images/rooms/chat-chamber.jpg'); }
+
+/* ===== ENTRANCE HALL SPECIFIC STYLES ===== */
+#entrance-hall .title-container {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  z-index: 10;
+}
+
+#entrance-hall .welcome-title {
+  text-align: center;
+  font-family: "Uniform Extra Condensed", sans-serif;
+  font-weight: 300;
+  font-size: 3.5rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  z-index: 10;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(120, 219, 255, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: quantumTextGlow 4s ease-in-out infinite;
+}
+
+#entrance-hall .home-text {
+  font-family: "Uniform Extra Condensed", sans-serif;
+  font-weight: 300 !important;
+}
+
+#entrance-hall .home-logo {
+  max-height: 150px;
+  height: 120px;
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  animation: float 7s ease-in-out infinite;
+  margin-top: -15px;
+}
+
+/* ===== MAIN ROOM CONTENT POSITIONING ===== */
+.room-content {
+  /* Core styling */
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  max-width: 460px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  
+  /* Positioning - SINGLE SOURCE OF TRUTH */
+  position: absolute;
+  top: 75%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* INCREASED: Higher than animations */
+  
+  /* 3D and interaction setup */
+  transform-style: preserve-3d;
+  cursor: pointer;
+  overflow: hidden;
+  
+  /* SIMPLIFIED TRANSITIONS - JS handles 3D tilt */
+  transition: box-shadow 0.3s ease;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+/* Glass panel shimmer effect */
+.room-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.room-content:hover::before {
+  left: 100%;
+}
+
+/* REMOVED REDUNDANT 3D TILT CSS - JS handles this completely */
+
+/* Enhanced transition effects for JS navigation */
+.transitioning .room-content {
+  /* animation: fadeScale 0.6s ease-out; */ /* Removed to sync with parent room transition via JS */
+}
+
+.room-content.reflect {
+  background: rgba(30, 30, 35, 0.55);
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.6),
+    inset 0 2px 2px rgba(255, 255, 255, 0.15);
+}
+
+/* ===== TYPOGRAPHY ===== */
+.room-title {
+  font-family: "Uniform Extra Condensed", sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 1.2rem;
+  font-weight: normal;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(234, 234, 235, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: quantumTextGlow 4s ease-in-out infinite;
+}
+
+.room-description {
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: normal;
+  position: relative;
+  z-index: 2;
+  letter-spacing: 0.5px;
+}
+
+/* Font assignments */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Uniform Extra Condensed", sans-serif;
+}
+
+body, p, div {
+  font-family: "Cartograph Mono", monospace;
+}
+
+.blonde-bot-text {
+  font-family: "Ethnocentric", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.artistic-accent {
+  font-family: "Adore", serif;
+  opacity: 0.8;
+}
+
+/* ===== BUTTONS ===== */
+.explore-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: var(--glass-bg-lighter);
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: normal;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.4s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: none;
+}
+
+.explore-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.explore-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.explore-btn:hover::before {
+  left: 100%;
+}
+
+/* ===== MUSIC PLAYER ===== */
+.music-player {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.music-player.entrance-position {
+  top: 30px;
+  right: 40px;
+}
+
+.music-player.corner-position {
+  bottom: 30px;
+  left: 40px;
+  transform: translate(0, 0);
+}
+
+.music-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.play-icon {
+  color: white;
+  font-size: 16px;
+  margin-left: 3px;
+  transition: transform 0.2s ease;
+}
+
+.pause-icon {
+  color: white;
+  font-size: 16px;
+  display: none;
+  transition: transform 0.2s ease;
+}
+
+.music-label {
+  font-family: "Cartograph Mono", monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 1px;
+}
+
+.music-player:hover {
+  background: rgba(20, 20, 20, 0.7);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.music-player.entrance-position:hover {
+  transform: translateX(-50%) scale(1.05);
+}
+
+.music-player.corner-position:hover {
+  transform: scale(1.05);
+}
+
+.music-button:hover {
+  background: transparent;
+  transform: none;
+}
+
+.music-button:hover .play-icon,
+.music-button:hover .pause-icon {
+  transform: scale(1.2);
+}
+
+.music-player.active {
+  background: rgba(25, 25, 25, 0.75);
+}
+
+.music-player.active .play-icon {
+  display: none;
+}
+
+.music-player.active .pause-icon {
+  display: block;
+}
+
+.music-player.entrance-position::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  animation: subtle-pulse 3s infinite;
+}
+
+/* ===== NAVIGATION ===== */
+.nav-dots {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.nav-dot {
+  background: rgba(120, 219, 255, 0.3);
+  border: 1px solid rgba(120, 219, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-dot.active {
+  background: linear-gradient(135deg, #78dbff 0%, #ff77c6 100%);
+  box-shadow: 0 0 15px rgba(120, 219, 255, 0.6);
+  transform: scale(1.3);
+}
+
+.nav-dot:hover {
+  background: rgba(120, 219, 255, 0.5);
+  transform: scale(1.2);
+}
+
+.nav-arrows {
+  display: none;
+  position: fixed;
+  top: 50%;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+/* ===== PROGRESS BAR (CSS-ONLY VERSION) ===== */
+.progress-bar-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 6px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 20, 25, 0.6);
+  border: 1px solid rgba(120, 219, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(120, 219, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.progress-indicator {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #78dbff 0%, #aa9ca4 100%);
+  box-shadow: 0 0 15px rgba(120, 219, 255, 0.5);
+  animation: quantumPulse 2s ease-in-out infinite;
+  border-radius: 10px;
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    rgba(255, 255, 255, 0) 100%);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+/* ===== FLASHLIGHT MOUSE EFFECT ===== */
+.flashlight-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    transparent 0%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.2) 70%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.flashlight-active .flashlight-overlay {
+  opacity: 1;
+}
+
+.flashlight-spotlight {
+  position: fixed;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(120, 219, 255, 0.08) 0%,
+    rgba(120, 219, 255, 0.04) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.flashlight-active .flashlight-spotlight {
+  opacity: 1;
+}
+
+/* ===== QUANTUM PARTICLE EFFECT ===== */
+.quantum-particle {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: linear-gradient(45deg, #78dbff, #ff77c6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  animation: quantumParticle 1.5s ease-out forwards;
+}
+
+/* ===== ESSENTIAL ANIMATIONS ONLY ===== */
+@keyframes fadeScale {
+  0% { opacity: 0.7; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes quantumTextGlow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  }
+  50% { 
+    filter: drop-shadow(0 0 20px rgba(120, 219, 255, 0.5));
+  }
+}
+
+@keyframes quantumPulse {
+  0%, 100% { 
+    box-shadow: 0 0 15px rgba(120, 219, 255, 0.5);
+  }
+  50% { 
+    box-shadow: 0 0 25px rgba(255, 119, 198, 0.7);
+  }
+}
+
+@keyframes subtle-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes quantumParticle {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) translateY(-100px) translateX(var(--dx, 50px));
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating-element {
+  animation: float 6s ease-in-out infinite;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s forwards ease-out;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .room-content {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .room-title {
+    font-size: 2rem;
+  }
+  .music-player {
+    font-size: 0.9rem;
+  }
+  .music-button {
+    width: 40px;
+    height: 40px;
+    right: 15px;
+  }
+  .music-label {
+    max-width: 100px;
+  }
+  .music-player.entrance-position {
+    transform: translateX(-50%);
+  }
+  .music-player.corner-position {
+    bottom: 15px;
+    left: 15px;
+    right: auto;
+    top: auto;
+  }
+  #entrance-hall .welcome-title {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+  }
+}
+
+/* ===== SMOOTHNESS OPTIMIZATIONS ===== */
+/* Add these to your main.css for butter-smooth transitions */
+
+/* Enhanced room performance */
+.room {
+  /* Existing styles... */
+  
+  /* SMOOTHNESS OPTIMIZATIONS */
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0); /* Force GPU layer */
+  backface-visibility: hidden;
+  perspective: 1500px;
+  transform-style: preserve-3d;
+  
+  /* Prevent sub-pixel rendering issues */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Optimize for transitions */
+  isolation: isolate;
+}
+
+/* Enhanced performance during transitions */
+.container.transitioning .room {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  
+  /* Temporarily disable filters during transition for performance */
+  filter: none !important;
+}
+
+.container.transitioning {
+  /* Optimize container during transitions */
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* Room content optimizations */
+.room-content {
+  /* Existing styles... */
+  
+  /* SMOOTHNESS OPTIMIZATIONS */
+  will-change: transform;
+  transform: translate3d(-50%, -50%, 0); /* Use translate3d instead of translate */
+  backface-visibility: hidden;
+  
+  /* Prevent layout thrashing */
+  contain: layout style paint;
+}
+
+/* Optimize transition effects */
+.room-content.reflect {
+  /* Simplified reflection for better performance */
+  background: rgba(30, 30, 35, 0.55);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  
+  /* Use transform3d */
+  transform: translate3d(-50%, -50%, 0) scale3d(0.98, 0.98, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Progress bar smoothness */
+.progress-indicator {
+  /* Existing styles... */
+  
+  /* SMOOTHNESS OPTIMIZATIONS */
+  will-change: width;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  /* Use steps for ultra-smooth progress */
+  transition: width 0.1s linear;
+}
+
+/* Music player optimizations */
+.music-player {
+  /* Existing styles... */
+  
+  /* SMOOTHNESS OPTIMIZATIONS */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Flashlight effect optimizations */
+.flashlight-overlay {
+  /* Existing styles... */
+  
+  /* SMOOTHNESS OPTIMIZATIONS */
+  will-change: background;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  /* Use faster updates */
+  transition: opacity 0.1s ease;
+}
+
+.flashlight-spotlight {
+  /* Existing styles... */
+  
+  /* SMOOTHNESS OPTIMIZATIONS */
+  will-change: transform;
+  backface-visibility: hidden;
+  
+  /* Faster response */
+  transition: opacity 0.05s ease;
+}
+
+/* .room.active .room-content {
+  animation: quantumBounce .5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.0s forwards;
+} */
+
+@keyframes quantumBounce {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+    box-shadow: 0 0 0 rgba(120, 219, 255, 0);
+    filter: blur(5px);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 30px rgba(120, 219, 255, 0.8);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    filter: blur(0px);
+  }
+}
+
+/* ===== FROM KNOWLEDGE BASE: 3D Tilt Card styles ===== */
+.tilt-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.tilt-card {
+  background: rgba(255, 255, 255, 0.03); /* Will be overridden by .description-panel's specific background */
+  backdrop-filter: blur(25px); /* Already on .description-panel */
+  -webkit-backdrop-filter: blur(25px); /* Already on .description-panel */
+  border: 1px solid rgba(120, 219, 255, 0.2); /* Will be overridden by .description-panel's specific border */
+  border-radius: 25px; /* .description-panel has 16px, might want to unify or keep separate */
+  padding: 35px; /* .description-panel has 2rem 2.5rem, adjust as needed */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative; /* .description-panel is already absolute */
+  overflow: hidden;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.tilt-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(120, 219, 255, 0.1) 0%, rgba(255, 119, 198, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1; /* Ensure this is below content but above card's own background if it were transparent */
+}
+
+.tilt-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  transform: translateX(-100%);
+  z-index: 1; /* Ensure this is above the ::before and card content potentially */
+  pointer-events: none;
+}
+
+.tilt-card:hover::before {
+  opacity: 1;
+}
+
+.tilt-card:hover::after {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+.tilt-shadow {
+  position: absolute;
+  bottom: -20px; /* Adjust based on .description-panel visual */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  filter: blur(15px);
+  transition: all 0.3s ease;
+  z-index: -2; /* Ensure this is behind the card */
+}
+/* ===== END KNOWLEDGE BASE STYLES ===== */
+
+#entrance-hall .description-panel {
+  /* Base Positioning & Original Styles */
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: 400px; /* Retain specific max-width */
+
+  /* Flexbox for centering content block(s) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically centers content */
+  align-items: center; /* Horizontally centers content block */
+
+  /* Enhanced Glass Panel Styles from Knowledge Base */
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 25px;
+  /* border: 1px solid rgba(245, 238, 238, 0.2); */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  padding: 30px; /* Changed from 10px to match Enhanced Glass Panel spec */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Ensure no tilt-specific styles like transform-style or cursor: pointer remain unless desired for other reasons */
+}
+
+/* Enhanced Glass Panel hover effect */
+#entrance-hall .description-panel:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(-50%) translateY(-5px); 
+  box-shadow: 0 15px 35px rgba(31, 38, 135, 0.5);
+}
+
+#entrance-hall .room-content {
+  display: none;
+}
+
+/* Styles for .room-description specifically within #entrance-hall to override general .room-description if needed */
+#entrance-hall .room-description {
+  font-family: "Cartograph Mono", monospace; /* Copied from general .room-description for specificity */
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75); /* Current color from main.css for #entrance-hall .room-description */
+  margin: 0; /* Resetting margin, specifically to remove bottom margin */
+  /* letter-spacing: 0.5px; */ /* Already in general .room-description, can be inherited */
+  /* position: relative; z-index: 2; - These may not be needed if it's simple text */
+}
+
+#entrance-hall .room-content {
+  display: none;
+}

@@ -1,0 +1,1208 @@
+/* CSS for Machine Megamind Page */ 
+html {
+    background-color: #000000; /* Ensure ultimate fallback is black */
+}
+
+/* Styles for the Machine Megamind page */
+body.detail-page.machine-megamind {
+    /* background-color: var(--dark-bg, #0a0a1f); Old background */
+    background-color: transparent; /* New: Allows dynamic background to show */
+    color: #FFFFFF; /* Changed to pure white */
+    font-family: "Uniform Extra Condensed", sans-serif; /* Changed font */
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
+    /* overflow-y: auto; Ensure vertical scrolling is enabled */
+}
+
+/* Override some overly broad styles from detailed-pages.css or inline if necessary */
+/* For instance, if detailed-pages.css makes body white, the above will fix it. */
+
+/* Import variables and fonts if not already inherited globally (recommended to ensure they are available) */
+/* @import url('fonts.css'); /* Assuming fonts.css is in the same dir or adjust path */
+
+/* Re-declare or ensure variables from main.css :root are accessible */
+:root {
+  --mm-glass-bg: rgba(25, 25, 35, 0.65); /* Slightly more opaque for better readability */
+  --mm-glass-border: rgba(255, 255, 255, 0.2); /* Increased opacity for better definition */
+  --mm-accent-blue-glow: rgba(255, 255, 255, 0.3); /* Changed to white glow */
+  --mm-accent-pink-glow: rgba(255, 255, 255, 0.3); /* Changed to white glow */
+  --mm-text-primary: #FFFFFF; /* Changed to pure white */
+  --mm-text-secondary: #FFFFFF; /* Changed to pure white */
+  --mm-futuristic-font: "Uniform Extra Condensed", sans-serif;
+  --mm-mono-font: "Cartograph Mono", monospace; /* Changed font to align with main.css paragraph style */
+  --mm-section-padding-vertical: clamp(40px, 8vh, 80px);
+  --mm-section-padding-horizontal-container: clamp(20px, 5vw, 50px);
+  --mm-card-border-radius: 18px;
+}
+
+/* General Section Styling */
+.machine-megamind .page-section {
+    /* padding-top: var(--mm-section-padding-vertical); */
+    padding-bottom: var(--mm-section-padding-vertical);
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 1400px; /* Increased max-width for content */
+    margin: 40px auto;
+    position: relative;
+    z-index: 1; /* Added z-index to ensure sections are above elements with z-index 0 */
+    border-radius: var(--mm-card-border-radius);
+    background: rgba(0, 0, 0, .85); /* Made sections semi-transparent black */
+    /* backdrop-filter: blur(18px) saturate(130%); */ /* Removed backdrop filter */
+    /* -webkit-backdrop-filter: blur(18px) saturate(130%); */ /* Removed backdrop filter */
+    border: 1px solid var(--mm-glass-border); /* Border uses updated --mm-glass-border */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35),
+                inset 0 0 0 1.5px rgba(255,255,255,0.06),
+                0 0 60px rgba(var(--mm-accent-blue-glow), 0.12); /* Kept subtle white glow */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.machine-megamind .page-section:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.45),
+                inset 0 0 0 1.5px rgba(255,255,255,0.09),
+                0 0 80px rgba(var(--mm-accent-pink-glow), 0.18); /* Kept subtle white glow */
+}
+
+.machine-megamind .container {
+    width: 100%;
+    max-width: 1200px;
+    padding-left: var(--mm-section-padding-horizontal-container);
+    padding-right: var(--mm-section-padding-horizontal-container);
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1; /* Ensure container and its content are below higher z-index siblings like bb-room-info */
+}
+
+/* Titles and Text */
+.machine-megamind .section-title,
+.machine-megamind .room-title,
+.machine-megamind .cta-title,
+.machine-megamind h1,
+.machine-megamind h2 {
+    font-family: var(--mm-futuristic-font);
+    color: var(--mm-text-primary);
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px var(--mm-accent-blue-glow); /* Adjusted to single white glow */
+    font-weight: normal; /* Added to remove bold */
+}
+
+.machine-megamind .room-title { 
+    font-size: 3.5rem;
+    text-align: left;
+    margin-bottom: -20px;
+}
+.machine-megamind .section-title { font-size: 2.8rem; margin-bottom: 1rem; text-align: center;}
+.machine-megamind .cta-title { font-size: 2.5rem; text-align: center; }
+
+.machine-megamind .intro-text,
+.machine-megamind .room-description,
+.machine-megamind .cta-text,
+.machine-megamind p {
+    font-family: var(--mm-mono-font);
+    color: var(--mm-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    text-align: center; /* Default center, can be overridden */
+    margin-bottom: 1.5rem;
+    max-width: 1000px; /* For readability of centered text blocks */
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+/* Restore text-align: left for room-description on larger screens */
+.machine-megamind .room-info-section .room-description {
+    text-align: left;
+    max-width: none; /* Allow it to fill available space in flex layout */
+    text-shadow: 0 2px 5px rgba(0,0,0,0.7); /* Enhanced black shadow for readability */
+}
+
+/* Return to Maison Button */
+.machine-megamind .return-to-maison {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    display: flex;
+    align-items: center;
+    padding: 10px 18px;
+    background-color: rgba(var(--mm-glass-bg), 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--mm-text-primary);
+    border: 1px solid var(--mm-glass-border);
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: var(--mm-mono-font);
+    font-size: 0.9rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+.machine-megamind .return-to-maison svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    stroke: #FFFFFF; /* Changed to white */
+}
+.machine-megamind .return-to-maison:hover {
+    background-color: rgba(var(--mm-glass-bg), 1);
+    color: #FFFFFF; /* Changed to white */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* White glow */
+}
+
+/* New: Styles for the dynamic page background */
+/* This ID is global, so no .machine-megamind prefix needed if it's unique across pages */
+#dynamic-page-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Covers the entire viewport height */
+    z-index: -10; /* Behind all other page content */
+    background-image: url('../images/rooms/machine-megamind.jpg'); /* Default or specific image for this page */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #000000; /* Fallback/target color when image fades */
+    opacity: 1; /* Initially visible */
+    transition: opacity 0.8s ease-out; /* Smooth fade effect */
+}
+
+/* New: Styles for Hero Background Slideshow */
+.machine-megamind .hero-background-slideshow {
+    position: fixed; /* Changed from absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Changed from 100% to 100vh */
+    background-color: #000000; /* Black background for transitions */
+    overflow: hidden;
+    z-index: -9; /* Adjusted z-index to be above dynamic-page-background but below content */
+}
+
+.machine-megamind .hero-background-slideshow .hero-bg-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    /* transition: opacity 1s ease-in-out; */ /* REMOVE: JS will handle opacity directly */
+}
+
+/* New: Styles for the process scroll animation host layer */
+/* This ID is global, so no .machine-megamind prefix needed if it's unique across pages */
+#process-scroll-animation-host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -5; /* Above main page background, below hero dynamic bg and sections */
+    pointer-events: none; /* Allow clicks to pass through */
+    overflow: hidden; /* Clip the image if it extends beyond viewport due to animation */
+}
+
+/* Video Hero Section Wrapper - new styles for the placeholder */
+.machine-megamind .video-hero-wrapper {
+    margin-top: 30px; /* Original margin from video-hero-section */
+    margin-bottom: 40px; /* Original margin from video-hero-section */
+    height: 70vh; /* Original height from video-hero-section */
+    max-height: 600px; /* Original max-height from video-hero-section */
+    position: relative; /* For potential future absolute children if any, not strictly needed now */
+}
+
+/* Video Hero Section - adjusted styles */
+.machine-megamind .video-hero-section {
+    padding: 0; /* Remains */
+    background: transparent; /* Set to transparent */
+    box-shadow: none; /* Remains */
+    border: none; /* Remains */
+    width: 100%; /* Fill wrapper */
+    height: 100%; /* Fill wrapper */
+    position: relative; /* Default position within wrapper */
+    top: 0;
+    left: 0;
+    overflow: hidden; /* Remains */
+}
+
+.machine-megamind .video-hero-section .video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 3; /* Ensure video is above slideshow and artistic text */
+}
+.machine-megamind .video-hero-section .video-placeholder iframe {
+    border-radius: 0; /* Full bleed */
+}
+.machine-megamind .artistic-background-text {
+    position: absolute;
+    font-family: var(--mm-futuristic-font);
+    font-size: 10vw; /* Responsive size */
+    color: rgba(255, 255, 255, 0.05);
+    z-index: 2; /* Ensure artistic text is above slideshow but below video */
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+/* Styles for Picture-in-Picture (PiP) or Sticky Video Player Mode */
+.machine-megamind .video-hero-section.video-pip-mode {
+    z-index: 2000; 
+    opacity: 1; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    border-radius: 8px; 
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+    transition: opacity 0.3s ease-in-out, box-shadow 0.4s ease-in-out;
+}
+
+.machine-megamind .video-hero-section.video-pip-mode .video-container,
+.machine-megamind .video-hero-section.video-pip-mode .video-placeholder,
+.machine-megamind .video-hero-section.video-pip-mode iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 0; 
+}
+
+.machine-megamind .video-hero-section.video-pip-mode .artistic-background-text {
+    display: none; /* Hide background text in PiP mode */
+}
+
+/* Room Info Section (Example - adapt based on machine-megamind.html structure) */
+.machine-megamind .room-info-section {
+    padding-top: 0;
+    margin-bottom: 70px; 
+}
+
+.machine-megamind .room-info-section .room-info-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    position: relative;
+    padding-left: 0;
+    background: rgba(30, 30, 45, 0.55); 
+    backdrop-filter: blur(8px) saturate(110%);
+    -webkit-backdrop-filter: blur(8px) saturate(110%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: calc(var(--mm-card-border-radius) - 4px);
+    padding: 1.5rem; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* New grid layout for the "Custom AI Agents" section */
+.machine-megamind .offerings-section .offerings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 320px);
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    perspective: 1000px; 
+}
+
+/* New card styles for the "Custom AI Agents" section */
+.machine-megamind .offerings-section .offering-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the top */
+    display: flex; /* Ensure flex properties apply */
+}
+
+.machine-megamind .offerings-section .offering-card:hover {
+    transform: translateY(-6px);
+    box-shadow: none;
+    align-items: center;
+}
+
+.machine-megamind .offerings-section .offering-image-wrapper {
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: 180px; /* Control image icon size */
+    margin-bottom: 1.5rem;
+    background-color: transparent;
+}
+
+.machine-megamind .offerings-section .offering-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    animation: simple-float 3.5s ease-in-out infinite;
+}
+
+.machine-megamind .offerings-section .offering-text-content {
+    flex: 1 1 auto;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.machine-megamind .offerings-section .offering-title {
+    text-align: center;
+    font-weight: 300;
+    font-size: 1.6rem;
+    margin-bottom: -.5rem;
+    margin-top: -.5rem; 
+    text-transform: uppercase;
+}
+
+.machine-megamind .offerings-section .offering-description {
+    text-align: center;
+    max-width: 40ch; /* Adjusted for better line breaks */
+    flex-grow: 1; /* Make description fill available space */
+    font-size: .9rem;
+}
+
+.machine-megamind .offerings-section .offering-features {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: .1rem 0 0 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Investment Section (Pricing Cards) */
+.machine-megamind .diagnosis-section .investment-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+    perspective: 1000px; 
+}
+.machine-megamind .diagnosis-section .investment-card {
+    background: var(--mm-glass-bg); 
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid var(--mm-glass-border);
+    border-radius: 24px;
+    display: flex; 
+    flex-direction: row; 
+    align-items: stretch; 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 40px rgba(var(--mm-accent-blue-glow), 0.1); 
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+    overflow: hidden; 
+    width: 100%; 
+}
+
+.machine-megamind .diagnosis-section .investment-card:last-child {
+    margin-bottom: 0; 
+}
+
+.machine-megamind .diagnosis-section .investment-card.featured {
+    border-color: rgba(255, 255, 255, 0.5); 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 50px rgba(255, 255, 255, 0.2); 
+}
+
+.machine-megamind .diagnosis-section .investment-card.featured:hover {
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.4), 
+                inset 0 0 0 1.5px rgba(255,255,255,0.08),
+                0 0 60px rgba(255, 255, 255, 0.3); 
+}
+
+.machine-megamind .diagnosis-section .investment-card:hover {
+    transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) scale3d(1.03, 1.03, 1.03);
+    z-index: 5; 
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-image-wrapper {
+    flex: 0 0 65%; 
+    position: relative; 
+    background-color: rgba(0,0,0,0.2); 
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-image {
+    width: 100%;
+    height: 100%; 
+    object-fit: cover;
+    border-radius: 0; 
+    display: block; 
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-text-content {
+    flex: 1 1 35%; 
+    padding: 35px; 
+    display: flex;
+    flex-direction: column;
+    text-align: left; 
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-title {
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.8rem;
+    color: var(--ai-text-primary);
+    margin-bottom: 0.5rem;
+    font-weight: normal; /* Added to remove bold */
+}
+.machine-megamind .diagnosis-section .investment-card .investment-price {
+    font-family: var(--ai-futuristic-font);
+    font-size: 2rem;
+    color: #FFFFFF; /* White price */
+    margin-bottom: 1rem;
+}
+.machine-megamind .diagnosis-section .investment-card .investment-price span {
+    font-size: 1rem;
+    color: var(--mm-text-secondary);
+}
+.machine-megamind .diagnosis-section .investment-card .investment-description {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+    text-align: left;
+}
+.machine-megamind .diagnosis-section .investment-card .investment-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    flex-grow: 1; 
+}
+.machine-megamind .diagnosis-section .investment-card .investment-features li {
+    padding: 5px 0 5px 25px;
+    position: relative;
+    font-size: 0.9rem;
+}
+.machine-megamind .diagnosis-section .investment-card .investment-features li::before {
+    content: '✧';
+    position: absolute;
+    left: 0;
+    color: #FFFFFF; 
+    font-size: 1.2em;
+}
+
+/* Apply custom bullet style to all lists */
+.machine-megamind ul li {
+    position: relative;
+    padding-left: 25px; /* Indent text to make room for the custom bullet */
+    list-style: none; /* Hide the default bullet */
+}
+
+.machine-megamind ul li::before {
+    content: '✧'; /* The custom bullet character */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #FFFFFF;
+    font-size: 1.2em;
+}
+
+.machine-megamind .explore-btn {
+    display: block; 
+    margin-top: auto; /* Pushes button to the bottom of the flex column in .offering-text-content */
+    padding: 12px 25px; /* Adjusted padding for better pill shape */
+    background: rgba(255, 255, 255, 0.1); /* Light white background */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* White border */
+    color: var(--ai-text-primary);
+    font-family: var(--ai-futuristic-font);
+    text-transform: uppercase;
+    border-radius: 50px; /* Increased border-radius for pill shape */
+    text-align: center; /* Ensure text is centered */
+    text-decoration: none; /* Removed underline */
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added transition */
+}
+.machine-megamind .explore-btn:hover {
+    background: rgba(55, 55, 70, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    text-decoration: none !important;
+}
+
+/* Process Section (Example - adapt if present) */
+.machine-megamind .process-section > .container {
+    position: relative;
+}
+
+.machine-megamind .process-section .process-overview-image {
+    width: 100%;
+    border-radius: 15px;
+    margin: 1.5rem 0 2.5rem 0; /* Reduced top margin, kept bottom margin */
+    border: 1px solid var(--mm-glass-border);
+}
+
+.machine-megamind .scrolling-process-image {
+    position: absolute;
+    top: 50%; 
+    left: 0; 
+    height: 55vh; 
+    width: auto; 
+    opacity: 0.35; 
+    transform: translateY(-50%); 
+    will-change: transform; 
+    visibility: hidden; 
+}
+
+.machine-megamind .process-section .section-title,
+.machine-megamind .process-section .intro-text,
+.machine-megamind .process-section .process-steps {
+    position: relative; 
+    z-index: 1;
+   
+}
+
+.machine-megamind .process-steps {
+    margin-top: 2rem;
+}
+.machine-megamind .process-step {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 30px; 
+    margin-bottom: 3rem; 
+    position: relative;
+}
+
+.machine-megamind .process-step .step-main-content {
+    flex: 1 1 60%; 
+    display: flex; 
+    align-items: flex-start; 
+    gap: 20px; 
+}
+
+.machine-megamind .step-number {
+    font-family: var(--mm-futuristic-font);
+    font-size: 2.5rem;
+    color: #FFFFFF; 
+    line-height: 1;
+    min-width: 60px; 
+    text-align: center;
+}
+
+.machine-megamind .process-step:not(:last-child) .process-connector {
+    position: absolute;
+    left: 29px; 
+    top: 70px; 
+    bottom: -3rem; 
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.3); 
+    opacity: 0.5;
+}
+
+.machine-megamind .step-content h3 {
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.6rem;
+    color: var(--mm-text-primary);
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-weight: normal; 
+}
+.machine-megamind .step-content p {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.machine-megamind .process-step .step-visual {
+    flex: 0 0 280px; 
+    max-width: 280px; 
+    height: auto;
+    object-fit: contain; 
+    border-radius: 12px; 
+    mix-blend-mode: screen; 
+    animation: simple-float 3.5s ease-in-out infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.machine-megamind .process-step .step-visual:hover {
+    transform: scale(1.03);
+}
+
+/* FAQ Section (Example - adapt if present) */
+.machine-megamind .faq-accordion .faq-item {
+    margin-bottom: 15px;
+    background: rgba(var(--mm-glass-bg),0.5);
+    border-radius: 10px;
+    border: 1px solid var(--mm-glass-border);
+}
+.machine-megamind .faq-question {
+    padding: 18px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.machine-megamind .faq-question h3 {
+    font-family: var(--mm-mono-font);
+    font-size: 1.1rem;
+    color: var(--mm-text-primary);
+    margin: 0;
+    text-align: left;
+    font-weight: normal; 
+}
+.machine-megamind .accordion-icon {
+    font-size: 1.5rem;
+    color: #FFFFFF; 
+    transition: transform 0.3s ease;
+}
+.machine-megamind .faq-item.active .accordion-icon { transform: rotate(45deg); }
+.machine-megamind .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    padding: 0 20px;
+}
+.machine-megamind .faq-answer p {
+    padding-bottom: 18px;
+    font-size: 0.95rem;
+    text-align: left;
+    margin:0;
+}
+
+/* CTA Button (General, can be used in various sections) */
+.machine-megamind .cta-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 14px 35px;
+    background: rgba(255, 255, 255, 0.15); 
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4); 
+    font-family: var(--mm-futuristic-font);
+    text-transform: uppercase;
+    border-radius: 25px;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.machine-megamind .cta-button:hover {
+    background: rgba(255, 255, 255, 0.25); 
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); 
+}
+
+/* Footer */
+.machine-megamind .footer {
+    background-color: rgba(10,10,20,0.8);
+    padding: 30px 0;
+    text-align: center;
+    margin-top: 50px;
+    border-top: 1px solid var(--mm-glass-border);
+}
+.machine-megamind .footer-logo {
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.8rem;
+    color: #FFFFFF; 
+    margin-bottom: 1rem;
+}
+.machine-megamind .footer-nav a {
+    color: var(--mm-text-secondary);
+    margin: 0 10px;
+    text-decoration: none;
+    font-family: var(--mm-mono-font);
+    font-size: 0.9rem;
+}
+.machine-megamind .footer-nav a:hover { color: #FFFFFF; } 
+.machine-megamind .footer-copyright {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+}
+
+/* General Styling for Floating Blonde Bot Images (if used) */
+.machine-megamind .blonde-bot-image {
+    position: absolute;
+    width: 550px; /* Adjusted size to be larger */
+    height: auto;
+    bottom: 0; /* Stick to the bottom */
+    right: -30px; /* Stick to the left corner */
+    z-index: 1; /* Positioned below the button but above the background */
+    transform: scaleX(-1);
+    /* Add specific animation if needed, e.g., bobbing-float */
+    /* animation: bobbing-float 3.5s ease-in-out infinite; */ 
+}
+
+artificial-ingenious .bb-diagnosis-cta-image {
+    position: absolute;
+    width: 550px; /* Adjusted size to be larger */
+    height: auto;
+    bottom: 0; /* Stick to the bottom */
+    left: 90; /* Stick to the left corner */
+    z-index: 1; /* Positioned below the button but above the background */
+    border-bottom-left-radius: var(--ai-card-border-radius); /* Match parent card's radius */
+}
+
+/* Example specific positioning for a blonde bot image */
+.machine-megamind .bb-mm-intro { /* Example class */
+    bottom: calc(-1 * var(--mm-section-padding-vertical) - 10px); 
+    right: calc(-1 * var(--mm-section-padding-horizontal-container) - 70px); 
+    width: clamp(450px, 18vw, 420px); 
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out; 
+    z-index: 0; 
+    animation: bobbing-float 3.5s ease-in-out infinite; 
+}
+
+.machine-megamind .bb-mm-intro:hover { /* Example class hover */
+    transform: translateY(-5px) perspective(800px) rotateY(-12deg) scale(1.03);
+    box-shadow: -5px 8px 28px rgba(0,0,0,0.4), 0 0 15px rgba(255, 255, 255, 0.1); 
+}
+
+@keyframes bobbing-float {
+  0% {
+    transform: scaleX(-1) translateY(0px) perspective(800px);
+  }
+  50% {
+    transform: scaleX(-1) translateY(-8px) perspective(800px);
+  }
+  100% {
+    transform: scaleX(-1) translateY(0px) perspective(800px);
+  }
+}
+
+@keyframes simple-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .machine-megamind .room-info-section .room-info-content {
+        flex-direction: column;
+        padding-left: 0;
+        text-align: center;
+    }
+    .machine-megamind .room-info-section .room-description {
+        text-align: center;
+    }
+    /* Adjust blonde bot images if they are part of this page and need specific stacking */
+    .machine-megamind .blonde-bot-image.bb-mm-intro { /* Example */
+        position: relative;
+        top: auto; left: auto; transform: none;
+        margin: 0 auto 20px auto;
+        width: clamp(150px, 30vw, 200px);
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --mm-section-padding-vertical: clamp(30px, 6vh, 60px);
+        --mm-section-padding-horizontal-container: clamp(15px, 4vw, 30px);
+    }
+
+    .machine-megamind .page-section {
+        margin: 25px auto;
+    }
+    
+    .machine-megamind .room-title { font-size: clamp(2rem, 6vw, 2.5rem); }
+    .machine-megamind .section-title { font-size: clamp(1.8rem, 5vw, 2rem); }
+    .machine-megamind .cta-title { font-size: clamp(1.6rem, 4.5vw, 1.8rem); }
+    .machine-megamind .intro-text, .machine-megamind .room-description, .machine-megamind .cta-text, .machine-megamind p {
+        font-size: 0.95rem; 
+    }
+
+    .machine-megamind .process-step {
+        flex-direction: column;
+        align-items: center; 
+        text-align: center;
+        gap: 20px; 
+    }
+    .machine-megamind .process-step .step-main-content {
+        flex-direction: column; 
+        align-items: center; 
+        gap: 10px; 
+        width: 100%; 
+        flex-basis: auto; 
+    }
+    .machine-megamind .process-step .step-visual {
+        margin-left: 0; 
+        max-width: 90%; 
+        width: auto; 
+        flex-basis: auto; 
+        order: 2; 
+        margin-top: 10px; 
+    }
+    .machine-megamind .process-step .step-number { 
+        margin-right: 0; 
+        margin-bottom: 10px; 
+    }
+    .machine-megamind .process-step:not(:last-child) .process-connector {
+        display: none; 
+    }
+}
+
+/* Continue the Tour Section (Example - adapt if present) */
+.machine-megamind .continue-tour-section {
+    /* Use a relevant background image for Machine Megamind */
+    background-image: url('../images/rooms/consults-coded.jpg'); /* Placeholder - replace with actual image */
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    border: none;
+    box-shadow: none;
+    padding-top: 60px; 
+    padding-bottom: 60px; 
+    text-align: center; 
+    position: relative; 
+    z-index: 0; 
+    border-radius: var(--mm-card-border-radius);
+}
+
+.machine-megamind .continue-tour-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: -1; 
+    border-radius: var(--mm-card-border-radius);
+
+}
+
+.machine-megamind .continue-tour-button {
+    display: inline-block;
+    padding: 15px 40px; 
+    background: rgba(255, 255, 255, 0.15); 
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.1rem; 
+    text-transform: uppercase;
+    border-radius: 50px; 
+    text-decoration: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    position: relative; 
+    z-index: 1; 
+}
+
+.machine-megamind .continue-tour-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); 
+    transform: translateY(-3px);
+    text-decoration: none !important;
+}
+
+.machine-megamind .continue-tour-button .arrow-right {
+    margin-left: 10px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.machine-megamind .continue-tour-button:hover .arrow-right {
+    transform: translateX(5px);
+} 
+
+/* Section Divider */
+.section-divider {
+    border: none;
+    height: 1px;
+    background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    margin: 4rem auto;
+    width: 90%;
+    display: block;
+    max-width: 1400px;
+}
+
+/* Agentic Workflows Section Cards */
+.machine-megamind .workflows-section .offerings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.machine-megamind .workflows-section .offering-card {
+    background: var(--mm-glass-bg);
+    border: 1px solid var(--mm-glass-border);
+    border-radius: var(--mm-card-border-radius);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.machine-megamind .workflows-section .offering-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.machine-megamind .workflows-section .offering-text-content {
+    padding: 0;
+}
+
+.machine-megamind .workflows-section .offering-title {
+    text-align: center;
+    font-size: 5rem;
+    font-weight: 300;
+}
+
+.machine-megamind .workflows-section .offering-description {
+    text-align: center;
+}
+
+/* Why Agentic AI Section */
+.machine-megamind .why-agentic-section .glass-panel {
+    background: rgba(15, 15, 25, 0.7);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--mm-card-border-radius);
+    padding: clamp(2rem, 5vw, 3rem);
+    text-align: center;
+}
+
+.machine-megamind .why-agentic-section .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.machine-megamind .why-agentic-section .card {
+    background: rgba(30, 30, 50, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease, transform 0.3s ease;
+    margin: 0;
+}
+
+.machine-megamind .why-agentic-section .card:hover {
+    transform: translateY(-5px);
+    background: rgba(40, 40, 60, 0.7);
+}
+
+.machine-megamind .why-agentic-section .card h3 {
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--mm-text-primary);
+    font-weight: normal;
+}
+
+.machine-megamind .why-agentic-section .card ul {
+    padding: 0;
+    margin: 0;
+}
+
+.machine-megamind .why-agentic-section .section-image {
+    width: 100%;
+    border-radius: 15px;
+    margin: 1.5rem 0 0 0;
+    border: 1px solid var(--mm-glass-border);
+}
+
+/* Implementation Timeline Section */
+.machine-megamind .timeline-section .timeline-steps {
+    margin-top: 3rem;
+    position: relative;
+}
+
+.machine-megamind .timeline-step {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5rem;
+    margin-bottom: 4rem;
+    position: relative;
+}
+
+.machine-megamind .timeline-step .timeline-step-main-content {
+    flex: 0 1 500px;
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+.machine-megamind .timeline-step-number {
+    font-family: var(--mm-futuristic-font);
+    font-size: 3rem;
+    color: #FFFFFF;
+    line-height: 1;
+    min-width: 70px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.machine-megamind .timeline-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 34px; /* Align with center of number */
+    top: 50px;
+    bottom: -4rem; /* Extend to next step's margin */
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 0.7;
+}
+
+.machine-megamind .timeline-step-content h3 {
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.8rem;
+    color: var(--mm-text-primary);
+    margin: 0 0 0.75rem 0;
+    text-align: left;
+    font-weight: normal;
+}
+
+.machine-megamind .timeline-step-content ul {
+    text-align: left;
+    margin: 0;
+}
+
+.machine-megamind .timeline-step-content ul li {
+    margin-bottom: 0.5rem;
+}
+
+.machine-megamind .timeline-step .timeline-step-visual {
+    flex: 0 0 300px;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    mix-blend-mode: screen;
+    animation: simple-float 4s ease-in-out infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0.9;
+}
+
+.machine-megamind .timeline-step:hover .timeline-step-visual {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+/* Agentic AI in Action Section */
+.machine-megamind .agentic-in-action-section .action-categories {
+    margin-top: 2.5rem;
+}
+
+.machine-megamind .agentic-in-action-section .category {
+    margin-bottom: 2.5rem;
+}
+
+.machine-megamind .agentic-in-action-section .category:last-child {
+    margin-bottom: 0;
+}
+
+.machine-megamind .agentic-in-action-section h3 {
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.8rem;
+    color: var(--mm-text-primary);
+    margin-bottom: 1.2rem;
+    font-weight: normal;
+    text-align: left;
+}
+
+.machine-megamind .agentic-in-action-section ul {
+    list-style: none;
+    padding-left: 1.5rem;
+    text-align: left;
+}
+
+.machine-megamind .agentic-in-action-section ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    font-family: var(--mm-mono-font);
+    color: var(--mm-text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.machine-megamind .agentic-in-action-section ul li::before {
+    content: '-';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--mm-text-secondary);
+}
+
+.machine-megamind .agentic-in-action-section ul li span {
+    font-weight: bold;
+    color: var(--mm-text-primary);
+}
+
+/* Workflow Spotlight Section */
+.machine-megamind .workflow-spotlight-section .spotlight-categories {
+    margin-top: 2.5rem;
+}
+
+.machine-megamind .workflow-spotlight-section .category {
+    margin-bottom: 2.5rem;
+}
+
+.machine-megamind .workflow-spotlight-section .category:last-child {
+    margin-bottom: 0;
+}
+
+.machine-megamind .workflow-spotlight-section h3 {
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.8rem;
+    color: var(--mm-text-primary);
+    margin-bottom: 1.2rem;
+    font-weight: normal;
+    text-align: left;
+}
+
+.machine-megamind .workflow-spotlight-section ul {
+    list-style: none;
+    padding-left: 1.5rem;
+    text-align: left;
+}
+
+.machine-megamind .workflow-spotlight-section ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    font-family: var(--mm-mono-font);
+    color: var(--mm-text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.machine-megamind .workflow-spotlight-section ul li::before {
+    content: '-';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--mm-text-secondary);
+}
+
+.machine-megamind .workflow-spotlight-section ul li span {
+    font-weight: bold;
+    color: var(--mm-text-primary);
+}
+
+/* Why Agentic AI Section */
+.machine-megamind .why-agentic-section .glass-panel {
+    background: rgba(15, 15, 25, 0.7);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--mm-card-border-radius);
+    padding: clamp(2rem, 5vw, 3rem);
+    text-align: center;
+}
+
+.machine-megamind .process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 29px; /* Align with center of step number */
+    top: 70px;
+    bottom: -3rem;
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 0.7;
+}
+
+.machine-megamind h3 {
+    text-transform: uppercase;
+}
