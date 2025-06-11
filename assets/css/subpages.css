@@ -1,118 +1,42 @@
-/* Base Body Styling */
-body.detail-page {
-    background-color: #000000;
-    color: #FFFFFF;
-    font-family: "Uniform Extra Condensed", sans-serif;
+html {
+    background-color: #000000; /* Ensure ultimate fallback is black */
+}
+
+/* Styles for the Artificial Ingenious page */
+body.detail-page.subpage {
+    /* background-color: var(--dark-bg, #0a0a1f); Old background */
+    background-color: transparent; /* New: Allows dynamic background to show */
+    color: #FFFFFF; /* Changed to pure white */
+    font-family: "Uniform Extra Condensed", sans-serif; /* Changed font */
     line-height: 1.6;
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
+    /* overflow-y: auto; Ensure vertical scrolling is enabled */
 }
 
-/* Template Variables */
+/* Override some overly broad styles from detailed-pages.css or inline if necessary */
+/* For instance, if detailed-pages.css makes body white, the above will fix it. */
+
+/* Import variables and fonts if not already inherited globally (recommended to ensure they are available) */
+/* @import url('fonts.css'); /* Assuming fonts.css is in the same dir or adjust path */
+
+/* Re-declare or ensure variables from main.css :root are accessible */
 :root {
-  --template-glass-bg: rgba(25, 25, 35, 0.65);
-  --template-glass-border: rgba(255, 255, 255, 0.2);
-  --template-accent-glow: rgba(255, 255, 255, 0.3);
-  --template-text-primary: #FFFFFF;
-  --template-text-secondary: #FFFFFF;
-  --template-futuristic-font: "Uniform Extra Condensed", sans-serif;
-  --template-mono-font: "Cartograph Mono", monospace;
-  --template-section-padding-vertical: clamp(40px, 8vh, 80px);
-  --template-section-padding-horizontal-container: clamp(20px, 5vw, 50px);
-  --template-card-border-radius: 18px;
-}
-
-/* Background Elements */
-#dynamic-page-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: -10;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #000000;
-}
-
-.hero-background-slideshow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: #000000;
-    overflow: hidden;
-    z-index: -9;
-}
-
-.hero-background-slideshow .hero-bg-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.75s ease-in-out;
-}
-
-.floating-elements-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    pointer-events: none;
-    z-index: -8;
-}
-
-/* Video Hero Section */
-.detail-page .video-hero-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    z-index: 1;
-}
-
-.detail-page .video-hero-section {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: transparent;
-}
-
-.detail-page .video-hero-section .video-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.detail-page .video-hero-section .video-placeholder iframe {
-    width: 100%;
-    height: 100%;
-}
-
-.detail-page .artistic-background-text {
-    position: absolute;
-    font-family: "Uniform Extra Condensed", sans-serif;
-    font-size: clamp(3rem, 8vw, 8rem);
-    font-weight: 200;
-    color: rgba(255, 255, 255, 0.1);
-    pointer-events: none;
-    z-index: 2;
-    letter-spacing: 4px;
+  --ai-glass-bg: rgba(25, 25, 35, 0.65); /* Slightly more opaque for better readability */
+  --ai-glass-border: rgba(255, 255, 255, 0.2); /* Increased opacity for better definition */
+  --ai-accent-blue-glow: rgba(255, 255, 255, 0.3); /* Changed to white glow */
+  --ai-accent-pink-glow: rgba(255, 255, 255, 0.3); /* Changed to white glow */
+  --ai-text-primary: #FFFFFF; /* Changed to pure white */
+  --ai-text-secondary: #FFFFFF; /* Changed to pure white */
+  --ai-futuristic-font: "Uniform Extra Condensed", sans-serif;
+  --ai-mono-font: "Cartograph Mono", monospace; /* Changed font to align with main.css paragraph style */
+  --ai-section-padding-vertical: clamp(40px, 8vh, 80px);
+  --ai-section-padding-horizontal-container: clamp(20px, 5vw, 50px);
+  --ai-card-border-radius: 18px;
 }
 
 /* General Section Styling */
-.detail-page .page-section {
+.subpage .page-section {
+    /* padding-top: var(--ai-section-padding-vertical); */
     padding-bottom: var(--ai-section-padding-vertical);
     padding-left: 0;
     padding-right: 0;
@@ -131,604 +55,1419 @@ body.detail-page {
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.detail-page .container {
+.subpage .page-section:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.45),
+                inset 0 0 0 1.5px rgba(255,255,255,0.09),
+                0 0 80px rgba(var(--ai-accent-pink-glow), 0.18); /* Kept subtle white glow */
+}
+
+.subpage .container {
+    width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.detail-page .section-title {
-    font-family: "Uniform Extra Condensed", sans-serif;
-    font-size: 2.8rem;
-    text-align: center;
-    margin-bottom: 1rem;
-    color: #FFFFFF;
-    letter-spacing: 2px;
-}
-
-.detail-page .intro-text {
-    font-family: "Cartograph Mono", monospace;
-    font-size: 1.05rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #FFFFFF;
-    max-width: 800px;
+    padding-left: var(--ai-section-padding-horizontal-container);
+    padding-right: var(--ai-section-padding-horizontal-container);
     margin-left: auto;
     margin-right: auto;
-    line-height: 1.6;
+    position: relative;
+    z-index: 1; /* Ensure container and its content are below higher z-index siblings like bb-room-info */
+}
+
+/* Titles and Text */
+.subpage .section-title,
+.subpage .room-title,
+.subpage .cta-title,
+.subpage h1,
+.subpage h2 {
+    font-family: var(--ai-futuristic-font);
+    color: var(--ai-text-primary);
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px var(--ai-accent-blue-glow); /* Adjusted to single white glow */
+    font-weight: normal; /* Added to remove bold */
+}
+
+.subpage .room-title { 
+    font-size: 3.5rem;
+    text-align: left;
+    margin-bottom: -20px;
+}
+.subpage .section-title { font-size: 2.8rem; margin-bottom: 1rem; text-align: center;}
+.subpage .cta-title { font-size: 2.5rem; text-align: center; }
+
+.subpage .intro-text,
+.subpage .room-description,
+.subpage .cta-text,
+.subpage p {
+    font-family: var(--ai-mono-font);
+    color: var(--ai-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    text-align: center; /* Default center, can be overridden */
+    margin-bottom: 1.5rem;
+    max-width: 1000px; /* For readability of centered text blocks */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Restore text-align: left for room-description on larger screens */
+.subpage .room-info-section .room-description {
+    text-align: left;
+    max-width: none; /* Allow it to fill available space in flex layout */
+    text-shadow: 0 1px 3px rgba(0,0,0,1.4); /* Added shadow for pop */
 }
 
 /* Return to Maison Button */
-.detail-page .return-to-maison {
+.subpage .return-to-maison {
     position: fixed;
     top: 25px;
     left: 25px;
     display: flex;
     align-items: center;
     padding: 10px 18px;
-    background-color: rgba(25, 25, 35, 0.8);
+    background-color: rgba(var(--ai-glass-bg), 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: #FFFFFF;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--ai-text-primary);
+    border: 1px solid var(--ai-glass-border);
     border-radius: 25px;
     text-decoration: none;
-    font-family: "Cartograph Mono", monospace;
+    font-family: var(--ai-mono-font);
     font-size: 0.9rem;
     z-index: 1000;
     transition: all 0.3s ease;
 }
-
-.detail-page .return-to-maison svg {
+.subpage .return-to-maison svg {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    stroke: #FFFFFF;
+    stroke: #FFFFFF; /* Changed to white */
+}
+.subpage .return-to-maison:hover {
+    background-color: rgba(var(--ai-glass-bg), 1);
+    color: #FFFFFF; /* Changed to white */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* White glow */
 }
 
-.detail-page .return-to-maison:hover {
-    background-color: rgba(25, 25, 35, 1);
-    color: #FFFFFF;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-}
-
-/* ========================================
-   TEMPLATE COMPONENTS - REUSABLE STYLES
-   ======================================== */
-
-/* Template Room Info Section */
-.template-room-info-section {
-    padding: var(--template-section-padding-vertical) 0;
-    position: relative;
-}
-
-.template-room-info-section .room-title {
-    font-family: var(--template-futuristic-font);
-    color: var(--template-text-primary);
-    font-size: 3.5rem;
-    text-align: left;
-    margin-bottom: -20px;
-    letter-spacing: 2px;
-    text-shadow: 0 0 12px var(--template-accent-glow);
-    font-weight: normal;
-}
-
-.template-room-info-section .room-description {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
-    font-size: 1.05rem;
-    line-height: 1.75;
-    text-align: left;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-}
-
-/* Template Offerings Grid */
-.template-offerings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.template-offering-card {
-    background: var(--template-glass-bg);
-    backdrop-filter: blur(18px) saturate(130%);
-    -webkit-backdrop-filter: blur(18px) saturate(130%);
-    border: 1px solid var(--template-glass-border);
-    border-radius: var(--template-card-border-radius);
-    overflow: hidden;
-    transition: all 0.4s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 0 0 1px rgba(255,255,255,0.05);
-}
-
-.template-offering-card:last-child {
-    margin-bottom: 0;
-}
-
-.template-offering-card.template-featured {
-    border: 2px solid var(--template-accent-glow);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
-                inset 0 0 0 1px rgba(255,255,255,0.08),
-                0 0 30px var(--template-accent-glow);
-}
-
-.template-offering-card.template-featured:hover {
-    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5),
-                inset 0 0 0 1px rgba(255,255,255,0.12),
-                0 0 40px var(--template-accent-glow);
-}
-
-.template-offering-card:hover {
-    transform: translateY(-8px);
-}
-
-.template-offering-image-wrapper {
+/* New: Styles for the dynamic page background */
+#dynamic-page-background {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 200px;
-    overflow: hidden;
+    height: 100vh; /* Covers the entire viewport height */
+    z-index: -10; /* Behind all other page content */
+    background-image: url('../images/rooms/machine-megamind.jpg'); /* Updated image path */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #000000; /* Fallback/target color when image fades */
+    opacity: 1; /* Initially visible */
+    transition: opacity 0.8s ease-out; /* Smooth fade effect */
 }
 
-.template-offering-image {
+/* New: Styles for Hero Background Slideshow */
+.subpage .hero-background-slideshow {
+    position: fixed; /* Changed from absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Changed from 100% to 100vh */
+    background-color: #000000; /* Black background for transitions */
+    overflow: hidden;
+    z-index: -9; /* Adjusted z-index to be above dynamic-page-background but below content */
+}
+
+.subpage .hero-background-slideshow .hero-bg-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    opacity: 0;
+    transition: opacity 0.75s ease-in-out; /* Enabled for smooth crossfade */
 }
 
-.template-offering-card:hover .template-offering-image {
-    transform: scale(1.05);
+/* New: Styles for the process scroll animation host layer */
+#process-scroll-animation-host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -5; /* Above main page background, below hero dynamic bg and sections */
+    pointer-events: none; /* Allow clicks to pass through */
+    overflow: hidden; /* Clip the image if it extends beyond viewport due to animation */
 }
 
-.template-offering-text-content {
-    padding: 1.5rem;
+/* Video Hero Section Wrapper - new styles for the placeholder */
+.subpage .video-hero-wrapper {
+    margin-top: 30px; /* Original margin from video-hero-section */
+    margin-bottom: 40px; /* Original margin from video-hero-section */
+    height: 70vh; /* Original height from video-hero-section */
+    max-height: 600px; /* Original max-height from video-hero-section */
+    position: relative; /* For potential future absolute children if any, not strictly needed now */
+}
+
+/* Video Hero Section - adjusted styles */
+.subpage .video-hero-section {
+    padding: 0; /* Remains */
+    background: transparent; /* Set to transparent */
+    /* background-image: url('../images/rooms/machine-megamind.jpg'); */ /* Reverted */
+    /* background-size: cover; */ /* Reverted */
+    /* background-position: center; */ /* Reverted */
+    /* background-repeat: no-repeat; */ /* Reverted */
+    box-shadow: none; /* Remains */
+    border: none; /* Remains */
+    /* margin-top, margin-bottom, height, max-height are now on the wrapper */
+    width: 100%; /* Fill wrapper */
+    height: 100%; /* Fill wrapper */
+    position: relative; /* Default position within wrapper */
+    top: 0;
+    left: 0;
+    overflow: hidden; /* Remains */
+    /* Ensure smooth transition if it becomes fixed - transitions are mainly on video-pip-mode */
+}
+
+.subpage .video-hero-section .video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 3; /* Ensure video is above slideshow and artistic text */
+}
+.subpage .video-hero-section .video-placeholder iframe {
+    border-radius: 0; /* Full bleed */
+}
+.subpage .artistic-background-text {
+    position: absolute;
+    font-family: var(--ai-futuristic-font);
+    font-size: 10vw; /* Responsive size */
+    color: rgba(255, 255, 255, 0.05);
+    z-index: 2; /* Ensure artistic text is above slideshow but below video */
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+/* Styles for Picture-in-Picture (PiP) or Sticky Video Player Mode */
+.subpage .video-hero-section.video-pip-mode {
+    /* Positioning (position, top, left, bottom, right) and Sizing (width, height, max-height) are now handled by JavaScript for reliability */
+    /* z-index and opacity are also set by JS but can be here as fallback/initial if JS is slow/fails */
+    z-index: 2000; 
+    opacity: 1; 
+    
+    /* Appearance styles that can remain in CSS */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    border-radius: 8px; 
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+    
+    /* Transitions for CSS-controlled properties or for when class is removed and JS clears inline styles */
+    transition: opacity 0.3s ease-in-out, box-shadow 0.4s ease-in-out;
+    /* overflow: hidden; is already set on .video-hero-section */
+}
+
+.subpage .video-hero-section.video-pip-mode .video-container,
+.subpage .video-hero-section.video-pip-mode .video-placeholder,
+.subpage .video-hero-section.video-pip-mode iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 0; /* Ensure iframe corners don't stick out if parent is rounded (though PiP is rounded here) */
+}
+
+.subpage .video-hero-section.video-pip-mode .artistic-background-text {
+    display: none; /* Hide background text in PiP mode */
+}
+
+/* Room Info Section */
+.subpage .room-info-section {
+    padding-top: 0;
+    margin-bottom: 70px; /* Added specific bottom margin */
+}
+
+.subpage .room-info-section .room-info-content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    align-items: flex-start;
+    gap: 15px;
+    position: relative;
+    padding-left: 0;
+
+    /* New glass effect styles */
+    background: rgba(30, 30, 45, 0.55); /* Slightly different glass */
+    backdrop-filter: blur(8px) saturate(110%);
+    -webkit-backdrop-filter: blur(8px) saturate(110%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: calc(var(--ai-card-border-radius) - 4px);
+    padding: 1.5rem; /* Added padding for the glass panel */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.template-offering-title {
-    font-family: var(--template-futuristic-font);
-    color: var(--template-text-primary);
-    font-size: 1.5rem;
-    margin: 0;
-    letter-spacing: 1px;
+/* Offerings Section */
+.subpage .offerings-grid {
+    display: block; /* Changed from grid to block for vertical stacking */
+    margin-top: 2rem;
+    perspective: 1000px; /* Added for 3D effect on children */
+}
+.subpage .offering-card {
+    background: var(--ai-glass-bg); /* Using the defined variable */
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid var(--ai-glass-border);
+    border-radius: var(--ai-card-border-radius);
+    display: flex; /* Keeping flex for internal layout */
+    flex-direction: row; /* Internal layout remains landscape */
+    align-items: stretch; /* Make image and text content wrappers equal height */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 40px rgba(var(--ai-accent-blue-glow), 0.1); /* Subtle white glow */
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+    overflow: hidden; /* Ensure border-radius clips children */
+    width: 100%; /* Make card full width */
+    margin-bottom: 30px; /* Add space between stacked cards */
 }
 
-.template-offering-price {
-    font-family: var(--template-futuristic-font);
-    color: var(--template-text-primary);
+.subpage .offering-card:last-child {
+    margin-bottom: 0; /* No margin for the last card */
+}
+
+.subpage .offering-card.featured {
+    border-color: rgba(255, 255, 255, 0.5); /* White border for featured */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 50px rgba(255, 255, 255, 0.2); /* More prominent white glow */
+}
+
+.subpage .offering-card.featured:hover {
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.4), 
+                inset 0 0 0 1.5px rgba(255,255,255,0.08),
+                0 0 60px rgba(255, 255, 255, 0.3); /* Stronger white glow on hover */
+}
+
+.subpage .offering-card:hover {
+    transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) scale3d(1.03, 1.03, 1.03);
+    z-index: 5; /* Added to try and keep it below the bot image on hover */
+}
+
+.subpage .offering-image-wrapper {
+    flex: 0 0 65%; /* Adjusted from 35% to ~65% for wider image */
+    position: relative; /* For absolute positioning of image if needed, or direct styling */
+    background-color: rgba(0,0,0,0.2); /* Slight dark bg for image area */
+}
+
+.subpage .offering-image {
+    width: 100%;
+    height: 100%; /* Fill the wrapper */
+    object-fit: cover;
+    border-radius: 0; /* Resetting since parent wrapper might handle it, or set 10px 0 0 10px if wrapper has issues */
+    /* margin-bottom: 1.5rem; */ /* Removed as it's now side-by-side */
+    display: block; /* Ensure no extra space below image */
+}
+
+.subpage .offering-text-content {
+    flex: 1 1 35%; /* Adjusted from 0 0 35% to ~35% for narrower text */
+    padding: 25px; /* Existing padding for content */
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Align text to the left */
+}
+
+.subpage .offering-title {
+    font-family: var(--ai-futuristic-font);
     font-size: 1.8rem;
-    font-weight: bold;
-    margin: 0.5rem 0;
+    color: var(--ai-text-primary);
+    margin-bottom: 0.5rem;
+    font-weight: normal; /* Added to remove bold */
 }
-
-.template-offering-price span {
+.subpage .offering-price {
+    font-family: var(--ai-futuristic-font);
+    font-size: 2rem;
+    color: #FFFFFF; /* White price */
+    margin-bottom: 1rem;
+}
+.subpage .offering-price span {
     font-size: 1rem;
+    color: var(--ai-text-secondary);
 }
-
-.template-offering-description {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
+.subpage .offering-description {
     font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
 }
-
-.template-offering-features {
+.subpage .offering-features {
     list-style: none;
     padding: 0;
-    margin: 1rem 0;
+    margin-bottom: 1.5rem;
+    /* text-align: left; */ /* Already handled by .offering-text-content */
+    flex-grow: 1; /* Allow features list to take available space, pushing button down if description is short */
 }
-
-.template-offering-features li {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    padding-left: 1.2rem;
+.subpage .offering-features li {
+    padding: 5px 0 5px 25px;
     position: relative;
+    font-size: 0.9rem;
 }
-
-.template-offering-features li::before {
-    content: "→";
+.subpage .offering-features li::before {
+    content: '✧';
     position: absolute;
     left: 0;
-    color: var(--template-accent-glow);
-    font-weight: bold;
+    color: #FFFFFF; /* White icon */
+    font-size: 1.2em;
+}
+.subpage .explore-btn {
+    display: block; 
+    margin-top: auto; /* Pushes button to the bottom of the flex column in .offering-text-content */
+    padding: 12px 25px; /* Adjusted padding for better pill shape */
+    background: rgba(255, 255, 255, 0.1); /* Light white background */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* White border */
+    color: var(--ai-text-primary);
+    font-family: var(--ai-futuristic-font);
+    text-transform: uppercase;
+    border-radius: 50px; /* Increased border-radius for pill shape */
+    text-align: center; /* Ensure text is centered */
+    text-decoration: none; /* Removed underline */
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added transition */
+}
+.subpage .explore-btn:hover {
+    background: rgba(255, 255, 255, 0.2); /* Lighter on hover */
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* White glow */
 }
 
-.template-explore-btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--template-accent-glow), rgba(255,255,255,0.1));
-    color: var(--template-text-primary);
-    text-decoration: none;
-    border-radius: 8px;
-    font-family: var(--template-futuristic-font);
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid var(--template-glass-border);
-    margin-top: auto;
+/* Process Section */
+.subpage .process-section > .container {
+    position: relative;
 }
 
-.template-explore-btn:hover {
-    background: linear-gradient(135deg, rgba(255,255,255,0.2), var(--template-accent-glow));
-    box-shadow: 0 0 20px var(--template-accent-glow);
-    transform: translateY(-2px);
+.subpage .process-section {
+    /* background: rgba(25, 25, 35, 0.25); */ /* Removed to inherit general .page-section background */
 }
 
-/* Template Process Steps */
-.template-process-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+.subpage .scrolling-process-image {
+    position: absolute;
+    top: 50%; 
+    left: 0; 
+    height: 55vh; 
+    width: auto; 
+    opacity: 0.35; 
+    transform: translateY(-50%); 
+
+    will-change: transform; 
+    visibility: hidden; 
+}
+
+.subpage .process-section .section-title,
+.subpage .process-section .intro-text,
+.subpage .process-section .process-steps {
+    position: relative; 
+    z-index: 1;
+}
+
+.subpage .process-steps {
     margin-top: 2rem;
 }
-
-.template-process-step {
+.subpage .process-step {
     display: flex;
-    align-items: center;
-    gap: 2rem;
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 30px; 
+    margin-bottom: 3rem; 
     position: relative;
-    padding: 2rem;
-    background: var(--template-glass-bg);
-    border: 1px solid var(--template-glass-border);
-    border-radius: var(--template-card-border-radius);
-    transition: all 0.4s ease;
 }
 
-.template-process-step .template-step-main-content {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    flex: 1;
+.subpage .process-step .step-main-content {
+    flex: 1 1 60%; 
+    display: flex; 
+    align-items: flex-start; 
+    gap: 20px; 
 }
 
-.template-step-number {
-    font-family: var(--template-futuristic-font);
-    font-size: 3rem;
-    color: var(--template-accent-glow);
-    font-weight: bold;
-    min-width: 80px;
+.subpage .step-number {
+    font-family: var(--ai-futuristic-font);
+    font-size: 2.5rem;
+    color: #FFFFFF; /* White step number */
+    line-height: 1;
+    min-width: 60px; 
     text-align: center;
 }
 
-.template-process-step:not(:last-child) .template-process-connector {
+.subpage .process-step:not(:last-child) .process-connector {
     position: absolute;
-    bottom: -1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 29px; 
+    top: 70px; 
+    bottom: -3rem; 
     width: 2px;
-    height: 3rem;
-    background: linear-gradient(to bottom, var(--template-accent-glow), transparent);
+    background-color: rgba(255, 255, 255, 0.3); /* White connector */
+    opacity: 0.5;
 }
 
-.template-step-content h3 {
-    font-family: var(--template-futuristic-font);
-    color: var(--template-text-primary);
-    font-size: 1.5rem;
-    margin: 0 0 0.5rem 0;
-    letter-spacing: 1px;
+.subpage .step-content h3 {
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.6rem;
+    color: var(--ai-text-primary);
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-weight: normal; /* Added to remove bold */
+}
+.subpage .step-content p {
+    text-align: left;
+    margin-bottom: 0;
 }
 
-.template-step-content p {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0;
+.subpage .process-step .step-visual {
+    flex: 0 0 280px; 
+    max-width: 280px; 
+    height: auto;
+    /* max-height: 220px; */ /* Removed to prevent cutting */
+    object-fit: contain; /* Changed from cover to contain */
+    border-radius: 12px; 
+    /* box-shadow: 0 6px 20px rgba(0,0,0,0.25), 0 0 10px rgba(var(--ai-accent-blue-glow), 0.1); */ /* Removed for cleaner blend */
+    /* border: 1px solid var(--ai-glass-border, rgba(255,255,255,0.1)); */ /* Removed for cleaner blend */
+    mix-blend-mode: screen; /* Changed from luminosity to screen */
+    animation: simple-float 3.5s ease-in-out infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.template-process-step .template-step-visual {
-    width: 200px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 12px;
-    border: 1px solid var(--template-glass-border);
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+.subpage .process-step .step-visual:hover {
+    transform: scale(1.03);
+    /* box-shadow: 0 8px 25px rgba(0,0,0,0.3), 0 0 15px rgba(var(--ai-accent-pink-glow), 0.15); */ /* Kept hover transform, removed shadow */
 }
 
-.template-process-step .template-step-visual:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+/* Use Cases Section */
+.subpage .use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 2rem;
+}
+.subpage .use-case-card {
+    background: rgba(var(--ai-glass-bg),0.5);
+    padding: 25px;
+    border-radius: var(--ai-card-border-radius);
+    border: 1px solid var(--ai-glass-border);
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    gap: 15px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                background 0.35s ease;
 }
 
-/* Template FAQ Section */
-.template-faq-accordion .template-faq-item {
-    background: var(--template-glass-bg);
-    border: 1px solid var(--template-glass-border);
-    border-radius: var(--template-card-border-radius);
+.subpage .use-case-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25), 0 0 15px rgba(255, 255, 255, 0.1); /* White glow */
+    background: rgba(var(--ai-glass-bg),0.65);
+    border-color: rgba(255, 255, 255, 0.3); /* Lighter white border */
+}
+
+.subpage .use-case-icon {
+    margin: 10px; 
+    margin-bottom: -30px;
+}
+
+.subpage .use-case-icon svg {
+    width: 68px; 
+    height: 68px; 
+    stroke: #FFFFFF; /* White icon stroke */
+}
+
+.subpage .use-case-content {
+    text-align: center; 
+}
+
+.subpage .use-case-title {
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.4rem;
+    color: var(--ai-text-primary);
+    margin-bottom: 0.75rem;
+    text-align: center;
+    font-weight: normal; /* Added to remove bold */
+}
+.subpage .use-case-description { text-align: center; font-size: 0.9rem; margin-bottom: 1rem;}
+.subpage .use-case-results {
+    display: flex;
+    gap: 15px;
     margin-bottom: 1rem;
-    overflow: hidden;
+    justify-content: center; /* Center result items */
 }
+.subpage .result-item {
+    background: rgba(255, 255, 255, 0.05); /* Very subtle white background */
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+.subpage .result-value {
+    display: block;
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.5rem;
+    color: #FFFFFF; /* White value */
+}
+.subpage .result-label { font-size: 0.75rem; color: var(--ai-text-secondary); }
+.subpage .testimonial {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--ai-text-secondary);
+    border-left: 3px solid rgba(255, 255, 255, 0.5); /* White border */
+    padding-left: 15px;
+    text-align: left; /* Align testimonial text to left */
+}
+.subpage .testimonial-author { font-weight: bold; margin-top: 0.5rem; display: block; }
 
-.template-faq-question {
+/* FAQ Section */
+.subpage .faq-accordion .faq-item {
+    margin-bottom: 15px;
+    background: rgba(var(--ai-glass-bg),0.5);
+    border-radius: 10px;
+    border: 1px solid var(--ai-glass-border);
+}
+.subpage .faq-question {
+    padding: 18px 20px;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
-
-.template-faq-question h3 {
-    font-family: var(--template-futuristic-font);
-    color: var(--template-text-primary);
-    font-size: 1.2rem;
+.subpage .faq-question h3 {
+    font-family: var(--ai-mono-font);
+    font-size: 1.1rem;
+    color: var(--ai-text-primary);
     margin: 0;
-    letter-spacing: 1px;
-    flex: 1;
+    text-align: left;
+    font-weight: normal; /* Added to remove bold, in case browser defaults it */
 }
-
-.template-accordion-icon {
+.subpage .accordion-icon {
     font-size: 1.5rem;
-    color: var(--template-accent-glow);
+    color: #FFFFFF; /* White icon */
     transition: transform 0.3s ease;
 }
-
-.template-faq-item.active .template-accordion-icon {
-    transform: rotate(45deg);
-}
-
-.template-faq-answer {
+.subpage .faq-item.active .accordion-icon { transform: rotate(45deg); }
+.subpage .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.4s ease-out;
+    padding: 0 20px;
 }
-
-.template-faq-answer p {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
+.subpage .faq-answer p {
+    padding-bottom: 18px;
     font-size: 0.95rem;
-    line-height: 1.6;
-    padding: 0 1.5rem 1.5rem;
-    margin: 0;
+    text-align: left;
+    margin:0;
 }
 
-.template-faq-answer ul {
-    padding-left: 2rem;
-    margin: 1rem 1.5rem;
+.subpage .faq-answer ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
 }
-
-.template-faq-answer ul li {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
+.subpage .faq-answer ul li {
+    position: relative;
+    padding-left: 25px;
     margin-bottom: 0.5rem;
 }
-
-.template-faq-answer ul li::before {
-    content: "→";
-    color: var(--template-accent-glow);
-    margin-right: 0.5rem;
-}
-
-/* Template Continue Tour Section */
-.template-continue-tour-section {
-    padding: var(--template-section-padding-vertical) 0;
-    text-align: center;
-    position: relative;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    margin: 60px auto 40px;
-}
-
-.template-continue-tour-section::before {
-    content: '';
+.subpage .faq-answer ul li::before {
+    content: '✧';
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--template-accent-glow), transparent);
-}
-
-.template-continue-tour-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, var(--template-glass-bg), rgba(255,255,255,0.1));
-    color: var(--template-text-primary);
-    text-decoration: none;
-    border-radius: 50px;
-    font-family: var(--template-futuristic-font);
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    border: 1px solid var(--template-glass-border);
-    transition: all 0.4s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.template-continue-tour-button:hover {
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), var(--template-accent-glow));
-    box-shadow: 0 0 30px var(--template-accent-glow);
-    transform: translateY(-3px);
-}
-
-.template-continue-tour-button .arrow-right {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
-}
-
-.template-continue-tour-button:hover .arrow-right {
-    transform: translateX(5px);
-}
-
-/* Template Footer */
-.template-footer {
-    background: var(--template-glass-bg);
-    border-top: 1px solid var(--template-glass-border);
-    padding: 2rem 0;
-    margin-top: 4rem;
-}
-
-.template-footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.template-footer-nav {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.template-footer-nav a {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
-}
-
-.template-footer-nav a:hover {
+    left: 0;
     color: #FFFFFF;
+    font-size: 1.2em;
 }
 
-.template-footer-copyright {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
-    font-size: 0.8rem;
+/* CTA Section */
+.subpage .cta-section .cta-content {
+    position: relative;
+    padding-right: 0; /* Adjusted from 240px for centered text */
     text-align: center;
 }
+.subpage .cta-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 14px 35px;
+    background: rgba(255, 255, 255, 0.15); /* Light white background */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4); /* White border */
+    font-family: var(--ai-futuristic-font);
+    text-transform: uppercase;
+    border-radius: 25px;
+    text-decoration: none; /* Removed underline */
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.subpage .cta-button:hover {
+    background: rgba(255, 255, 255, 0.25); /* Lighter on hover */
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); /* White glow */
+}
 
-/* Template Diagnosis Section */
-.template-diagnosis-section .template-diagnosis-content-wrapper {
+/* Discover Other Rooms Section */
+.subpage .discover-rooms-section {
+    padding-bottom: calc(var(--ai-section-padding-vertical) + 20px); 
+}
+.subpage .discover-rooms-section .section-title {
+    margin-bottom: 3rem; 
+    font-size: 3rem; 
+    text-shadow: 0 0 15px var(--ai-accent-blue-glow); /* Subtle white glow */
+}
+
+.subpage .orbit-container {
+    position: relative; 
+}
+
+/* Orbiting Room Cards Enhancements - Styled as Holographic Buttons */
+.subpage .room-orbit-item {
+    display: block; 
+    position: relative; 
+    background: rgba(255, 255, 255, 0.05); /* Subtle white background */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Lighter white border */
+    border-radius: 18px; 
+    color: var(--ai-text-primary);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.05); /* Very subtle white shadow */
+    text-decoration: none; 
+    min-height: 160px; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.subpage .room-orbit-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent); /* Whiter shine */
+  transition: left 0.6s ease;
+  z-index: 1; 
+}
+
+.subpage .room-orbit-item:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1); /* Subtle white shadow on hover */
+  border-color: rgba(255, 255, 255, 0.4); /* Lighter white border on hover */
+}
+
+.subpage .room-orbit-item:hover::before {
+  left: 100%;
+}
+
+.subpage .room-orbit-card {
+    border-radius: 0; 
+    overflow: hidden;
+    box-shadow: none; 
+    border: none; 
+    position: relative; 
+    background: transparent; 
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    z-index: 2; 
+    padding: 0; 
+}
+
+.subpage .room-orbit-image {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    flex-grow: 1; 
+    display: block;
+    transition: transform 0.4s ease-in-out;
+    min-height: 100px; 
+}
+
+.subpage .room-orbit-item:hover .room-orbit-image {
+    transform: scale(1.05); 
+}
+
+.subpage .room-orbit-overlay {
+    position: relative; 
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 70%, transparent 100%);
+    padding: 12px; 
+    transition: background 0.3s ease;
+    z-index: 3; 
+}
+
+.subpage .room-orbit-item:hover .room-orbit-overlay {
+    background: linear-gradient(to top, rgba(50,50,50,0.5) 0%, rgba(0,0,0,0.2) 70%, transparent 100%); /* Darker overlay on hover for contrast */
+}
+
+.subpage .room-orbit-title {
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.1rem; 
+    color: var(--ai-text-primary);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7); 
+    margin: 0;
+    line-height: 1.2;
+    text-align: center; 
+}
+
+/* Central Orbit Logo */
+.subpage .orbit-center {
+    z-index: 10; 
+}
+.subpage .orbit-center-logo {
+    font-family: var(--ai-futuristic-font);
+    font-size: clamp(1.2rem, 3vw, 1.8rem); 
+    color: var(--ai-text-primary);
     text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: var(--template-glass-bg);
-    border: 1px solid var(--template-glass-border);
-    border-radius: var(--template-card-border-radius);
+    text-shadow: 0 0 35px rgba(var(--ai-accent-pink-glow), 0.5), inset 0 0 15px rgba(var(--ai-accent-blue-glow),0.3); /* White glows */
+    padding: 10px; 
+    background-color: rgba(var(--ai-glass-bg), 0.7); 
+    border-radius: 50%;
+    border: 1.5px solid var(--ai-glass-border);
+    box-shadow: 0 0 25px rgba(var(--ai-accent-blue-glow), 0.4), inset 0 0 12px rgba(var(--ai-accent-pink-glow),0.25); /* White glows */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.template-diagnosis-price {
-    font-family: var(--template-futuristic-font);
-    color: var(--template-text-primary);
-    font-size: 2.5rem;
-    font-weight: bold;
+.subpage .orbit-center-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(var(--ai-accent-pink-glow), 0.5), inset 0 0 15px rgba(var(--ai-accent-blue-glow),0.3); /* White glows */
+}
+
+/* Footer */
+.subpage .footer {
+    background-color: rgba(10,10,20,0.8);
+    padding: 30px 0;
+    text-align: center;
+    margin-top: 50px;
+    border-top: 1px solid var(--ai-glass-border);
+}
+.subpage .footer-logo {
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.8rem;
+    color: #FFFFFF; /* White logo */
     margin-bottom: 1rem;
-    text-shadow: 0 0 12px var(--template-accent-glow);
+}
+.subpage .footer-nav a {
+    color: var(--ai-text-secondary);
+    margin: 0 10px;
+    text-decoration: none;
+    font-family: var(--ai-mono-font);
+    font-size: 0.9rem;
+}
+.subpage .footer-nav a:hover { color: #FFFFFF; } /* White hover */
+.subpage .footer-copyright {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
 }
 
-.template-diagnosis-description {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
-    font-size: 1rem;
-    line-height: 1.6;
+/* General Styling for Floating Blonde Bot Images */
+.subpage .blonde-bot-image {
+    position: absolute;
+    width: clamp(150px, 18vw, 230px);
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+    z-index: 5;
+}
+
+/* Specific positioning for each blonde bot image */
+.subpage .bb-room-info {
+
+    position: absolute;
+    width: 580px; /* Adjusted size to be larger */
+    height: auto;
+    bottom: 0; /* Stick to the bottom */
+    right: -50px; /* Stick to the left corner */
+    z-index: 1; /* Positioned below the button but above the background */
+    transform: scaleX(-1);
+}
+
+.subpage .bb-room-info:hover {
+    box-shadow: -5px 8px 28px rgba(0,0,0,0.4), 0 0 15px rgba(255, 255, 255, 0.1); /* Subtle white glow */
+}
+
+.subpage .bb-process-intro {
+    bottom: calc(-1 * var(--ai-section-padding-vertical)); 
+    left: -10px; 
+    transform: translateX(-50%) translateY(-50%) perspective(800px); 
+    width: 250px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: bobbing-float 3.5s ease-in-out infinite; 
+}
+
+.subpage .bb-process-intro:hover {
+    transform: translateX(-50%) translateY(-50%) perspective(800px) rotateY(-8deg) scale(1.08); 
+    box-shadow: -3px 5px 20px rgba(0,0,0,0.35), 0 0 12px rgba(255, 255, 255, 0.1); /* Subtle white glow */
+}
+
+.subpage .bb-cta {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+
+.subpage .bb-cta:hover {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 18px 45px rgba(255, 255, 255, 0.15); /* Subtle white glow */
+}
+
+@keyframes bobbing-float {
+  0% {
+    transform: scaleX(-1) translateY(0px) perspective(800px);
+  }
+  50% {
+    transform: scaleX(-1) translateY(-8px) perspective(800px);
+  }
+  100% {
+    transform: scaleX(-1) translateY(0px) perspective(800px);
+  }
+}
+
+@keyframes simple-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Responsive adjustments for sections and blonde-bot images */
+@media (max-width: 992px) {
+    .subpage .room-info-section .room-info-content {
+        flex-direction: column;
+        padding-left: 0;
+        text-align: center;
+    }
+    .subpage .room-info-section .room-description {
+        text-align: center;
+    }
+    .subpage .blonde-bot-image.bb-room-info {
+        position: relative;
+        top: auto; left: auto; transform: none;
+        margin: 0 auto 20px auto;
+        width: clamp(150px, 30vw, 200px);
+    }
+
+    .subpage .process-section > .container {
+        /* padding-top: 20px; */
+    }
+    .subpage .blonde-bot-image.bb-process-intro {
+        position: relative;
+        top: auto; left: auto; transform: none;
+        margin: 0 auto 20px auto;
+        width: clamp(120px, 25vw, 160px);
+    }
+
+    .subpage .cta-section .cta-content {
+        padding-right: 0;
+    }
+    .subpage .blonde-bot-image.bb-cta {
+        position: relative;
+        top: auto; right: auto; transform: none;
+        margin: 0 auto 20px auto;
+        display: block;
+        width: clamp(130px, 28vw, 180px);
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --ai-section-padding-vertical: clamp(30px, 6vh, 60px);
+        --ai-section-padding-horizontal-container: clamp(15px, 4vw, 30px);
+    }
+
+    .subpage .page-section {
+        margin: 25px auto;
+    }
+    
+    .subpage .room-title { font-size: clamp(2rem, 6vw, 2.5rem); }
+    .subpage .section-title { font-size: clamp(1.8rem, 5vw, 2rem); }
+    .subpage .cta-title { font-size: clamp(1.6rem, 4.5vw, 1.8rem); }
+    .subpage .intro-text, .subpage .room-description, .subpage .cta-text, .subpage p {
+        font-size: 0.95rem;
+    }
+    .subpage .room-info-section .room-info-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .subpage .room-info-section .room-description {
+        text-align: center; /* Changed from right to center for consistency on mobile */
+    }
+    .subpage .process-step {
+        flex-direction: column;
+        align-items: center; 
+        text-align: center;
+        gap: 20px; 
+    }
+    .subpage .process-step .step-main-content {
+        flex-direction: column; 
+        align-items: center; 
+        gap: 10px; 
+        width: 100%; 
+        flex-basis: auto; 
+    }
+    .subpage .process-step .step-visual {
+        margin-left: 0; 
+        max-width: 90%; 
+        width: auto; 
+        flex-basis: auto; 
+        order: 2; 
+        margin-top: 10px; 
+    }
+    .subpage .process-step .step-number { 
+        margin-right: 0; 
+        margin-bottom: 10px; 
+    }
+    .subpage .process-step:not(:last-child) .process-connector {
+        display: none; 
+    }
+    .subpage .use-case-card { flex-direction: column; align-items: center; text-align: center; }
+    .subpage .use-case-icon { margin-bottom: 15px; }
+    .subpage .use-case-title, .subpage .use-case-description, .subpage .testimonial {
+        text-align: center;
+    }
+    /* Ensure testimonial border is centered or consistent */
+    .subpage .testimonial {
+        border-left: none; /* Remove side border */
+        border-top: 2px solid rgba(255, 255, 255, 0.3); /* Add top border */
+        padding-left: 0;
+        padding-top: 10px; /* Add padding for top border */
+        margin-top: 15px;
+    }
+}
+
+.subpage .bb-offering-featured {
+    bottom: calc(-1 * var(--ai-section-padding-vertical) - 80px); 
+    right: -170px; 
+    width: 250px; 
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out; 
+    z-index: 20; /* Increased z-index */
+    animation: bobbing-float 3.5s ease-in-out infinite; 
+}
+
+/* New Diagnosis Section Styles */
+.subpage .diagnosis-section .diagnosis-content-wrapper {
+    max-width: 700px; /* Control width of content */
+    margin: 1.5rem auto 0 auto; /* Center it and add some top margin */
+    padding-bottom: 1.5rem; /* Added padding at the bottom for the button */
+    text-align: center; /* Center align text within this wrapper */
+    display: flex; /* Added */
+    flex-direction: column; /* Added */
+    align-items: center; /* Added to keep content centered horizontally */
+    min-height: 350px; /* Ensure container has enough height to push button down */
+    position: relative; /* Added for positioning context for child elements */
+}
+
+.subpage .diagnosis-price {
+    font-family: var(--ai-futuristic-font);
+    font-size: 2.5rem; /* Prominent price */
+    color: #FFFFFF; /* White price */
+    margin-bottom: 1rem;
+    display: inline-block; /* To make the text-align:left work within a centered parent */
+    font-weight: normal; /* Added to remove bold if it was appearing so */
+}
+
+.subpage .diagnosis-description {
+    font-size: 1rem; /* Standard paragraph size */
+    color: var(--ai-text-secondary);
     margin-bottom: 1.5rem;
 }
 
-.template-diagnosis-features {
+.subpage .diagnosis-features {
     list-style: none;
     padding: 0;
-    margin: 1.5rem 0;
-    text-align: left;
-    width: 100%;
+    margin-bottom: 2rem;
+    text-align: left; /* Align list items to the left for readability */
+    display: inline-block; /* To make the text-align:left work within a centered parent */
+    flex-grow: 1; /* Make the features list take available space, pushing button down */
 }
 
-.template-diagnosis-features li {
-    font-family: var(--template-mono-font);
-    color: var(--template-text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
-    padding-left: 1.5rem;
+.subpage .diagnosis-features li {
+    padding: 8px 0 8px 30px;
     position: relative;
+    font-size: 0.95rem;
+    color: var(--ai-text-secondary);
 }
 
-.template-diagnosis-features li::before {
-    content: "✓";
+.subpage .diagnosis-features li::before {
+    content: '✧'; /* Checkmark icon CHANGED to star */
     position: absolute;
     left: 0;
-    color: var(--template-accent-glow);
-    font-weight: bold;
+    color: #FFFFFF; /* White icon */
+    font-size: 1.3em;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.template-cta-button {
+.subpage p.offering-description {
+    text-align: left;
+    margin-left: 0;
+}
+
+/* New Continue the Tour Section Styles */
+.subpage .continue-tour-section {
+    background-image: url('../images/rooms/consults-coded.jpg'); /* Added background image */
+    background-size: cover; /* Ensure image covers the section */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent image tiling */
+    border: none;
+    box-shadow: none;
+    padding-top: 60px; /* Increased padding for better visual with background */
+    padding-bottom: 60px; /* Increased padding for better visual with background */
+    text-align: center; /* Center the button */
+    position: relative; /* For the overlay pseudo-element */
+    z-index: 0; /* Base z-index */
+}
+
+.subpage .continue-tour-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black overlay */
+    z-index: -1; /* Behind the button */
+    border-radius: inherit; /* Inherit border-radius if section had one (it doesn't currently) */
+}
+
+.subpage .continue-tour-button {
     display: inline-block;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--template-accent-glow), rgba(255,255,255,0.1));
-    color: var(--template-text-primary);
+    padding: 15px 40px; /* Generous padding */
+    background: rgba(255, 255, 255, 0.15); /* Consistent with other CTAs */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.1rem; /* Slightly larger */
+    text-transform: uppercase;
+    border-radius: 50px; /* Pill shape */
     text-decoration: none;
-    border-radius: 8px;
-    font-family: var(--template-futuristic-font);
-    font-size: 1rem;
-    letter-spacing: 1px;
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid var(--template-glass-border);
-    margin-top: 1rem;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    position: relative; /* Ensure it's above the pseudo-element */
+    z-index: 1; /* Ensure it's above the pseudo-element */
 }
 
-.template-cta-button:hover {
-    background: linear-gradient(135deg, rgba(255,255,255,0.2), var(--template-accent-glow));
-    box-shadow: 0 0 20px var(--template-accent-glow);
-    transform: translateY(-2px);
+.subpage .continue-tour-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); /* White glow */
+    transform: translateY(-3px);
+}
+
+.subpage .continue-tour-button .arrow-right {
+    margin-left: 10px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.subpage .continue-tour-button:hover .arrow-right {
+    transform: translateX(5px);
+}
+
+.subpage .diagnosis-section .cta-button {
+    /* margin-top: auto; /* Removed, flex-grow on sibling will push it down */
+    /* The button will use general .cta-button styles defined elsewhere */
+    /* It will be centered due to align-items: center on the parent flex container */
+    /* Add specific width if needed, e.g., width: 80%; max-width: 300px; */
+}
+
+/* New styles for the blonde bot image on the diagnosis CTA */
+.subpage .bb-diagnosis-cta-image {
+    position: absolute;
+    width: 550px; /* Adjusted size to be larger */
+    height: auto;
+    bottom: 0; /* Stick to the bottom */
+    left: 0; /* Stick to the left corner */
+    z-index: 1; /* Positioned below the button but above the background */
+    border-bottom-left-radius: var(--ai-card-border-radius); /* Match parent card's radius */
+}
+
+/* ===== MUSIC PLAYER ===== */
+.music-player {
+  display: flex;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.music-player.corner-position {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+
+.music-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.play-icon {
+  color: white;
+  font-size: 16px;
+  margin-left: 3px;
+  transition: transform 0.2s ease;
+}
+
+.pause-icon {
+  color: white;
+  font-size: 16px;
+  display: none;
+  transition: transform 0.2s ease;
+}
+
+.music-label {
+  font-family: "Cartograph Mono", monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 1px;
+}
+
+.music-player:hover {
+  background: rgba(20, 20, 20, 0.7);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.music-player.corner-position:hover {
+  transform: scale(1.05);
+}
+
+.music-button:hover {
+  background: transparent;
+  transform: none;
+}
+
+.music-button:hover .play-icon,
+.music-button:hover .pause-icon {
+  transform: scale(1.2);
+}
+
+.music-player.active {
+  background: rgba(25, 25, 25, 0.75);
+}
+
+.music-player.active .play-icon {
+  display: none;
+}
+
+.music-player.active .pause-icon {
+  display: block;
+}
+
+/* Offerings Grid Container */
+.offerings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+    max-width: 100%;
+}
+
+/* Individual Offering Card */
+.offering-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    padding-top: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.offering-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Image Wrapper */
+.offering-image-wrapper {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+/* Offering Image */
+.offering-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.offering-card:hover .offering-image {
+    transform: scale(1.05);
+}
+
+/* Card Content Container */
+.offering-text-content {
+    position: relative;
+    z-index: 2;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Offering Title */
+.offering-title {
+    font-family: "Uniform Extra Condensed", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Offering Description */
+.offering-description {
+    font-family: "Uniform Extra Condensed", sans-serif;
+    font-size: 0.865rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1rem;
+}
+
+/* Features List */
+.offering-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: auto;
+}
+
+.offering-features li {
+    font-family: "Uniform Extra Condensed", sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.3rem 0;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.4;
+}
+
+.offering-features li::before {
+    content: '•';
+    color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+}
+
+/* Glass shimmer effect */
+.offering-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+    z-index: 1;
+}
+
+.offering-card:hover::before {
+    left: 100%;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    :root {
-        --template-section-padding-vertical: clamp(20px, 5vh, 40px);
-        --template-section-padding-horizontal-container: clamp(15px, 4vw, 25px);
+    .offerings-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem 0;
     }
-
-    .template-room-info-section .room-title {
-        font-size: clamp(2rem, 6vw, 2.5rem);
+    
+    .offering-card {
+        padding: 1rem;
+        padding-top: 5px;
     }
+    
+    .offering-image-wrapper {
+        height: 150px;
+        margin-bottom: 0.75rem;
+    }
+    
+    .offering-title {
+        font-size: 1.2rem;
+    }
+    
+    .offering-description {
+        font-size: 0.8rem;
+    }
+    
+    .offering-features li {
+        font-size: 0.75rem;
+    }
+}
 
-    .template-offerings-grid {
+@media (max-width: 480px) {
+    .offerings-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .template-process-step {
-        flex-direction: column;
-        text-align: center;
-        gap: 1.5rem;
-    }
-
-    .template-process-step .template-step-main-content {
-        flex-direction: column;
         gap: 1rem;
     }
-
-    .template-process-step .template-step-visual {
-        width: 100%;
-        max-width: 300px;
-        height: 200px;
+    
+    .offering-card {
+        padding: 0.75rem;
+        padding-top: 5px;
     }
-
-    .template-step-number {
-        font-size: 2rem;
-        min-width: auto;
+    
+    .offering-image-wrapper {
+        height: 120px;
     }
-
-    .template-process-step:not(:last-child) .template-process-connector {
-        display: none;
+    
+    .offering-title {
+        font-size: 1.1rem;
     }
-
-    .template-footer-nav {
-        gap: 1rem;
+    
+    .offering-description {
+        font-size: 0.75rem;
     }
+}
 
-    .template-continue-tour-button {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
+/* Alternative grid layouts for different screen sizes */
+@media (min-width: 1200px) {
+    .offerings-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
-} 
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .offerings-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -488,6 +488,7 @@ body.detail-page.machine-megamind {
     position: relative;
     padding-left: 25px; /* Indent text to make room for the custom bullet */
     list-style: none; /* Hide the default bullet */
+    content: '✧';
 }
 
 .machine-megamind ul li::before {
@@ -1000,6 +1001,12 @@ artificial-ingenious .bb-diagnosis-cta-image {
     margin: 1.5rem 0 0 0;
     border: 1px solid var(--mm-glass-border);
 }
+.section-image {
+    width: 100%;
+    border-radius: 15px;
+    margin: 1.5rem 0 0 0;
+    border: 1px solid var(--mm-glass-border);
+}
 
 /* Implementation Timeline Section */
 .machine-megamind .timeline-section .timeline-steps {
@@ -1119,7 +1126,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
 }
 
 .machine-megamind .agentic-in-action-section ul li::before {
-    content: '-';
+    content: '✧';
     position: absolute;
     left: 0;
     top: 0;
@@ -1140,9 +1147,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
     margin-bottom: 2.5rem;
 }
 
-.machine-megamind .workflow-spotlight-section .category:last-child {
-    margin-bottom: 0;
-}
+
 
 .machine-megamind .workflow-spotlight-section h3 {
     font-family: var(--mm-futuristic-font);
@@ -1170,7 +1175,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
 }
 
 .machine-megamind .workflow-spotlight-section ul li::before {
-    content: '-';
+    content: '✧';
     position: absolute;
     left: 0;
     top: 0;

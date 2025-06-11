@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             lastTime = currentTime;
             
             // Adaptive speed based on frame rate
-            const adaptiveSpeed = Math.min(0.2, 0.1 * (deltaTime / 16.67)); // Reduced 0.08 to 0.05 to slow down
+            const adaptiveSpeed = Math.min(.03, 0.1 * (deltaTime / 16.67)); // Reduced 0.08 to 0.05 to slow down
             scrollProgress += adaptiveSpeed;
             
             if (scrollProgress >= 1) {
