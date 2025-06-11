@@ -872,16 +872,17 @@ body.detail-page.artificial-ingenious {
 
 /* Specific positioning for each blonde bot image */
 .artificial-ingenious .bb-room-info {
-    bottom:-90px; 
-    right: -160px; 
-    width: 450px; 
-    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out; 
-    z-index: 0; /* Lowered z-index to be behind page-section cards */
-    animation: bobbing-float 3.5s ease-in-out infinite; 
+
+    position: absolute;
+    width: 580px; /* Adjusted size to be larger */
+    height: auto;
+    bottom: 0; /* Stick to the bottom */
+    right: -50px; /* Stick to the left corner */
+    z-index: 1; /* Positioned below the button but above the background */
+    transform: scaleX(-1);
 }
 
 .artificial-ingenious .bb-room-info:hover {
-    transform: translateY(-5px) perspective(800px) rotateY(-12deg) scale(1.03);
     box-shadow: -5px 8px 28px rgba(0,0,0,0.4), 0 0 15px rgba(255, 255, 255, 0.1); /* Subtle white glow */
 }
 
