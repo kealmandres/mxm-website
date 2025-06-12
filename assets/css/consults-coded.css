@@ -1,0 +1,105 @@
+/* CSS for Consults Coded Page */
+:root {
+  --cc-glass-bg: rgba(25, 25, 35, 0.65);
+  --cc-glass-border: rgba(255, 255, 255, 0.2);
+  --cc-text-primary: #FFFFFF;
+  --cc-text-secondary: #E0E0E0;
+  --cc-futuristic-font: "Uniform Extra Condensed", sans-serif;
+  --cc-mono-font: "Cartograph Mono", monospace;
+  --cc-card-border-radius: 18px;
+}
+
+body.consults-coded .page-section {
+    background: rgba(0, 0, 0, .85);
+    border: 1px solid var(--cc-glass-border);
+    border-radius: var(--cc-card-border-radius);
+    margin: 40px auto;
+    max-width: 1400px;
+    padding-bottom: clamp(40px, 8vh, 80px);
+    padding-top: clamp(40px, 8vh, 80px);
+}
+
+.consults-coded .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.consults-coded .service-card {
+    background: var(--cc-glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--cc-glass-border);
+    border-radius: var(--cc-card-border-radius);
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.consults-coded .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.consults-coded .service-card h3 {
+    font-family: var(--cc-futuristic-font);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.consults-coded .service-card ul {
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.consults-coded .engagement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.consults-coded .engagement-card {
+    background: var(--cc-glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--cc-glass-border);
+    border-radius: var(--cc-card-border-radius);
+    padding: 2rem;
+    text-align: center;
+}
+
+.consults-coded .engagement-card .price {
+    font-family: var(--cc-futuristic-font);
+    font-size: 2rem;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.consults-coded .engagement-card ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.consults-coded .ideal-for {
+    font-style: italic;
+    font-size: 0.9rem;
+    text-align: left;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--cc-glass-border);
+}
+
+.consults-coded .continue-tour-button {
+    text-transform: uppercase;
+}
+.consults-coded .continue-tour-button .arrow-right {
+    margin-left: 10px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.consults-coded .continue-tour-button:hover .arrow-right {
+    transform: translateX(5px);
+} 
