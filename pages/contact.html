@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+    CONTACT | MxM
+  </title>
+
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/detailed-pages.css">
+    <link rel="stylesheet" href="../assets/css/fourth-wall-breaking.css">
+    <link rel="stylesheet" href="../assets/css/micro-interactions.css">
+    <link rel="stylesheet" href="../assets/css/artificial-ingenious.css">
+    <!-- Persistent Music Player Styles -->
+    <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
+  <script crossorigin="anonymous" src="https://kit.fontawesome.com/a076d05399.js">
+  </script>
+ </head>
+ <body class="detail-page artificial-ingenious persistent-music-active">
+    <!-- Required Audio Element for Persistent Music Player -->
+    <audio id="background-music" loop preload="auto">
+        <source src="../assets/audio/background-music.mp3" type="audio/mpeg">
+        <source src="../assets/audio/background-music.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Persistent Music Player Controls -->
+    <div class="persistent-music-controls">
+        <!-- Main Player Control -->
+        <div class="persistent-music-player">
+            <button id="play-pause-btn" 
+                    data-play-text="▶" 
+                    data-pause-text="⏸"
+                    aria-label="Play/Pause music">
+                ▶
+            </button>
+            <span class="music-status-label">MxM Mix</span>
+            <button class="volume-toggle-btn" id="volume-toggle-btn" aria-label="Toggle volume control">
+                VOL
+            </button>
+        </div>
+        
+        <!-- Volume Control -->
+        <div class="volume-control-container" id="volume-control-container">
+            <span class="volume-icon">♪</span>
+            <input type="range" 
+                   id="volume-slider" 
+                   min="0" 
+                   max="1" 
+                   step="0.05" 
+                   value="0.5"
+                   aria-label="Volume control">
+            <span class="volume-display">50%</span>
+        </div>
+    </div>
+
+    <div id="dynamic-page-background"></div>
+    <div id="process-scroll-animation-host">
+        <!-- <img src="../assets/images/artificial-ingenious/Step 4 (revised).jpg" alt="Process Animation Background" class="scrolling-process-image"> -->
+    </div>
+    <div class="hero-background-slideshow">
+        <img src="../assets/images/rooms/chat-chamber.jpg" alt="Contact Background Slide 1" class="hero-bg-slide">
+        <img src="../assets/images/contact-page/marissa_kos_httpss.mj.runpJ62DQKZGNQ_A_futuristic_contact_roo_c3419674-8280-40a4-967e-1c07692b149f_3 copy.jpg" alt="Contact Background Slide 2" class="hero-bg-slide">
+        <img src="../assets/images/future-observatory/backgrounds/marissa_kos_inside_the_domed_observatory_of_a_futuristic_labo_c55e3fec-3431-4728-aadb-e45028537708_1.png" alt="Contact Background Slide 3" class="hero-bg-slide">
+        <img src="../assets/images/future-observatory/backgrounds/observatory 1.png" alt="Contact Background Slide 4" class="hero-bg-slide">
+    </div>
+    <!-- Room-specific 3D elements will be added via JavaScript -->
+    <div class="floating-elements-container"></div>
+    
+    <!-- Return to Homepage Button -->
+    <a href="../index.html" class="return-to-maison">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Return to MaCHiNE MaiSON
+    </a>
+    
+    <!-- Video Hero Section -->
+    <div class="video-hero-wrapper">
+        <section class="page-section video-hero-section" data-section-type="video-hero">
+            <div class="video-container">
+                <div class="video-placeholder">
+                    <iframe src="https://player.vimeo.com/video/1087965169?h=0&amp;autoplay=1&amp;loop=0&amp;title=0&amp;byline=0&amp;portrait=0" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                </div>
+            </div>
+            <div class="artistic-background-text" style="top: 20%; left: 10%;">CONTACT</div>
+        </section>
+    </div>
+
+
+    <section class="page-section room-info-section" data-section-type="room-info" style="padding: 0 0 40px 0; margin-top: 100px;">
+        <div class="container">
+            <h1 class="room-title">Get In Touch</h1>
+            <p class="room-description">Ready for empowered autonomy? Whether you're curious about AI implementation, need consulting services, or want to collaborate, transmission starts here. Expect a response within 24-48 hours.</p>
+            <div class="mm-offerings-grid" style=" display: flex; flex-direction: row; justify-content: space-around;
+             padding: 0; margin-top: -10px;">
+                <!-- Research Agent -->
+                <div class="mm-offering-card" style="padding-top: 5px;">
+                 
+                    <div class="mm-offering-text-content" style="display: flex; flex-direction: column; align-items: center;">
+                     <img src="../assets/images/contact-page/Call.png" alt="Research Agent" 
+                      style="
+                        width: 200px;
+                        margin-bottom: -10px;
+                       height: auto; object-fit: contain; animation: simple-float 3.5s ease-in-out infinite; max-width: 100%; max-height: 100%; transition: transform 0.3s ease;">
+    
+    
+                        <h3 class="mm-offering-title">[Phone Number]</h3>
+                    </div>
+                </div>
+                <div class="mm-offering-card" style="padding-top: 5px;">
+                 
+                    <div class="mm-offering-text-content" style="display: flex; flex-direction: column; align-items: center;">
+                     <img src="../assets/images/contact-page/Email 1.png" alt="Research Agent" 
+                      style="
+                        width: 200px;
+                        margin-bottom: -10px;
+                       height: auto; object-fit: contain; animation: simple-float 3.5s ease-in-out infinite; max-width: 100%; max-height: 100%; transition: transform 0.3s ease;">
+    
+    
+                        <h3 class="mm-offering-title" style="text-transform: lowercase;">info@themxm.ai</h3>
+                    </div>
+                </div>
+    
+              </div>
+              <div class="mm-offering-card" style="padding-top: 5px; width: 100%;">
+                <div class="mm-offering-text-content" style="display: flex;">
+                    <form id="contactForm" name="sentMessage" novalidate="novalidate" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                        <div style="display: flex; flex-direction: column; gap: 15px; justify-content: center;">
+                            <!-- Inquiry Type -->
+                            <div style="margin-bottom: 15px;">
+                                <select id="inquiryType" required="required" style="width: 100%; max-width: 800px; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font); margin: 0 auto; display: block;">
+                                    <option disabled="" selected="" value="">Select Inquiry Type *</option>
+                                    <option value="coaching">AI Coaching Packages (aRTIFICIAL iNGENIOUS)</option>
+                                    <option value="development">AI Agent Development (MaCHiNE MEGaMiND)</option>
+                                    <option value="consulting">Consulting</option>
+                                    <option value="speaking">Speaking/Media Request</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Name Field -->
+                            <div style="margin-bottom: 15px;">
+                                <input id="name" placeholder="Your Name *" required="required" type="text" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font);"/>
+                            </div>
+                            
+                            <!-- Email Field -->
+                            <div style="margin-bottom: 15px;">
+                                <input id="email" placeholder="Your Email *" required="required" type="email" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font);"/>
+                            </div>
+                            
+                            <!-- Subject Field -->
+                            <div style="margin-bottom: 15px;">
+                                <input id="subject" placeholder="Subject" type="text" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font);"/>
+                            </div>
+                            
+                            <!-- Message Field -->
+                            <div style="margin-bottom: 15px;">
+                                <textarea id="message" placeholder="Your Message *" required="required" rows="6" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font); min-height: 150px; resize: vertical;"></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Newsletter Checkbox -->
+                        <div style="margin: 20px auto; text-align: center; display: flex; justify-content: center; align-items: center;">
+                            <label style="display: flex; align-items: center; color: var(--ai-text-primary); font-family: var(--ai-mono-font); text-align: center;">
+                                <input id="newsletterCheck" type="checkbox" style="margin-right: 10px;"/>
+                                Keep me posted with the Peroxide Prophecies newsletter
+                            </label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div style="text-align: center; margin: 30px auto 0 auto; display: flex; justify-content: center;">
+                            <button id="sendMessageButton" type="submit" class="cta-button" style="padding: 15px 40px; font-size: 1.2rem; margin: 0 auto;">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+  
+
+    <!-- Fast-Track Section -->
+    <section class="page-section" data-section-key="Fast Track" style="min-height: 70vh; display: flex; align-items: center;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <div class="offering-card" style="padding: 30px; text-align: center; margin: 0 auto; max-width: 800px;">
+                <div class="offering-text-content" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <h4 class="offering-title" style="text-align: center; margin: 0 auto;">Fast-Track Your Request</h4>
+                    <p style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto 30px auto; text-align: center; max-width: 600px;">
+                        Skip the form and book a 15-minute discovery call directly.
+                    </p>
+                    <a href="https://calendly.com/marissa-themxm/discovery" target="_blank" class="cta-button" style="display: inline-block; padding: 15px 30px; text-decoration: none; margin: 0 auto 30px auto;">
+                        Book Discovery Call
+                    </a>
+                    
+                    <div style="margin: 40px auto 0 auto; text-align: center;">
+                        <h5 style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto 20px auto; text-align: center;">
+                            Alternatively, start your diagnosis directly:
+                        </h5>
+                        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; align-items: center;">
+                            <a href="https://tally.so/r/mKOoVz" target="_blank" class="explore-btn" style="text-decoration: none; padding: 10px 20px; margin: 5px; text-align: center;">
+                                AI Coaching Diagnosis (aRTIFICIAL iNGENIOUS)
+                            </a>
+                            <a href="https://tally.so/r/meyA00" target="_blank" class="explore-btn" style="text-decoration: none; padding: 10px 20px; margin: 5px; text-align: center;">
+                                AI Agent Diagnosis (MaCHiNE MEGaMiND)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision and Mission Section -->
+    <section class="page-section" data-section-key="Vision Mission" style="min-height: 60vh; display: flex; align-items: center;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <div class="offering-card" style="padding: 30px; margin: 0 auto; max-width: 800px;">
+                <div class="offering-text-content" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 class="offering-title" style="text-align: center; margin: 0 auto;">Vision for the Future</h3>
+                    <p style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto 30px auto; text-align: center;">
+                        I envision a future where technology amplifies human potential, automating the mundane and freeing us to focus on creativity, strategy, and connection. A future of abundance and true appreciation for the glory of the human condition when freed from the stresses of manufactured scarcity.
+                    </p>
+                    
+                    <h3 class="offering-title" style="text-align: center; margin: 0 auto;">Personal Mission</h3>
+                    <p style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto; text-align: center;">
+                        To demystify artificial intelligence and motivate everyone to harness its power, transforming challenges into opportunities and building a future we as a species can be proud of. You should always walk out of MxM more autonomously empowered than when you walked in.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Continue Tour Section -->
+    <section class="page-section continue-tour-section" style="background-image: url('../assets/images/rooms/blonde-bot-lair.jpg');">
+        <div class="container">
+            <a href="coming-soon.html" class="continue-tour-button" style="text-transform: uppercase;">CONTiNUE THE TOUR<span class="arrow-right">→</span></a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-nav">
+                    <a href="../index.html">Home</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="blonde-bot-lair.html">About</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+                <div class="footer-copyright">© 2025 MaCHiNE x MaiSON. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/animated-transitions.js"></script>
+    <script src="../js/fourth-wall-breaking.js"></script>
+    <script src="../js/micro-interactions.js"></script>
+    <script src="../assets/js/artificial-ingenious.js" defer></script>
+    
+    <!-- Persistent Music Player Script -->
+    <script src="../assets/js/persistent-music-player.js"></script>
+    
+    <!-- Volume Display Update Script -->
+    <script>
+        // Update volume display in real-time
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeDisplay = document.querySelector('.volume-display');
+        
+        if (volumeSlider && volumeDisplay) {
+            volumeSlider.addEventListener('input', function() {
+                volumeDisplay.textContent = Math.round(this.value * 100) + '%';
+            });
+        }
+        
+        // Update music status label based on playback state
+        function updateMusicLabel() {
+            const label = document.querySelector('.music-status-label');
+            if (window.persistentMusicPlayer && label) {
+                const isPlaying = window.persistentMusicPlayer.isPlaying();
+                label.textContent = isPlaying ? 'MxM Mix ♪' : 'MxM Mix';
+            }
+        }
+        
+        // Update label every second
+        setInterval(updateMusicLabel, 1000);
+    </script>
+ </body>
+</html>
