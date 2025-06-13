@@ -12,8 +12,47 @@
     <link rel="stylesheet" href="../assets/css/fourth-wall-breaking.css">
     <link rel="stylesheet" href="../assets/css/micro-interactions.css">
     <link rel="stylesheet" href="../assets/css/machine-megamind.css">
+    <!-- Persistent Music Player Styles -->
+    <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
 </head>
-<body class="detail-page machine-megamind">
+<body class="detail-page machine-megamind persistent-music-active">
+    <!-- Required Audio Element for Persistent Music Player -->
+    <audio id="background-music" loop preload="auto">
+        <source src="../assets/audio/background-music.mp3" type="audio/mpeg">
+        <source src="../assets/audio/background-music.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Persistent Music Player Controls -->
+    <div class="persistent-music-controls">
+        <!-- Main Player Control -->
+        <div class="persistent-music-player">
+            <button id="play-pause-btn" 
+                    data-play-text="▶" 
+                    data-pause-text="⏸"
+                    aria-label="Play/Pause music">
+                ▶
+            </button>
+            <span class="music-status-label">MxM Mix</span>
+            <button class="volume-toggle-btn" id="volume-toggle-btn" aria-label="Toggle volume control">
+                VOL
+            </button>
+        </div>
+        
+        <!-- Volume Control -->
+        <div class="volume-control-container" id="volume-control-container">
+            <span class="volume-icon">♪</span>
+            <input type="range" 
+                   id="volume-slider" 
+                   min="0" 
+                   max="1" 
+                   step="0.05" 
+                   value="0.5"
+                   aria-label="Volume control">
+            <span class="volume-display">50%</span>
+        </div>
+    </div>
+
     <div id="dynamic-page-background"></div>
     <div class="hero-background-slideshow">
         <img src="../assets/images/machine-megamind/backgrounds/artificial-ingenious.jpg" alt="Machine Megamind Background Slide 1" class="hero-bg-slide">
@@ -77,7 +116,7 @@
                         <div class="step-number">02</div>
                         <div class="step-content">
                             <h3>BUILD</h3>
-                            <p>We develop specialised AI agents for different functions (data analysis, content creation, customer outreach, operations, administration, business development… we build agents for almost anything), integrating them into your existing systems, and ideally optimising execution once they’ve had some time with boots on the ground.</p>
+                            <p>We develop specialised AI agents for different functions (data analysis, content creation, customer outreach, operations, administration, business development… we build agents for almost anything), integrating them into your existing systems, and ideally optimising execution once they've had some time with boots on the ground.</p>
                         </div>
                     </div>
                 </div>
@@ -86,7 +125,7 @@
                         <div class="step-number">03</div>
                         <div class="step-content">
                             <h3>COMPLY</h3>
-                            <p>All agents are built with security and compliance in mind, ensuring data protection and ethical operation standards. This also is where we audit each agent’s output as well as the quality of communication through the agentic workflow in a closed environment. AI is doing the best it can with our constant pestering and still hallucinates (hey, some verryyy well-known founders are operating on psychoactives… nobody’s perfect).</p>
+                            <p>All agents are built with security and compliance in mind, ensuring data protection and ethical operation standards. This also is where we audit each agent's output as well as the quality of communication through the agentic workflow in a closed environment. AI is doing the best it can with our constant pestering and still hallucinates (hey, some verryyy well-known founders are operating on psychoactives… nobody's perfect).</p>
                         </div>
                     </div>
                 </div>
@@ -116,7 +155,7 @@
     <section class="page-section offerings-section" data-section-type="offerings">
         <div class="container">
             <h2 class="section-title">CUSTOM AI AGENTS</h2>
-            <p class="intro-text">Our specialized custom AI agents are designed to handle functions with superhuman efficiency, freeing your team to focus on high-value creative and strategic work… no more singeing retinas on the computer screen, we’re all tired, let’s get back to doing what we love. Here are just a few examples of Agents at your disposal, but MxM loves versatility so as far as your mind can fathom, your MaCHiNE MEGaMiND can be built.</p>
+            <p class="intro-text">Our specialized custom AI agents are designed to handle functions with superhuman efficiency, freeing your team to focus on high-value creative and strategic work… no more singeing retinas on the computer screen, we're all tired, let's get back to doing what we love. Here are just a few examples of Agents at your disposal, but MxM loves versatility so as far as your mind can fathom, your MaCHiNE MEGaMiND can be built.</p>
             
             <div class="offerings-grid">
                 <!-- Research Agent -->
@@ -220,7 +259,7 @@
             <div class="section-divider"></div>
 
             <h2 class="section-title">AGENTIC WORKFLOWS</h2>
-            <p class="intro-text">The true power of AI emerges when multiple agents work together in seamless workflows, creating end-to-end solutions that transform entire business processes. ‘Agentic’ will feel ‘angelic’ when you experience the level of support and proactivity your battalion brings.</p>
+            <p class="intro-text">The true power of AI emerges when multiple agents work together in seamless workflows, creating end-to-end solutions that transform entire business processes. 'Agentic' will feel 'angelic' when you experience the level of support and proactivity your battalion brings.</p>
             <div class="offerings-grid" style="padding: 0px;">
                 <!-- Research Agent -->
                 <div class="offering-card">
@@ -335,7 +374,7 @@
     <!-- <section class="page-section timeline-section" data-section-type="timeline" style="padding: 10px 0 -10px 0;">
         <div class="container">
             <h2 class="section-title">IMPLEMENTATION TIMELINE</h2>
-            <p class="intro-text">Our 12-week process ensures a smooth, successful integration of AI agents and workflows where your MaCHiNE MEGaMiND metamorphosises “business as usual” into “business as unreal”... seriously, once you go bot you never go back.</p>
+            <p class="intro-text">Our 12-week process ensures a smooth, successful integration of AI agents and workflows where your MaCHiNE MEGaMiND metamorphosises "business as usual" into "business as unreal"... seriously, once you go bot you never go back.</p>
             
             <div class="timeline-steps" style="padding-left: 90px; padding-right: 90px;">
                 <div class="timeline-step">
@@ -596,7 +635,7 @@
                         <div class="accordion-icon">+</div>
                     </div>
                     <div class="faq-answer">
-                        <p>The Architect phase is crucial for understanding your needs. We typically need insights into your business goals, current workflows, specific tasks you want to automate or enhance, existing software systems, and any relevant; documentation, data, or knowledge bases that agents can learn from - you might commonly hear the word “context” when training agents, which is simply the aforementioned relevant resources. This collaborative process ensures the agents we build are perfectly aligned with your operational reality and strategic objectives. We commonly detect contexts that clients would never have thought of to train agents on, this is crucial to the success of the agent.</p>
+                        <p>The Architect phase is crucial for understanding your needs. We typically need insights into your business goals, current workflows, specific tasks you want to automate or enhance, existing software systems, and any relevant; documentation, data, or knowledge bases that agents can learn from - you might commonly hear the word "context" when training agents, which is simply the aforementioned relevant resources. This collaborative process ensures the agents we build are perfectly aligned with your operational reality and strategic objectives. We commonly detect contexts that clients would never have thought of to train agents on, this is crucial to the success of the agent.</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -729,7 +768,7 @@
             <section data-section-type="timeline" style="padding: 10px 0; width: 100%;">
                 <div class="container" style="width: 100%; box-sizing: border-box;">
                     <h2 class="section-title">IMPLEMENTATION TIMELINE</h2>
-                    <p class="intro-text">Our 12-week process ensures a smooth, successful integration of AI agents and workflows where your MaCHiNE MEGaMiND metamorphosises “business as usual” into “business as unreal”... seriously, once you go bot you never go back.</p>
+                    <p class="intro-text">Our 12-week process ensures a smooth, successful integration of AI agents and workflows where your MaCHiNE MEGaMiND metamorphosises "business as usual" into "business as unreal"... seriously, once you go bot you never go back.</p>
         
                     <div class="timeline-steps" style="padding: 0 5%; box-sizing: border-box;">
                          <!-- Step 1: Discovery & Design -->
@@ -944,6 +983,34 @@ document.addEventListener('keydown', function(event) {
     }
 });
     </script>   
+    
+    <!-- Persistent Music Player Script -->
+    <script src="../assets/js/persistent-music-player.js"></script>
+    
+    <!-- Volume Display Update Script -->
+    <script>
+        // Update volume display in real-time
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeDisplay = document.querySelector('.volume-display');
+        
+        if (volumeSlider && volumeDisplay) {
+            volumeSlider.addEventListener('input', function() {
+                volumeDisplay.textContent = Math.round(this.value * 100) + '%';
+            });
+        }
+        
+        // Update music status label based on playback state
+        function updateMusicLabel() {
+            const label = document.querySelector('.music-status-label');
+            if (window.persistentMusicPlayer && label) {
+                const isPlaying = window.persistentMusicPlayer.isPlaying();
+                label.textContent = isPlaying ? 'MxM Mix ♪' : 'MxM Mix';
+            }
+        }
+        
+        // Update label every second
+        setInterval(updateMusicLabel, 1000);
+    </script>
         
 </body>
 </html>

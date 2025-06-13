@@ -1,0 +1,545 @@
+/* 
+ * Persistent Music Player Styles
+ * Premium Glass Morphism Design - Monochrome Only
+ * LEFT SIDE POSITIONING & ENHANCED GLASS EFFECTS
+ */
+
+/* ===== PERSISTENT MUSIC PLAYER CONTROLS ===== */
+.persistent-music-controls {
+  position: fixed;
+  bottom: 30px;
+  left: 40px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 15px;
+  z-index: 1000;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Main Control Container - PREMIUM GLASS */
+.persistent-music-player {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  border-radius: 30px;
+  padding: 10px 18px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  min-width: 240px;
+}
+
+.persistent-music-player:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 60px rgba(255, 255, 255, 0.1);
+  transform: scale(1.05) translateY(-2px);
+}
+
+/* Play/Pause Button Styling - PREMIUM GLASS - NO CIRCLE */
+#play-pause-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  position: relative;
+}
+
+#play-pause-btn:hover {
+  background: transparent;
+  transform: scale(1.15);
+  color: rgba(255, 255, 255, 1);
+}
+
+#play-pause-btn:active {
+  transform: scale(1.05);
+}
+
+/* Button States - MONOCHROME */
+#play-pause-btn.playing {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+#play-pause-btn.paused {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Music Label - PREMIUM */
+.music-status-label {
+  font-family: "Cartograph Mono", monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.persistent-music-player:hover .music-status-label {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Volume Toggle Button */
+.volume-toggle-btn {
+  width: 50px;
+  height: 44px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+  font-family: "Cartograph Mono", monospace;
+  letter-spacing: 1px;
+  font-weight: 500;
+  position: relative;
+}
+
+.volume-toggle-btn:hover {
+  background: transparent;
+  transform: scale(1.15);
+  color: rgba(255, 255, 255, 1);
+}
+
+.volume-toggle-btn:active {
+  transform: scale(1.05);
+}
+
+/* Volume Control Container - AUTO HIDE */
+.volume-control-container {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  border-radius: 25px;
+  padding: 10px 18px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  min-width: 180px;
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
+.volume-control-container.show {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.volume-control-container:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 60px rgba(255, 255, 255, 0.1);
+  transform: scale(1.02) translateY(-1px);
+}
+
+/* Volume Slider Styling - PREMIUM GLASS */
+#volume-slider {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+#volume-slider:hover {
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Webkit Slider Thumb - PREMIUM GLASS */
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.8) 50%, rgba(220, 220, 220, 0.7) 100%);
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 250, 0.9) 50%, rgba(240, 240, 240, 0.8) 100%);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox Slider Thumb - PREMIUM GLASS */
+#volume-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.8) 50%, rgba(220, 220, 220, 0.7) 100%);
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#volume-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 250, 0.9) 50%, rgba(240, 240, 240, 0.8) 100%);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Volume Icon - PREMIUM */
+.volume-icon {
+  margin-right: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  transition: color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.volume-control-container:hover .volume-icon {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Volume Display - PREMIUM */
+.volume-display {
+  margin-left: 12px;
+  font-family: "Cartograph Mono", monospace;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 1.2px;
+  min-width: 35px;
+  text-align: right;
+  transition: color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.volume-control-container:hover .volume-display {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== AUTOPLAY PROMPT STYLING - PREMIUM GLASS ===== */
+.autoplay-prompt {
+  position: fixed;
+  top: 30px;
+  left: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 24px;
+  z-index: 10000;
+  max-width: 320px;
+  animation: slideInFromLeft 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.autoplay-prompt::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.1) 100%);
+  z-index: -1;
+  animation: subtle-pulse 3s infinite;
+}
+
+.autoplay-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+.autoplay-content p {
+  font-family: "Cartograph Mono", monospace;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 1.2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.autoplay-content button {
+  font-family: "Cartograph Mono", monospace;
+  border: none;
+  border-radius: 22px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 0.9rem;
+  letter-spacing: 1.2px;
+}
+
+#enable-autoplay-btn {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 245, 0.8) 50%, rgba(235, 235, 235, 0.7) 100%);
+  color: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+#enable-autoplay-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 250, 0.9) 50%, rgba(245, 245, 245, 0.8) 100%);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+#dismiss-autoplay-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 18px;
+  line-height: 1;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#dismiss-autoplay-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.01);
+  }
+}
+
+@keyframes quantumGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .persistent-music-controls {
+    bottom: 20px;
+    left: 20px;
+    gap: 12px;
+  }
+  
+  .persistent-music-player,
+  .volume-control-container {
+    min-width: 160px;
+    padding: 8px 14px;
+    border-radius: 25px;
+  }
+  
+  #play-pause-btn {
+    width: 38px;
+    height: 38px;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+  
+  .music-status-label {
+    font-size: 0.8rem;
+  }
+  
+  .autoplay-prompt {
+    top: 20px;
+    left: 20px;
+    max-width: 280px;
+    padding: 18px;
+  }
+  
+  .autoplay-content p {
+    font-size: 0.85rem;
+  }
+  
+  .autoplay-content button {
+    padding: 10px 18px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .persistent-music-controls {
+    bottom: 15px;
+    left: 15px;
+  }
+  
+  .persistent-music-player,
+  .volume-control-container {
+    min-width: 140px;
+    padding: 6px 12px;
+  }
+  
+  #play-pause-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
+  
+  .music-status-label {
+    font-size: 0.75rem;
+  }
+  
+  .volume-display {
+    font-size: 0.7rem;
+    min-width: 30px;
+  }
+  
+  .autoplay-prompt {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    max-width: none;
+    padding: 15px;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  .persistent-music-player,
+  .volume-control-container,
+  .autoplay-prompt,
+  #play-pause-btn,
+  #volume-slider::-webkit-slider-thumb,
+  #volume-slider::-moz-range-thumb,
+  .autoplay-content button {
+    transition: none;
+    animation: none;
+  }
+  
+  .autoplay-prompt::before {
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .persistent-music-player,
+  .volume-control-container,
+  .autoplay-prompt {
+    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.9);
+  }
+  
+  .music-status-label,
+  .volume-icon,
+  .volume-display,
+  .autoplay-content p {
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+/* ===== INTEGRATION WITH EXISTING MUSIC PLAYER ===== */
+/* Hide existing music player when persistent player is active */
+.persistent-music-active .music-player {
+  display: none;
+}
+
+/* Ensure persistent player doesn't conflict with existing elements */
+.persistent-music-controls {
+  pointer-events: auto;
+}
+
+.persistent-music-controls * {
+  pointer-events: auto;
+} 

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/detailed-pages.css">
     <link rel="stylesheet" href="../assets/css/coming-soon.css">
+    <!-- Persistent Music Player Styles -->
+    <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
     <style>
         body.coming-soon {
             background-image: url('../assets/images/rooms/underconstruction.png');
@@ -18,7 +20,44 @@
         }
     </style>
 </head>
-<body class="coming-soon">
+<body class="coming-soon persistent-music-active">
+    <!-- Required Audio Element for Persistent Music Player -->
+    <audio id="background-music" loop preload="auto">
+        <source src="../assets/audio/background-music.mp3" type="audio/mpeg">
+        <source src="../assets/audio/background-music.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Persistent Music Player Controls -->
+    <div class="persistent-music-controls">
+        <!-- Volume Control -->
+     
+        
+        <!-- Main Player Control -->
+        <div class="persistent-music-player">
+            <button id="play-pause-btn" 
+                    data-play-text="▶" 
+                    data-pause-text="⏸"
+                    aria-label="Play/Pause music">
+                ▶
+            </button>
+            <span class="music-status-label">MxM Mix</span>
+            <button class="volume-toggle-btn" id="volume-toggle-btn" aria-label="Toggle volume control">
+                VOL
+            </button>
+        </div>
+        <div class="volume-control-container" id="volume-control-container">
+            <span class="volume-icon">♪</span>
+            <input type="range" 
+                   id="volume-slider" 
+                   min="0" 
+                   max="1" 
+                   step="0.05" 
+                   value="0.5"
+                   aria-label="Volume control">
+            <span class="volume-display">50%</span>
+        </div>
+    </div>
 
 
     <div class="floating-elements-container"></div>
@@ -37,5 +76,33 @@
 
     <script src="../js/script.js"></script>
     <script src="../js/animated-transitions.js"></script>
+    
+    <!-- Persistent Music Player Script -->
+    <script src="../assets/js/persistent-music-player.js"></script>
+    
+    <!-- Volume Display Update Script -->
+    <script>
+        // Update volume display in real-time
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeDisplay = document.querySelector('.volume-display');
+        
+        if (volumeSlider && volumeDisplay) {
+            volumeSlider.addEventListener('input', function() {
+                volumeDisplay.textContent = Math.round(this.value * 100) + '%';
+            });
+        }
+        
+        // Update music status label based on playback state
+        function updateMusicLabel() {
+            const label = document.querySelector('.music-status-label');
+            if (window.persistentMusicPlayer && label) {
+                const isPlaying = window.persistentMusicPlayer.isPlaying();
+                label.textContent = isPlaying ? 'MxM Mix ♪' : 'MxM Mix';
+            }
+        }
+        
+        // Update label every second
+        setInterval(updateMusicLabel, 1000);
+    </script>
 </body>
 </html> 
