@@ -144,23 +144,24 @@ body.persistent-music-active .volume-control-container {
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 0 0 1px rgba(255, 255, 255, 0.05);
   border-radius: 25px;
-  padding: 10px 18px;
+  padding: 8px 14px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  width: 200px !important;
-  max-width: 200px !important;
-  min-width: 200px !important;
+
   opacity: 0;
   transform: translateX(-20px);
   pointer-events: none;
 }
 
-.volume-control-container.show {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
+.volume-control-container.show,
+body.persistent-music-active .volume-control-container.show {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  pointer-events: auto !important;
 }
 
-.volume-control-container:hover {
+.volume-control-container:hover,
+.volume-control-container.show:hover,
+body.persistent-music-active .volume-control-container.show:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: 
@@ -168,7 +169,7 @@ body.persistent-music-active .volume-control-container {
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.08),
     0 0 60px rgba(255, 255, 255, 0.1);
-  transform: scale(1.02) translateY(-1px);
+  transform: scale(1.02) translateY(-1px) !important;
 }
 
 /* Volume Slider Styling - PREMIUM GLASS */
@@ -436,9 +437,9 @@ body.persistent-music-active .volume-control-container {
   }
   
   body.persistent-music-active .volume-control-container {
-    width: 180px !important;
-    max-width: 180px !important;
-    min-width: 180px !important;
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 120px !important;
     padding: 8px 14px;
     border-radius: 25px;
   }
@@ -485,9 +486,9 @@ body.persistent-music-active .volume-control-container {
   }
   
   body.persistent-music-active .volume-control-container {
-    width: 160px !important;
-    max-width: 160px !important;
-    min-width: 160px !important;
+    width: 110px !important;
+    max-width: 110px !important;
+    min-width: 110px !important;
     padding: 6px 12px;
   }
   
