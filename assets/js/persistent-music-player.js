@@ -24,13 +24,77 @@ class PersistentMusicPlayer {
         this.isDucked = false;
         this.videoElements = [];
         
+        // The canonical, unshuffled list of all tracks.
+        this.defaultPlaylist = [
+            '/assets/audio/playlist/01_First_Track.mp3',
+            '/assets/audio/playlist/02_Electric_Temptation_(1).mp3',
+            '/assets/audio/playlist/03_Eternal_Groove.mp3',
+            '/assets/audio/playlist/04_Eternal_Night_(1).mp3',
+            '/assets/audio/playlist/05_Eternal_Nights_(1).mp3',
+            '/assets/audio/playlist/06_Euphoria_Rising_(1).mp3',
+            '/assets/audio/playlist/07_Euphoria_in_Motion_(1)_(1).mp3',
+            '/assets/audio/playlist/08_Euphoria_in_Motion_(10)_(1).mp3',
+            '/assets/audio/playlist/09_Euphoria_in_Motion_(11)_(1).mp3',
+            '/assets/audio/playlist/10_Euphoria_in_Motion_(2)_(1).mp3',
+            '/assets/audio/playlist/11_Euphoria_in_Motion_(3)_(1).mp3',
+            '/assets/audio/playlist/12_Euphoria_in_Motion_(4)_(1).mp3',
+            '/assets/audio/playlist/13_Euphoria_in_Motion_(5)_(1).mp3',
+            '/assets/audio/playlist/14_Euphoria_in_Motion_(6)_(1).mp3',
+            '/assets/audio/playlist/15_Euphoria_in_Motion_(7)_(1).mp3',
+            '/assets/audio/playlist/16_Euphoria_in_Motion_(9)_(1).mp3',
+            '/assets/audio/playlist/17_Euphoria_of_the_Night_(1)_(1).mp3',
+            '/assets/audio/playlist/18_Euphoria_of_the_Night_(2).mp3',
+            '/assets/audio/playlist/19_Euphoric_Nights_(1).mp3',
+            '/assets/audio/playlist/20_Glamour_Nights_(1).mp3',
+            '/assets/audio/playlist/21_Glamour_in_Motion_(1).mp3',
+            '/assets/audio/playlist/22_Lights_of_the_Night_(1).mp3',
+            '/assets/audio/playlist/23_Rebel_Groove_(1).mp3',
+            '/assets/audio/playlist/24_Rhythm_of_the_Night_(1).mp3',
+            '/assets/audio/playlist/25_Rhythms_of_the_Night_(1)_(1).mp3',
+            '/assets/audio/playlist/26_Rhythms_of_the_Night_(2).mp3',
+            '/assets/audio/playlist/27_Velvet_Nights_(1).mp3',
+            '/assets/audio/playlist/Dancing in the Light (1).mp3',
+            '/assets/audio/playlist/Electric Temptation (1).mp3',
+            '/assets/audio/playlist/Eternal Groove.mp3',
+            '/assets/audio/playlist/Eternal Night (1).mp3',
+            '/assets/audio/playlist/Eternal Nights (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (1) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (10) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (11) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (2) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (3) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (4) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (5) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (6) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (7) (1).mp3',
+            '/assets/audio/playlist/Euphoria in Motion (9) (1).mp3',
+            '/assets/audio/playlist/Euphoria of the Night (1) (1).mp3',
+            '/assets/audio/playlist/Euphoria of the Night (2).mp3',
+            '/assets/audio/playlist/Euphoria Rising (1).mp3',
+            '/assets/audio/playlist/Euphoric Nights (1).mp3',
+            '/assets/audio/playlist/First track (1).mp3',
+            '/assets/audio/playlist/Glamour in Motion (1).mp3',
+            '/assets/audio/playlist/Glamour Nights (1).mp3',
+            '/assets/audio/playlist/Lights of the Night (1).mp3',
+            '/assets/audio/playlist/Rebel Groove (1).mp3',
+            '/assets/audio/playlist/Rhythm of the Night (1).mp3',
+            '/assets/audio/playlist/Rhythms of the Night (1) (1).mp3',
+            '/assets/audio/playlist/Rhythms of the Night (2).mp3',
+            '/assets/audio/playlist/Velvet Nights (1).mp3'
+        ];
+        
+        // This will hold the current, shuffled version of the playlist.
+        this.playlist = [...this.defaultPlaylist];
+        
         // Default state
         this.defaultState = {
             currentTime: 0,
             volume: 0.5,
             isPlaying: false,
             src: '',
-            userInteracted: false
+            userInteracted: false,
+            currentTrackIndex: 0,
+            shuffleSeed: null // Used for deterministic shuffling
         };
         
         this.init();
@@ -48,8 +112,12 @@ class PersistentMusicPlayer {
     initialize() {
         console.log('🎵 Initializing Persistent Music Player...');
         
-        // Get DOM elements
+        // Get DOM elements, or create them if they don't exist
         this.audio = document.getElementById('background-music');
+        if (!this.audio) {
+            this.createPlayerElements();
+        }
+        
         this.playPauseBtn = document.getElementById('play-pause-btn');
         this.volumeSlider = document.getElementById('volume-slider');
         this.volumeToggleBtn = document.getElementById('volume-toggle-btn');
@@ -60,7 +128,10 @@ class PersistentMusicPlayer {
             return;
         }
         
-        // Load saved state
+        // Disable loop for playlist functionality
+        this.audio.loop = false;
+        
+        // Load saved state (which will also trigger the seeded shuffle)
         this.loadState();
         
         // Setup event listeners
@@ -89,24 +160,32 @@ class PersistentMusicPlayer {
                 console.log('📁 Loaded saved state:', this.state);
             } else {
                 this.state = { ...this.defaultState };
-                console.log('🆕 Using default state');
+                // Generate an initial seed for the very first visit
+                this.state.shuffleSeed = Math.floor(Math.random() * 100000);
+                console.log('🆕 No saved state found. Created new shuffle seed:', this.state.shuffleSeed);
             }
+            // Shuffle the playlist deterministically using the loaded or new seed
+            this.shufflePlaylist();
         } catch (error) {
             console.error('❌ Error loading state from localStorage:', error);
             this.state = { ...this.defaultState };
+            this.state.shuffleSeed = Math.floor(Math.random() * 100000);
+            this.shufflePlaylist();
         }
     }
     
     saveState() {
         try {
+            // Create a fresh object to save, ensuring we don't save the entire audio element
             const stateToSave = {
-                currentTime: this.audio.currentTime || 0,
-                volume: this.audio.volume || 0.5,
-                isPlaying: !this.audio.paused && !this.audio.ended,
-                src: this.audio.src || '',
-                userInteracted: this.userInteracted
+                currentTime: this.audio ? this.audio.currentTime : 0,
+                volume: this.audio ? this.audio.volume : 0.5,
+                isPlaying: this.audio ? !this.audio.paused && !this.audio.ended : false,
+                src: this.audio ? this.audio.src : '',
+                userInteracted: this.userInteracted,
+                currentTrackIndex: this.state.currentTrackIndex,
+                shuffleSeed: this.state.shuffleSeed,
             };
-            
             localStorage.setItem(this.storageKey, JSON.stringify(stateToSave));
         } catch (error) {
             console.error('❌ Error saving state to localStorage:', error);
@@ -116,55 +195,34 @@ class PersistentMusicPlayer {
     applyState() {
         if (!this.audio) return;
         
-        const isHomePage = window.location.pathname === '/' || window.location.pathname.endsWith('index.html') || window.location.pathname === '/index.html';
-        
-        // Set volume
         this.audio.volume = this.state.volume;
         if (this.volumeSlider) {
             this.volumeSlider.value = this.state.volume;
         }
         
-        // Set source if it exists and is different
-        if (this.state.src && this.audio.src !== this.state.src) {
-            this.audio.src = this.state.src;
+        // Set the source from our deterministically shuffled playlist
+        const currentTrackSrc = this.playlist[this.state.currentTrackIndex];
+        if (currentTrackSrc && this.audio.src !== currentTrackSrc) {
+            this.audio.src = currentTrackSrc;
         }
-        
-        // Set current time when audio is ready
-        const setCurrentTime = () => {
-            if (this.state.currentTime > 0) {
+
+        const setCurrentTimeAndResume = () => {
+            if (this.state.currentTime > 0 && this.audio.duration > this.state.currentTime) {
                 this.audio.currentTime = this.state.currentTime;
                 console.log(`⏰ Restored playback position: ${this.state.currentTime.toFixed(2)}s`);
             }
+            if (this.state.isPlaying && this.state.userInteracted) {
+                this.attemptAutoResume();
+            }
         };
-        
+
         if (this.audio.readyState >= 2) {
-            setCurrentTime();
+            setCurrentTimeAndResume();
         } else {
-            this.audio.addEventListener('canplay', setCurrentTime, { once: true });
+            this.audio.addEventListener('canplay', setCurrentTimeAndResume, { once: true });
         }
         
-        // Update UI
         this.updatePlayPauseButton();
-        
-        // Enhanced autoplay logic for home page
-        if (isHomePage) {
-            console.log('🏠 Home page detected - attempting enhanced autoplay');
-            
-            // For returning users who had music playing
-            if (this.state.isPlaying && this.state.userInteracted) {
-                this.attemptAutoResume();
-            }
-            // For new users on home page - try to start music
-            else if (!this.state.userInteracted) {
-                console.log('🆕 New user on home page - will attempt autoplay');
-                // The actual autoplay attempt will happen in setupUserInteractionDetection
-            }
-        } else {
-            // Standard behavior for other pages
-            if (this.state.isPlaying && this.state.userInteracted) {
-                this.attemptAutoResume();
-            }
-        }
     }
     
     async attemptAutoResume() {
@@ -195,9 +253,8 @@ class PersistentMusicPlayer {
         });
         
         this.audio.addEventListener('ended', () => {
-            this.state.isPlaying = false;
-            this.updatePlayPauseButton();
-            this.saveState();
+            console.log('🎵 Song ended, playing next...');
+            this.playNextSong();
         });
         
         this.audio.addEventListener('volumechange', () => {
@@ -967,12 +1024,156 @@ class PersistentMusicPlayer {
         setTimeout(() => this.checkRestoreVolume(), 500);
     }
     
+    seededRandom(seed) {
+        // A simple pseudo-random number generator for deterministic shuffling
+        let x = Math.sin(seed) * 10000;
+        return x - Math.floor(x);
+    }
+
+    shufflePlaylist() {
+        const seed = this.state.shuffleSeed;
+        if (seed === null) {
+            console.error("🚫 Cannot shuffle playlist without a seed.");
+            return;
+        }
+
+        let shuffled = [...this.defaultPlaylist]; // Always start from the original order
+
+        // Shuffle the array using the seed
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(this.seededRandom(seed + i) * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        
+        this.playlist = shuffled; // Update the in-memory playlist
+        console.log(`🎶 Playlist shuffled with seed: ${seed}`);
+    }
+
+    playNextSong() {
+        this.state.currentTrackIndex++;
+        if (this.state.currentTrackIndex >= this.playlist.length) {
+            // The playlist has finished. Generate a new seed for a fresh shuffle.
+            this.state.shuffleSeed = Math.floor(Math.random() * 100000);
+            this.shufflePlaylist(); // Re-shuffle with the new seed
+            this.state.currentTrackIndex = 0; // Start from the beginning
+            console.log('✨ Playlist finished. Reshuffling with new seed:', this.state.shuffleSeed);
+        }
+        
+        this.audio.src = this.playlist[this.state.currentTrackIndex];
+        this.audio.currentTime = 0;
+        
+        const playPromise = this.audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.error("❌ Failed to play next song:", error);
+                // If one song fails, try the next one after a short delay
+                setTimeout(() => this.playNextSong(), 1000);
+            });
+        }
+        this.saveState();
+    }
+    
     // Cleanup method
     destroy() {
         this.stopStateSaving();
         this.saveState();
         this.hideAutoplayPrompt();
         console.log('🧹 Persistent Music Player destroyed');
+    }
+
+    createPlayerElements() {
+        console.log('🎨 Creating player DOM elements because they were not found.');
+
+        // Create audio element
+        this.audio = document.createElement('audio');
+        this.audio.id = 'background-music';
+        this.audio.loop = false; // We handle looping with our playlist logic
+        document.body.appendChild(this.audio);
+
+        // Create player container
+        const playerContainer = document.createElement('div');
+        playerContainer.id = 'music-player-container';
+        playerContainer.className = 'music-player-container'; // Add a class for styling
+
+        // Player controls HTML
+        playerContainer.innerHTML = `
+            <button id="play-pause-btn" class="paused" aria-label="Play music" data-play-text="▶️" data-pause-text="⏸️">▶️</button>
+            <div id="volume-wrapper">
+                <button id="volume-toggle-btn">🔊</button>
+                <div id="volume-control-container">
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                </div>
+            </div>
+        `;
+        document.body.appendChild(playerContainer);
+
+        // Add some default styles for the created player
+        const style = document.createElement('style');
+        style.textContent = `
+            .music-player-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                background-color: rgba(0, 0, 0, 0.5);
+                padding: 8px;
+                border-radius: 50px;
+                z-index: 10001;
+            }
+            #play-pause-btn, #volume-toggle-btn {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            #volume-wrapper {
+                position: relative;
+            }
+            #volume-control-container {
+                position: absolute;
+                bottom: 100%;
+                right: 0;
+                background-color: rgba(0, 0, 0, 0.7);
+                padding: 10px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                display: none; /* Hidden by default */
+            }
+            #volume-control-container.show {
+                display: block;
+            }
+            #volume-slider {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 100px;
+                height: 5px;
+                background: #ddd;
+                outline: none;
+                opacity: 0.7;
+                transition: opacity .2s;
+                border-radius: 3px;
+            }
+            #volume-slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 15px;
+                height: 15px;
+                background: #87CEEB;
+                cursor: pointer;
+                border-radius: 50%;
+            }
+            #volume-slider::-moz-range-thumb {
+                width: 15px;
+                height: 15px;
+                background: #87CEEB;
+                cursor: pointer;
+                border-radius: 50%;
+            }
+        `;
+        document.head.appendChild(style);
     }
 }
 

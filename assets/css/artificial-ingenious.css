@@ -174,6 +174,10 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh; /* Changed from 100% to 100vh */
     background-color: #000000; /* Black background for transitions */
+    background-image: url('../images/rooms/machine-megamind.jpg'); /* Fallback background image */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     overflow: hidden;
     z-index: -9; /* Adjusted z-index to be above dynamic-page-background but below content */
 }
@@ -187,6 +191,11 @@ body.detail-page.artificial-ingenious {
     object-fit: cover;
     opacity: 0;
     transition: opacity 0.75s ease-in-out; /* Enabled for smooth crossfade */
+}
+
+/* Make the first image visible by default */
+.artificial-ingenious .hero-background-slideshow .hero-bg-slide:first-child {
+    opacity: 1;
 }
 
 /* New: Styles for the process scroll animation host layer */

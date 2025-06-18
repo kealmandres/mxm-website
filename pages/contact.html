@@ -12,13 +12,15 @@
     <link rel="stylesheet" href="../assets/css/detailed-pages.css">
     <link rel="stylesheet" href="../assets/css/fourth-wall-breaking.css">
     <link rel="stylesheet" href="../assets/css/micro-interactions.css">
-    <link rel="stylesheet" href="../assets/css/artificial-ingenious.css">
+    <link rel="stylesheet" href="../assets/css/contact-combined.css">
     <!-- Persistent Music Player Styles -->
     <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script crossorigin="anonymous" src="https://kit.fontawesome.com/a076d05399.js">
   </script>
  </head>
- <body class="detail-page artificial-ingenious persistent-music-active">
+ <body class="detail-page artificial-ingenious persistent-music-active contact-page">
     <!-- Required Audio Element for Persistent Music Player -->
     <audio id="background-music" loop preload="auto">
         <source src="../assets/audio/background-music.mp3" type="audio/mpeg">
@@ -62,9 +64,10 @@
     </div>
     <div class="hero-background-slideshow">
         <img src="../assets/images/rooms/chat-chamber.jpg" alt="Contact Background Slide 1" class="hero-bg-slide">
-        <img src="../assets/images/contact-page/marissa_kos_httpss.mj.runpJ62DQKZGNQ_A_futuristic_contact_roo_c3419674-8280-40a4-967e-1c07692b149f_3 copy.jpg" alt="Contact Background Slide 2" class="hero-bg-slide">
-        <img src="../assets/images/future-observatory/backgrounds/marissa_kos_inside_the_domed_observatory_of_a_futuristic_labo_c55e3fec-3431-4728-aadb-e45028537708_1.png" alt="Contact Background Slide 3" class="hero-bg-slide">
-        <img src="../assets/images/future-observatory/backgrounds/observatory 1.png" alt="Contact Background Slide 4" class="hero-bg-slide">
+        <img src="../assets/images/contact-page/backgrounds/BG 2.png copy.jpg" alt="Contact Background Slide 2" class="hero-bg-slide">
+        <img src="../assets/images/contact-page/backgrounds/BG 3.png" alt="Contact Background Slide 3" class="hero-bg-slide">
+        <img src="../assets/images/contact-page/backgrounds/marissa_kos_httpss.mj.runpJ62DQKZGNQ_A_futuristic_contact_roo_c3419674-8280-40a4-967e-1c07692b149f_3 copy.jpg" alt="Contact Background Slide 2" class="hero-bg-slide">
+       
     </div>
     <!-- Room-specific 3D elements will be added via JavaScript -->
     <div class="floating-elements-container"></div>
@@ -77,48 +80,65 @@
         Return to MaCHiNE MaiSON
     </a>
     
-    <section class="page-section room-info-section" data-section-type="room-info" style="padding: 0 0 40px 0; margin-top: 100px;">
+    <section class="page-section room-info-section section-padding-margin" data-section-type="room-info" data-section-key="Get In Touch">
+        <img 
+        src="../assets/images/contact-page/Edited 1745915991-b440d7773986cf348f368727934bd7d7-2 copy.png" 
+        alt="Blonde Bot presenting Artificial Ingenious" 
+        class="blonde-bot-contact-intro">
+      
         <div class="container">
-            <h1 class="room-title">Get In Touch</h1>
-            <p class="room-description">Ready for empowered autonomy? Whether you're curious about AI implementation, need consulting services, or want to collaborate, transmission starts here. Expect a response within 24-48 hours.</p>
-            <div class="mm-offerings-grid" style=" display: flex; flex-direction: row; justify-content: space-around;
-             padding: 0; margin-top: -10px;">
-                <!-- Research Agent -->
-                <div class="mm-offering-card" style="padding-top: 5px;">
-                 
-                    <div class="mm-offering-text-content" style="display: flex; flex-direction: column; align-items: center;">
-                     <img src="../assets/images/contact-page/Call.png" alt="Research Agent" 
-                      style="
-                        width: 200px;
-                        margin-bottom: -10px;
-                       height: auto; object-fit: contain; animation: simple-float 3.5s ease-in-out infinite; max-width: 100%; max-height: 100%; transition: transform 0.3s ease;">
-    
-    
-                        <h3 class="mm-offering-title">[Phone Number]</h3>
+            
+            <h2 class="section-title uppercase-text">Get In Touch</h2>
+            <p class="intro-text">Ready for empowered autonomy? Whether you're curious about AI implementation, need consulting services, or want to collaborate, transmission starts here. Expect a response within 24-48 hours.</p>
+            
+            <!-- Two Column Layout Container -->
+            <div class="contact-two-column-layout">
+                
+                <!-- Left Column - Contact Info -->
+                <div class="contact-info-sidebar">
+                    
+                    <!-- Contact Methods Container -->
+                    <div class="contact-methods-container">
+                       
+                        
+                         <!-- Call us -->
+                         <div class="flex-center-start">
+                            <img src="../assets/images/contact-page/Call.png" alt="Phone Contact" 
+                            class="contact-image-style">
+                            <div class="contact-method margin-bottom-40">
+                               
+                                <h3>
+                                   Call us
+                                </h3>
+                                <p>[Placeholder: Phone Number]</p>
+                            </div>
+                         </div>
+                        <!-- Call us -->
+                         <div class="flex-start-start">
+                            <img src="../assets/images/contact-page/Email 1.png" alt="Phone Contact" 
+                            class="contact-image-style">
+                            <div class="contact-method margin-bottom-40">
+                               
+                                <h3>
+                                   Email us
+                                </h3>
+                                <p>info@themxm.ai</p>
+                            </div>
+                         </div>
+                         
                     </div>
-                </div>
-                <div class="mm-offering-card" style="padding-top: 5px;">
-                 
-                    <div class="mm-offering-text-content" style="display: flex; flex-direction: column; align-items: center;">
-                     <img src="../assets/images/contact-page/Email 1.png" alt="Research Agent" 
-                      style="
-                        width: 200px;
-                        margin-bottom: -10px;
-                       height: auto; object-fit: contain; animation: simple-float 3.5s ease-in-out infinite; max-width: 100%; max-height: 100%; transition: transform 0.3s ease;">
-    
-    
-                        <h3 class="mm-offering-title" style="text-transform: lowercase;">info@themxm.ai</h3>
-                    </div>
-                </div>
-    
-              </div>
-              <div class="mm-offering-card" style="padding-top: 5px; width: 100%;">
-                <div class="mm-offering-text-content" style="display: flex;">
-                    <form id="contactForm" name="sentMessage" novalidate="novalidate" style="max-width: 800px; margin: 0 auto; text-align: center;">
-                        <div style="display: flex; flex-direction: column; gap: 15px; justify-content: center;">
+                  
+
+                </div>  
+                <!-- Right Column - Contact Form -->
+                <div class="contact-form-sidebar offering-card" >
+                    
+                    <!-- Contact Form -->
+                    <form id="contactForm" name="sentMessage" novalidate="novalidate" >
+                        <div class="contact-form-container" >
                             <!-- Inquiry Type -->
-                            <div style="margin-bottom: 15px;">
-                                <select id="inquiryType" required="required" style="width: 100%; max-width: 800px; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font); margin: 0 auto; display: block;">
+                            <div>
+                                <select id="inquiryType" required="required">
                                     <option disabled="" selected="" value="">Select Inquiry Type *</option>
                                     <option value="coaching">AI Coaching Packages (aRTIFICIAL iNGENIOUS)</option>
                                     <option value="development">AI Agent Development (MaCHiNE MEGaMiND)</option>
@@ -129,37 +149,37 @@
                             </div>
                             
                             <!-- Name Field -->
-                            <div style="margin-bottom: 15px;">
-                                <input id="name" placeholder="Your Name *" required="required" type="text" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font);"/>
+                            <div>
+                                <input id="name" placeholder="Your Name *" required="required" type="text"/>
                             </div>
                             
                             <!-- Email Field -->
-                            <div style="margin-bottom: 15px;">
-                                <input id="email" placeholder="Your Email *" required="required" type="email" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font);"/>
+                            <div>
+                                <input id="email" placeholder="Your Email *" required="required" type="email"/>
                             </div>
                             
                             <!-- Subject Field -->
-                            <div style="margin-bottom: 15px;">
-                                <input id="subject" placeholder="Subject" type="text" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font);"/>
+                            <div>
+                                <input id="subject" placeholder="Subject" type="text"/>
                             </div>
                             
                             <!-- Message Field -->
-                            <div style="margin-bottom: 15px;">
-                                <textarea id="message" placeholder="Your Message *" required="required" rows="6" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--ai-glass-border); border-radius: 8px; color: white; font-family: var(--ai-mono-font); min-height: 150px; resize: vertical;"></textarea>
+                            <div>
+                                <textarea id="message" placeholder="Your Message *" required="required" rows="6"></textarea>
                             </div>
                         </div>
                         
                         <!-- Newsletter Checkbox -->
-                        <div style="margin: 20px auto; text-align: center; display: flex; justify-content: center; align-items: center;">
-                            <label style="display: flex; align-items: center; color: var(--ai-text-primary); font-family: var(--ai-mono-font); text-align: center;">
-                                <input id="newsletterCheck" type="checkbox" style="margin-right: 10px;"/>
+                        <div class="newsletter-checkbox">
+                            <label>
+                                <input id="newsletterCheck" type="checkbox"/>
                                 Keep me posted with the Peroxide Prophecies newsletter
                             </label>
                         </div>
                         
                         <!-- Submit Button -->
-                        <div style="text-align: center; margin: 30px auto 0 auto; display: flex; justify-content: center;">
-                            <button id="sendMessageButton" type="submit" class="cta-button" style="padding: 15px 40px; font-size: 1.2rem; margin: 0 auto;">
+                        <div class="submit-button-container">
+                            <button id="sendMessageButton" type="submit" class="cta-button send-message-button">
                                 Send Message
                             </button>
                         </div>
@@ -169,63 +189,141 @@
         </div>
     </section>
 
-
   
-
     <!-- Fast-Track Section -->
-    <section class="page-section" data-section-key="Fast Track" style="min-height: 70vh; display: flex; align-items: center;">
-        <div class="container" style="display: flex; justify-content: center; align-items: center; width: 100%;">
-            <div class="offering-card" style="padding: 30px; text-align: center; margin: 0 auto; max-width: 800px;">
-                <div class="offering-text-content" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <h4 class="offering-title" style="text-align: center; margin: 0 auto;">Fast-Track Your Request</h4>
-                    <p style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto 30px auto; text-align: center; max-width: 600px;">
-                        Skip the form and book a 15-minute discovery call directly.
+    <section class="page-section fast-track-section" data-section-key="Fast Track">
+
+        <div class="container">
+            <h2 class="section-title uppercase-text">Fast-Track Your Request</h2>
+            <p class="intro-text">Start your diagnosis directly or continue the tour to each room for more information.</p>
+
+            
+            <div class="offering-card glass-card">
+                <div class="offering-image-wrapper">
+                    <img src="../assets/images/rooms/machine-megamind.jpg" alt="MODEL Package Image" class="offering-image">
+                </div>
+                <div class="offering-text-content-fast-track">
+                    <div>
+
+                        <h3 class="offering-title diagnosis-title">AI Coaching Diagnosis</h3>
+                        <p class="offering-description diagnosis-description">aRTIFICIAL iNGENIOUS</p>
+                    </div>
+                    <div class="button-container">
+        
+                        <a href="https://tally.so/r/mKOoVz" class="explore-btn">BOOK DIAGNOSIS</a>
+                        <a href="/pages/artificial-ingenious.html" class="explore-btn">Take me to <span style="text-transform: none;">aRTIFICIAL iNGENIOUS</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="offering-card glass-card offering-card--overlap">
+                <div class="offering-image-wrapper">
+                    <img src="../assets/images/rooms/artificial-ingenious.jpg" alt="MODEL Package Image" class="offering-image offering-image--overlap">
+                </div>
+                <div class="offering-text-content-fast-track">
+                    <div>
+
+                        <h3 class="offering-title diagnosis-title">AI Agent Diagnosis</h3>
+                        <p class="offering-description diagnosis-description">MaCHiNE MEGaMiND</p>
+                    </div>
+                    <div class="button-container">
+        
+                        <a href="https://tally.so/r/mKOoVz" class="explore-btn">BOOK DIAGNOSIS</a>
+                        <a href="/pages/machine-megamind.html" class="explore-btn">Take me to <span style="text-transform: none;">MaCHiNE MEGaMiND</span></a>
+                    </div>                </div>
+            </div>
+            <p class="intro-text">Alternatively, if you're looking for our other consulting services, book below</p>
+            <div class="offering-card glass-card">
+                <div class="offering-image-wrapper">
+                    <img src="../assets/images/consults-coded/marissa_kos_httpss.mj.runFqUkLhcxtGI_the_conference_rooom_of__990f12c2-543f-4390-a8a9-9f4313f2e49a_3.png" alt="MODEL Package Image" class="offering-image">
+                </div>
+                <div class="offering-text-content">
+                    <h3 class="offering-title diagnosis-title">DISCOVERY CALL</h3>
+                    <p class="offering-description diagnosis-description">Book a 10 minute discovery call to discuss service selection and engagement options</p>
+                    <div class="button-container">
+        
+                        <a href="https://calendly.com/marissa-themxm/discovery" class="explore-btn">ACTIVATE</a>
+                        <a href="/pages/consults-coded.html" class="explore-btn">Take me to <span style="text-transform: none;">CONSULTS CODED</span></a>
+                    </div> 
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="page-section social-media-section" data-section-key="Social Media">
+        <img src="../assets/images/contact-page/MSG.png" alt="Blonde Bot introducing the coaching process" class="blonde-bot-fast-track">
+
+        <div class="container">
+            <h2 class="section-title uppercase-text">Connect on Social</h2>
+           
+            <div class="offering-card social-offering-card" >
+                <div class="offering-text-content">
+                    <p class="social-intro-text">
+                        Follow us for sophisticated genius and join the prestigious revolution of empowered autonomy
                     </p>
-                    <a href="https://calendly.com/marissa-themxm/discovery" target="_blank" class="cta-button" style="display: inline-block; padding: 15px 30px; text-decoration: none; margin: 0 auto 30px auto;">
-                        Book Discovery Call
-                    </a>
                     
-                    <div style="margin: 40px auto 0 auto; text-align: center;">
-                        <h5 style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto 20px auto; text-align: center;">
-                            Alternatively, start your diagnosis directly:
-                        </h5>
-                        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; align-items: center;">
-                            <a href="https://tally.so/r/mKOoVz" target="_blank" class="explore-btn" style="text-decoration: none; padding: 10px 20px; margin: 5px; text-align: center;">
-                                AI Coaching Diagnosis (aRTIFICIAL iNGENIOUS)
-                            </a>
-                            <a href="https://tally.so/r/meyA00" target="_blank" class="explore-btn" style="text-decoration: none; padding: 10px 20px; margin: 5px; text-align: center;">
-                                AI Agent Diagnosis (MaCHiNE MEGaMiND)
-                            </a>
-                        </div>
+                    <!-- Social Media Grid -->
+                    <div class="social-media-grid">
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/mxm.a.i/" target="_blank" class="social-media-card">
+                            <div class="social-icon">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <h4>Instagram</h4>
+                        </a>
+                        
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@mxm.a.i?_t=ZS-8wTpF4czdoO&_r=1" target="_blank" class="social-media-card">
+                            <div class="social-icon">
+                                <i class="fab fa-tiktok"></i>
+                            </div>
+                            <h4>TikTok</h4>
+                        </a>
+                        
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/themxm.a.i/" target="_blank" class="social-media-card">
+                            <div class="social-icon" >
+                                <i class="fab fa-facebook-f"></i>
+                            </div>
+                            <h4>Facebook</h4>
+                        </a>
+                        
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/company/mxm-ai" target="_blank" class="social-media-card">
+                            <div class="social-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </div>
+                            <h4>LinkedIn</h4>
+                        </a>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Vision and Mission Section -->
-    <section class="page-section" data-section-key="Vision Mission" style="min-height: 60vh; display: flex; align-items: center;">
-        <div class="container" style="display: flex; justify-content: center; align-items: center; width: 100%;">
-            <div class="offering-card" style="padding: 30px; margin: 0 auto; max-width: 800px;">
-                <div class="offering-text-content" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                    <h3 class="offering-title" style="text-align: center; margin: 0 auto;">Vision for the Future</h3>
-                    <p style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto 30px auto; text-align: center;">
+    <!-- <section class="page-section vision-mission-section" data-section-key="Vision Mission">
+        <div class="container vision-mission-container">
+            <div class="offering-card vision-mission-card">
+                <div class="offering-text-content vision-mission-content">
+                    <h3 class="offering-title">Vision for the Future</h3>
+                    <p>
                         I envision a future where technology amplifies human potential, automating the mundane and freeing us to focus on creativity, strategy, and connection. A future of abundance and true appreciation for the glory of the human condition when freed from the stresses of manufactured scarcity.
                     </p>
                     
-                    <h3 class="offering-title" style="text-align: center; margin: 0 auto;">Personal Mission</h3>
-                    <p style="color: var(--ai-text-primary); font-family: var(--ai-mono-font); margin: 0 auto; text-align: center;">
+                    <h3 class="offering-title">Personal Mission</h3>
+                    <p>
                         To demystify artificial intelligence and motivate everyone to harness its power, transforming challenges into opportunities and building a future we as a species can be proud of. You should always walk out of MxM more autonomously empowered than when you walked in.
                     </p>
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Continue Tour Section -->
-    <section class="page-section continue-tour-section" style="background-image: url('../assets/images/rooms/blonde-bot-lair.jpg');">
+    <section class="page-section continue-tour-section continue-tour-bg" data-section-key="Continue Tour" style="background-image: url('../assets/images/rooms/entrance-hall.jpg');">
         <div class="container">
-            <a href="coming-soon.html" class="continue-tour-button" style="text-transform: uppercase;">CONTiNUE THE TOUR<span class="arrow-right">→</span></a>
+            <a href="/index.html" class="continue-tour-button uppercase-text">CONTiNUE THE TOUR<span class="arrow-right">→</span></a>
         </div>
     </section>
 
@@ -251,7 +349,7 @@
     <script src="../js/animated-transitions.js"></script>
     <script src="../js/fourth-wall-breaking.js"></script>
     <script src="../js/micro-interactions.js"></script>
-    <script src="../assets/js/artificial-ingenious.js" defer></script>
+    <script src="../assets/js/chat.js" defer></script>
     
     <!-- Persistent Music Player Script -->
     <script src="../assets/js/persistent-music-player.js"></script>
@@ -281,4 +379,4 @@
         setInterval(updateMusicLabel, 1000);
     </script>
  </body>
-</html>
+</html> 

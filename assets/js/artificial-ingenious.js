@@ -166,6 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Hero Background Slideshow
     setupScrollDrivenHeroSlideshow();
 
+    // Ensure first background image is visible immediately
+    const firstBgImage = document.querySelector('.artificial-ingenious .hero-background-slideshow .hero-bg-slide:first-child');
+    if (firstBgImage) {
+        firstBgImage.style.opacity = '1';
+        console.log('First background image set to visible');
+    }
+
     // Initialize Offering Card Tilt Effect
     initOfferingCardTilt();
 
