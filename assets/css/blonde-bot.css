@@ -11,7 +11,7 @@ body.detail-page.artificial-ingenious {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
-    padding: 0 50px;
+    padding: 0 3.5rem;
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
@@ -57,7 +57,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
                 inset 0 0 0 1.5px rgba(255,255,255,0.06),
                 0 0 60px rgba(var(--ai-accent-blue-glow), 0.12); /* Kept subtle white glow */
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-    padding: 0 55px 55px 55px;
+    padding: 0 3.5rem 3.5rem 3.5rem;
 }
 
 .artificial-ingenious .page-section:hover {
@@ -324,21 +324,65 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     perspective: 1000px; /* Added for 3D effect on children */
 }
 .artificial-ingenious .offering-card {
-    background: var(--ai-glass-bg); /* Using the defined variable */
+    background: var(--ai-glass-bg);
     backdrop-filter: blur(12px) saturate(120%);
     -webkit-backdrop-filter: blur(12px) saturate(120%);
     border: 1px solid var(--ai-glass-border);
     border-radius: var(--ai-card-border-radius);
-    display: flex; /* Keeping flex for internal layout */
-    flex-direction: row; /* Internal layout remains landscape */
-    align-items: stretch; /* Make image and text content wrappers equal height */
+    display: flex;
+    flex-direction: row; /* Desktop: side by side */
+    align-items: stretch;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 
                 inset 0 0 0 1px rgba(255,255,255,0.05),
-                0 0 40px rgba(var(--ai-accent-blue-glow), 0.1); /* Subtle white glow */
+                0 0 40px rgba(var(--ai-accent-blue-glow), 0.1);
     transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
-    overflow: hidden; /* Ensure border-radius clips children */
-    width: 100%; /* Make card full width */
-    margin-bottom: 30px; /* Add space between stacked cards */
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/* Mobile/Tablet: Stack image on top, text below */
+@media (max-width: 1424px) {
+    .artificial-ingenious .offering-card {
+        flex-direction: column; /* Stack vertically */
+    }
+    
+    .offering-image-wrapper {
+        width: 100%; /* Full width when stacked */
+        height: 250px; /* Fixed height for consistency */
+    }
+    
+    .offering-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Maintain aspect ratio */
+    }
+    
+    .offering-text-content {
+        padding: 30px 40px !important; /* Adjust padding for mobile */
+    }
+}
+
+/* Smaller mobile screens */
+@media (max-width: 768px) {
+    .offering-text-content {
+        padding: 20px 30px !important; /* Even tighter spacing */
+    }
+    
+    .mm-offering-description {
+        font-size: 0.85rem !important; /* Slightly smaller text */
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .offering-text-content {
+        padding: 20px 20px !important;
+    }
+    
+    .offering-title {
+        font-size: 1.2rem !important;
+    }
 }
 
 .artificial-ingenious .offering-card:last-child {
@@ -1322,12 +1366,12 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 
 /* Individual Machine Megamind Offering Card */
 .mm-offering-card {
-    background: var(--glass-bg);
+    background: rgba(70, 6, 11, 0.39);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 1.5rem;
+    padding: 1.9rem;
     padding-top: 5px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
@@ -1380,7 +1424,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 .mm-offering-title {
     font-family: "Ethnocentric", sans-serif;
     font-size: 1.4rem;
-    font-weight: 300;
+    font-weight: 200;
     color: rgba(255, 255, 255, 0.95);
     margin-bottom: 0.75rem;
     letter-spacing: 1px;
@@ -1426,7 +1470,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 }
 
 /* Machine Megamind Glass shimmer effect */
-.mm-offering-card::before {
+/* .mm-offering-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1436,7 +1480,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     transition: left 0.6s ease;
     z-index: 1;
-}
+} */
 
 .mm-offering-card:hover::before {
     left: 100%;
@@ -1514,30 +1558,34 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 
 
 .sec4-body {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch;
-    padding: 20px;
-    border-radius: 10px;
-    gap: 40px;
- }
-
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    width: 100%;
+}
  .mm-offerings-grid-sec4 {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px;
-    height: 100%;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 2rem;
  }
 
- .mm-offerings-grid-sec4-2 {
-    display: flex;
-    flex-direction: column;
+ .mm-offerings-grid-sec4.full-width-cards {
+    display: block;
     width: 100%;
-    gap: 20px; /* optional spacing between cards */
-  }
+    padding: 0;
+ }
+ 
+ .mm-offerings-grid-sec4.full-width-cards .mm-offering-card {
+    max-width: none;
+}
+
+ .mm-offerings-grid-sec4-2 {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+ }
 
 
   .mm-offering-card-2 {
@@ -1586,7 +1634,6 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     justify-content: center;
     padding: 0;
 }
-
 
 .social-media-card {
     background: rgba(255, 255, 255, 0.05);
@@ -1903,4 +1950,10 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     .speaking-topics-list {
         column-count: 1;
     }
+}
+
+
+.section-title-container {
+    display: flex;
+    text-align: center;
 }

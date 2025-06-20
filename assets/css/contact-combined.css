@@ -11,7 +11,7 @@ body.detail-page.artificial-ingenious {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
-    padding: 0 50px;
+    padding: 3.5rem 3.5rem 0 3.5rem;
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
