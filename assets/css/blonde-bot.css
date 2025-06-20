@@ -384,6 +384,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     display: flex;
     flex-direction: column;
     text-align: left; /* Align text to the left */
+    
 }
 
 .artificial-ingenious .offering-title {
@@ -880,7 +881,6 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     width: clamp(150px, 18vw, 230px);
     height: auto;
     border-radius: 15px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
     z-index: 5;
 }
 
@@ -896,9 +896,6 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     transform: scaleX(-1);
 }
 
-.artificial-ingenious .bb-room-info:hover {
-    box-shadow: -5px 8px 28px rgba(0,0,0,0.4), 0 0 15px rgba(255, 255, 255, 0.1); /* Subtle white glow */
-}
 
 .artificial-ingenious .bb-process-intro {
     bottom: calc(-1 * var(--ai-section-padding-vertical)); 
@@ -1188,6 +1185,25 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     /* The button will use general .cta-button styles defined elsewhere */
     /* It will be centered due to align-items: center on the parent flex container */
     /* Add specific width if needed, e.g., width: 80%; max-width: 300px; */
+}
+
+.artificial-ingenious .cta-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 14px 35px;
+    background: rgba(255, 255, 255, 0.15); /* Light white background */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4); /* White border */
+    font-family: var(--ai-futuristic-font);
+    text-transform: uppercase;
+    border-radius: 25px;
+    text-decoration: none; /* Removed underline */
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.artificial-ingenious .cta-button:hover {
+    background: rgba(255, 255, 255, 0.25); /* Lighter on hover */
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); /* White glow */
 }
 
 /* New styles for the blonde bot image on the diagnosis CTA */
@@ -1501,10 +1517,10 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     padding: 20px;
     border-radius: 10px;
-    
+    gap: 40px;
  }
 
  .mm-offerings-grid-sec4 {
@@ -1761,17 +1777,130 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 
 @media (max-width: 480px) {
     .social-media-section .offering-card {
-        padding: 25px 25px;
+        padding: 20px;
     }
-    
     .social-media-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 0;
-        max-width: 300px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
-    
     .social-media-card {
-        padding: 25px 20px;
+        padding: 15px;
+    }
+}
+
+/* Booking Form Styles */
+.booking-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.booking-form-container .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.booking-form-container .form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-form-container input,
+.booking-form-container textarea {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 15px;
+    color: #fff;
+    font-family: 'Cartograph Mono', monospace;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.booking-form-container input::placeholder,
+.booking-form-container textarea::placeholder {
+    color: #ccc;
+    opacity: 1;
+}
+
+.booking-form-container .cta-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: center;
+    width: 50%;
+    margin-top: 10px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.booking-form-container .cta-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+   
+}
+
+/* Speaking Topics List */
+.speaking-topics {
+    margin: 40px auto;
+    max-width: 900px;
+    text-align: left;
+}
+
+.speaking-topics-title {
+    font-family: var(--ai-futuristic-font);
+    font-size: 1.8rem;
+    color: var(--ai-text-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.speaking-topics-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    column-count: 2;
+    column-gap: 40px;
+}
+
+.speaking-topics-list li {
+    font-family: var(--ai-mono-font);
+    font-size: 1rem;
+    color: var(--ai-text-secondary);
+    margin-bottom: 1rem;
+    padding-left: 25px;
+    position: relative;
+    break-inside: avoid;
+}
+
+.speaking-topics-list li::before {
+    content: '✧';
+    position: absolute;
+    left: 0;
+    color: #FFFFFF;
+    font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+    .speaking-topics-list {
+        column-count: 1;
     }
 }
