@@ -4,8 +4,7 @@ html {
 
 /* Styles for the Artificial Ingenious page */
 body.detail-page.artificial-ingenious {
-    /* background-color: var(--dark-bg, #0a0a1f); Old background */
-    background-color: transparent; /* New: Allows dynamic background to show */
+    background-color: transparent;
     color: #FFFFFF; /* Changed to pure white */
     font-family: "Uniform Extra Condensed", sans-serif; /* Changed font */
     line-height: 1.6;

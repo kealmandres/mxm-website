@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Loading Test</title>
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+        }
+        .font-test {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .uniform { font-family: 'Uniform Extra Condensed', Arial, sans-serif; }
+        .cartograph { font-family: 'Cartograph Mono', 'Courier New', monospace; }
+        .ethnocentric { font-family: 'Ethnocentric', Arial, sans-serif; }
+        .adore { font-family: 'Adore', Impact, sans-serif; }
+        
+        .image-test {
+            margin: 10px 0;
+        }
+        .image-test img {
+            max-width: 200px;
+            height: auto;
+            border: 2px solid rgba(255,255,255,0.3);
+            margin: 10px;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .loaded { background: green; }
+        .failed { background: red; }
+    </style>
+</head>
+<body>
+    <h1>MxM Asset Loading Diagnostic</h1>
+    
+    <div class="test-section">
+        <h2>Font Loading Test</h2>
+        <div class="font-test uniform">Uniform Extra Condensed Font Test <span class="status" id="uniform-status">Testing...</span></div>
+        <div class="font-test cartograph">Cartograph Mono Font Test <span class="status" id="cartograph-status">Testing...</span></div>
+        <div class="font-test ethnocentric">Ethnocentric Font Test <span class="status" id="ethnocentric-status">Testing...</span></div>
+        <div class="font-test adore">Adore Bold Font Test <span class="status" id="adore-status">Testing...</span></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Image Loading Test</h2>
+        <div class="image-test">
+            <strong>Logo:</strong>
+            <img src="assets/images/logo.png" alt="Logo" onload="markLoaded(this)" onerror="markFailed(this)">
+        </div>
+        <div class="image-test">
+            <strong>AI Process Step 1:</strong>
+            <img src="assets/images/artificial-ingenious/process-visuals/Step1.png" alt="Step 1" onload="markLoaded(this)" onerror="markFailed(this)">
+        </div>
+        <div class="image-test">
+            <strong>Contact Background:</strong>
+            <img src="assets/images/rooms/contact_bg.png" alt="Contact BG" onload="markLoaded(this)" onerror="markFailed(this)">
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Direct Font File Access Test</h2>
+        <div id="font-file-tests">
+            <p>Testing direct font file access...</p>
+        </div>
+    </div>
+    
+    <script>
+        function markLoaded(img) {
+            img.style.border = '2px solid green';
+            console.log('✅ Image loaded:', img.src);
+        }
+        
+        function markFailed(img) {
+            img.style.border = '2px solid red';
+            img.style.background = 'rgba(255,0,0,0.1)';
+            console.log('❌ Image failed:', img.src);
+        }
+        
+        // Test font loading
+        function testFontLoading() {
+            const fonts = [
+                { name: 'Uniform Extra Condensed', id: 'uniform-status' },
+                { name: 'Cartograph Mono', id: 'cartograph-status' },
+                { name: 'Ethnocentric', id: 'ethnocentric-status' },
+                { name: 'Adore', id: 'adore-status' }
+            ];
+            
+            fonts.forEach(font => {
+                if (document.fonts) {
+                    document.fonts.ready.then(() => {
+                        const loaded = document.fonts.check(`16px "${font.name}"`);
+                        const status = document.getElementById(font.id);
+                        if (loaded) {
+                            status.textContent = '✅ Loaded';
+                            status.className = 'status loaded';
+                        } else {
+                            status.textContent = '❌ Failed';
+                            status.className = 'status failed';
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Test direct font file access
+        function testFontFiles() {
+            const fontFiles = [
+                'assets/fonts/UniformExtraCondensed.ttf',
+                'assets/fonts/UniformExtraCondensed-Bold.otf',
+                'assets/fonts/CartographMono.ttf',
+                'assets/fonts/AdoreBold.ttf',
+                'assets/fonts/EthnocentricUltraLightItalic.ttf',
+                'assets/fonts/EthnocentricExtraLightItalic.ttf'
+            ];
+            
+            const container = document.getElementById('font-file-tests');
+            
+            fontFiles.forEach(fontFile => {
+                fetch(fontFile)
+                    .then(response => {
+                        const div = document.createElement('div');
+                        if (response.ok) {
+                            div.innerHTML = `✅ <strong>${fontFile}</strong> - Accessible (${response.headers.get('content-type')})`;
+                            div.style.color = 'lightgreen';
+                        } else {
+                            div.innerHTML = `❌ <strong>${fontFile}</strong> - HTTP ${response.status}`;
+                            div.style.color = 'lightcoral';
+                        }
+                        container.appendChild(div);
+                    })
+                    .catch(error => {
+                        const div = document.createElement('div');
+                        div.innerHTML = `❌ <strong>${fontFile}</strong> - Network Error: ${error.message}`;
+                        div.style.color = 'lightcoral';
+                        container.appendChild(div);
+                    });
+            });
+        }
+        
+        // Run tests when page loads
+        window.addEventListener('load', () => {
+            setTimeout(testFontLoading, 1000);
+            testFontFiles();
+        });
+    </script>
+</body>
+</html> 

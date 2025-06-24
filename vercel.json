@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/artificial-ingenious", "destination": "/pages/artificial-ingenious.html" },
+    { "source": "/machine-megamind", "destination": "/pages/machine-megamind.html" },
+    { "source": "/consults-coded", "destination": "/pages/consults-coded.html" },
+    { "source": "/future-observatory", "destination": "/pages/future-observatory.html" },
+    { "source": "/blonde-bot-lair", "destination": "/pages/blonde-bot-lair.html" },
+    { "source": "/contact", "destination": "/pages/contact.html" },
+    { "source": "/back-to-future", "destination": "/pages/back-to-future.html" },
+    { "source": "/success-gallery", "destination": "/pages/success-gallery.html" },
+    { "source": "/coming-soon", "destination": "/pages/coming-soon.html" },
+    { "source": "/about", "destination": "/pages/blonde-bot-lair.html" },
+    { "source": "/privacy-policy", "destination": "/pages/privacy-policy.html" },
+    { "source": "/terms-of-service", "destination": "/pages/terms-of-service.html" }
+  ]
+} 
