@@ -1020,6 +1020,10 @@ body.detail-page.artificial-ingenious {
         width: clamp(150px, 30vw, 200px);
     }
 
+    .form-container{
+        max-width: 100% !important;
+    }
+
     .artificial-ingenious .process-section > .container {
         /* padding-top: 20px; */
     }

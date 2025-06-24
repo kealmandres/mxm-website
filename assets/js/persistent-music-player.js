@@ -11,6 +11,8 @@ class PersistentMusicPlayer {
         this.activeAudio = 'A'; // Track which audio element is active
         this.crossfadeDuration = 6000; // 6 seconds in milliseconds
         this.crossfadeInterval = null;
+        this.isCrossfading = false; // Flag to track crossfading state
+        this.crossfadePrepared = false; // Flag to track if crossfade is prepared
         this.playPauseBtn = null;
         this.volumeSlider = null;
         this.volumeToggleBtn = null;
@@ -213,6 +215,9 @@ class PersistentMusicPlayer {
             this.volumeSlider.value = this.state.volume;
         }
         
+        // Update volume display to match restored state
+        this.updateVolumeDisplay();
+        
         // Set the source from our deterministically shuffled playlist
         const currentTrackSrc = this.playlist[this.state.currentTrackIndex];
         if (currentTrackSrc && this.audio.src !== currentTrackSrc) {
@@ -266,7 +271,8 @@ class PersistentMusicPlayer {
             });
             
             audioElement.addEventListener('pause', () => {
-                if (this.getActiveAudio() === audioElement) {
+                // Don't update button state if we're crossfading and this is the old audio being paused
+                if (this.getActiveAudio() === audioElement && !this.isCrossfading) {
                     this.state.isPlaying = false;
                     this.updatePlayPauseButton();
                     this.saveState();
@@ -286,6 +292,8 @@ class PersistentMusicPlayer {
                     if (this.volumeSlider) {
                         this.volumeSlider.value = audioElement.volume;
                     }
+                    // Update volume display when volume changes
+                    this.updateVolumeDisplay();
                     this.saveState();
                 }
             });
@@ -309,9 +317,14 @@ class PersistentMusicPlayer {
             audioElement.addEventListener('timeupdate', () => {
                 if (this.getActiveAudio() === audioElement && audioElement.duration) {
                     const timeRemaining = audioElement.duration - audioElement.currentTime;
-                    // Start crossfade 6 seconds before the end
-                    if (timeRemaining <= 6 && timeRemaining > 5.9 && !this.crossfadeInterval) {
+                    // Improved crossfade trigger - start preparation earlier and with wider window
+                    if (timeRemaining <= 8 && timeRemaining > 4 && !this.crossfadePrepared && !this.isCrossfading) {
                         console.log('🎵 Starting crossfade preparation...');
+                        this.prepareNextTrackForCrossfade();
+                    }
+                    // Fallback trigger closer to the end
+                    else if (timeRemaining <= 3 && timeRemaining > 2.5 && !this.crossfadePrepared && !this.isCrossfading) {
+                        console.log('🎵 Fallback crossfade preparation...');
                         this.prepareNextTrackForCrossfade();
                     }
                 }
@@ -575,13 +588,34 @@ class PersistentMusicPlayer {
             this.originalVolume = volume;
             console.log(`🔊 Volume set to: ${(volume * 100).toFixed(0)}%`);
         }
+        
+        // Update volume display
+        this.updateVolumeDisplay();
+    }
+    
+    // New method to update volume display
+    updateVolumeDisplay() {
+        const volumeDisplay = document.querySelector('.volume-display');
+        if (volumeDisplay && this.volumeSlider) {
+            const displayVolume = Math.round(this.volumeSlider.value * 100);
+            volumeDisplay.textContent = displayVolume + '%';
+        }
     }
     
     updatePlayPauseButton() {
         if (!this.playPauseBtn) return;
         
         const activeAudio = this.getActiveAudio();
-        const isPlaying = !activeAudio.paused && !activeAudio.ended;
+        let isPlaying = false;
+        
+        if (this.isCrossfading) {
+            // During crossfade, consider music as playing if either audio is playing
+            const inactiveAudio = this.getInactiveAudio();
+            isPlaying = (!activeAudio.paused && !activeAudio.ended) || (!inactiveAudio.paused && !inactiveAudio.ended);
+        } else {
+            // Normal state - check only active audio
+            isPlaying = !activeAudio.paused && !activeAudio.ended;
+        }
         
         // Update button text/icon
         if (isPlaying) {
@@ -840,14 +874,24 @@ class PersistentMusicPlayer {
         // Enhanced detection for generic iframes
         let isPlaying = false;
         let playCheckInterval = null;
+        const isYouTube = iframe.src.toLowerCase().includes('youtube');
+        
+        console.log(`🎬 Setting up ${isYouTube ? 'YouTube' : 'generic'} iframe detection`);
         
         // Method 1: Intersection Observer for visibility
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
-                    // Iframe is highly visible, likely playing
+                    // For YouTube, don't auto-duck just because it's visible
+                    if (isYouTube) {
+                        console.log(`👁️ YouTube iframe is visible but NOT auto-ducking volume (waiting for user interaction)`);
+                        // Only duck if we have clear evidence of playing
+                        return;
+                    }
+                    
+                    // For non-YouTube iframes, assume playing when highly visible
                     if (!isPlaying) {
-                        console.log(`🎬 Iframe video likely started - ducking music volume`);
+                        console.log(`🎬 Non-YouTube iframe video likely started - ducking music volume`);
                         this.duckVolume();
                         isPlaying = true;
                         
@@ -857,7 +901,7 @@ class PersistentMusicPlayer {
                 } else if (entry.intersectionRatio < 0.3) {
                     // Iframe is barely visible or hidden
                     if (isPlaying) {
-                        console.log(`👁️ Iframe video likely stopped - restoring music volume`);
+                        console.log(`👁️ ${isYouTube ? 'YouTube' : 'Iframe'} video likely stopped - restoring music volume`);
                         this.restoreVolume();
                         isPlaying = false;
                         this.stopPlaybackMonitoring(iframe);
@@ -869,9 +913,9 @@ class PersistentMusicPlayer {
         observer.observe(iframe);
         iframe._intersectionObserver = observer;
         
-        // Method 2: Click detection to assume play/pause
+        // Method 2: Enhanced click detection for YouTube
         iframe.addEventListener('click', () => {
-            console.log(`🖱️ Iframe clicked - toggling video state`);
+            console.log(`🖱️ ${isYouTube ? 'YouTube' : 'Iframe'} clicked - toggling video state`);
             if (isPlaying) {
                 console.log(`⏸️ Assuming video paused - restoring volume`);
                 this.restoreVolume();
@@ -887,19 +931,75 @@ class PersistentMusicPlayer {
         
         // Method 3: Focus events
         iframe.addEventListener('focus', () => {
-            if (!isPlaying) {
-                console.log(`🎯 Iframe focused - likely video starting`);
+            if (!isPlaying && !isYouTube) {
+                console.log(`🎯 Non-YouTube iframe focused - likely video starting`);
                 setTimeout(() => {
                     this.duckVolume();
                     isPlaying = true;
                     this.startPlaybackMonitoring(iframe);
                 }, 1000);
+            } else if (isYouTube) {
+                console.log(`🎯 YouTube iframe focused - waiting for user interaction (NOT auto-ducking)`);
+                // Don't auto-duck for YouTube focus, wait for explicit click
             }
         });
         
-        // Store state
+        // Method 4: YouTube-specific enhancements
+        if (isYouTube) {
+            // Remove aggressive mouse enter/leave detection - only use scroll-based detection
+            
+            // Enhanced scroll detection for YouTube (only restore if playing)
+            let scrollTimeout;
+            const handleScroll = () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    // Only check scroll if we think the video is playing
+                    if (!isPlaying) return;
+                    
+                    const rect = iframe.getBoundingClientRect();
+                    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                    const isLargeEnough = rect.width > 200 && rect.height > 150;
+                    
+                    if (!isVisible || !isLargeEnough) {
+                        console.log(`📜 YouTube scrolled out of view - restoring volume`);
+                        this.restoreVolume();
+                        isPlaying = false;
+                        this.stopPlaybackMonitoring(iframe);
+                    }
+                }, 500);
+            };
+            
+            window.addEventListener('scroll', handleScroll);
+            iframe._scrollHandler = handleScroll;
+        }
+        
+        // Store state and cleanup function
         iframe._isPlaying = () => isPlaying;
-        iframe._setPlaying = (playing) => { isPlaying = playing; };
+        iframe._setPlaying = (playing) => { 
+            console.log(`🎬 ${isYouTube ? 'YouTube' : 'Iframe'} playing state set to: ${playing}`);
+            const wasPlaying = isPlaying;
+            isPlaying = playing;
+            
+            // Handle volume ducking/restoration based on state change
+            if (playing && !wasPlaying) {
+                console.log(`🔉 Video started playing - ducking volume`);
+                this.duckVolume();
+                this.startPlaybackMonitoring(iframe);
+            } else if (!playing && wasPlaying) {
+                console.log(`🔊 Video stopped playing - restoring volume`);
+                this.restoreVolume();
+                this.stopPlaybackMonitoring(iframe);
+            }
+        };
+        iframe._cleanup = () => {
+            if (iframe._scrollHandler) {
+                window.removeEventListener('scroll', iframe._scrollHandler);
+            }
+            if (iframe._intersectionObserver) {
+                iframe._intersectionObserver.disconnect();
+            }
+            this.stopPlaybackMonitoring(iframe);
+        };
     }
     
     startPlaybackMonitoring(iframe) {
@@ -908,19 +1008,44 @@ class PersistentMusicPlayer {
             clearInterval(iframe._playbackMonitor);
         }
         
+        const isYouTube = iframe.src.toLowerCase().includes('youtube');
+        const monitorInterval = isYouTube ? 1000 : 2000; // Check YouTube more frequently
+        
+        console.log(`🔍 Starting playback monitoring for ${isYouTube ? 'YouTube' : 'generic'} iframe (${monitorInterval}ms interval)`);
+        
         iframe._playbackMonitor = setInterval(() => {
             // Check if iframe is still visible and likely playing
             const rect = iframe.getBoundingClientRect();
             const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
             const isLargeEnough = rect.width > 200 && rect.height > 150;
             
+            // Additional checks for YouTube
+            let shouldStop = false;
+            
             if (!isVisible || !isLargeEnough || document.hidden) {
+                shouldStop = true;
+            }
+            
+            // For YouTube, also check if the user has scrolled significantly away
+            if (isYouTube && isVisible) {
+                const viewportHeight = window.innerHeight;
+                const iframeCenter = rect.top + rect.height / 2;
+                const distanceFromCenter = Math.abs(iframeCenter - viewportHeight / 2);
+                
+                // If YouTube iframe is more than 80% of viewport height away from center, likely not focused
+                if (distanceFromCenter > viewportHeight * 0.8) {
+                    shouldStop = true;
+                    console.log(`📜 YouTube iframe too far from viewport center - assuming paused`);
+                }
+            }
+            
+            if (shouldStop) {
                 console.log(`📱 Video monitoring detected stop condition - restoring volume`);
                 this.restoreVolume();
                 if (iframe._setPlaying) iframe._setPlaying(false);
                 this.stopPlaybackMonitoring(iframe);
             }
-        }, 2000); // Check every 2 seconds
+        }, monitorInterval);
     }
     
     stopPlaybackMonitoring(iframe) {
@@ -988,6 +1113,9 @@ class PersistentMusicPlayer {
             this.volumeSlider.value = this.duckedVolume;
         }
         
+        // Update volume display
+        this.updateVolumeDisplay();
+        
         console.log(`🔉 Music volume ducked from ${(this.originalVolume * 100).toFixed(0)}% to ${(this.duckedVolume * 100).toFixed(0)}%`);
     }
     
@@ -1003,6 +1131,9 @@ class PersistentMusicPlayer {
         if (this.volumeSlider) {
             this.volumeSlider.value = this.originalVolume;
         }
+        
+        // Update volume display
+        this.updateVolumeDisplay();
         
         console.log(`🔊 Music volume restored to ${(this.originalVolume * 100).toFixed(0)}%`);
     }
@@ -1024,14 +1155,19 @@ class PersistentMusicPlayer {
                     return true;
                 }
                 
-                // Fallback: check visibility and size
+                // Fallback: check visibility and size (removed intersectionRatio bug)
                 const rect = iframe.getBoundingClientRect();
                 const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
                 const isLargeEnough = rect.width > 200 && rect.height > 150;
                 const isInViewport = isVisible && isLargeEnough;
                 
-                // Only consider it playing if it's prominently visible
-                return isInViewport && rect.intersectionRatio > 0.7;
+                // For YouTube iframes, be more conservative - only consider playing if explicitly set
+                if (iframe.src.toLowerCase().includes('youtube')) {
+                    return iframe._isPlaying && iframe._isPlaying();
+                }
+                
+                // For other iframes, use visibility as fallback
+                return isInViewport;
             });
         }
         
@@ -1112,21 +1248,30 @@ class PersistentMusicPlayer {
 
     playNextSongWithCrossfade() {
         // If crossfade is already in progress, let it complete
-        if (this.crossfadeInterval) {
+        if (this.isCrossfading) {
             console.log('🎵 Crossfade already in progress');
             return;
         }
         
-        // If the track ended naturally, just play the next one
+        // If crossfade was prepared but not started, try to start it
+        if (this.crossfadePrepared) {
+            console.log('🎵 Song ended with prepared crossfade, starting now');
+            this.startCrossfade();
+            return;
+        }
+        
+        // If no crossfade was prepared, fall back to regular next song
+        console.log('🎵 Song ended without crossfade preparation, playing next song normally');
         this.playNextSong();
     }
     
     playNextSong() {
-        // Clear any ongoing crossfade
+        // Clear any ongoing crossfade and reset flags
         if (this.crossfadeInterval) {
             clearInterval(this.crossfadeInterval);
             this.crossfadeInterval = null;
         }
+        this.resetCrossfadeFlags();
         
         this.state.currentTrackIndex++;
         if (this.state.currentTrackIndex >= this.playlist.length) {
@@ -1141,6 +1286,17 @@ class PersistentMusicPlayer {
         activeAudio.src = this.playlist[this.state.currentTrackIndex];
         activeAudio.currentTime = 0;
         
+        // Ensure correct volume when not crossfading
+        const correctVolume = this.isDucked ? this.duckedVolume : this.originalVolume;
+        activeAudio.volume = correctVolume;
+        
+        // Update volume slider and display
+        if (this.volumeSlider) {
+            this.volumeSlider.value = correctVolume;
+        }
+        this.updateVolumeDisplay();
+        this.state.volume = correctVolume;
+        
         const playPromise = activeAudio.play();
         if (playPromise !== undefined) {
             playPromise.catch(error => {
@@ -1150,6 +1306,8 @@ class PersistentMusicPlayer {
             });
         }
         this.saveState();
+        
+        console.log(`🎵 Playing next song at ${(correctVolume * 100).toFixed(0)}% volume`);
     }
     
     // Cleanup method - update to handle both audio elements
@@ -1158,11 +1316,22 @@ class PersistentMusicPlayer {
         this.saveState();
         this.hideAutoplayPrompt();
         
-        // Clear crossfade interval
+        // Clear crossfade interval and reset flags
         if (this.crossfadeInterval) {
             clearInterval(this.crossfadeInterval);
             this.crossfadeInterval = null;
         }
+        this.resetCrossfadeFlags();
+        
+        // Clean up all video element listeners
+        this.videoElements.forEach(element => {
+            if (element.tagName === 'IFRAME' && element._cleanup) {
+                element._cleanup();
+            }
+        });
+        
+        // Force restore volume before cleanup
+        this.forceRestoreVolume();
         
         // Remove second audio element
         if (this.audioB && this.audioB.parentNode) {
@@ -1276,8 +1445,11 @@ class PersistentMusicPlayer {
     }
     
     prepareNextTrackForCrossfade() {
-        // Don't prepare if already crossfading
-        if (this.crossfadeInterval) return;
+        // Don't prepare if already crossfading or already prepared
+        if (this.isCrossfading || this.crossfadePrepared) return;
+        
+        console.log('🎵 Preparing crossfade...');
+        this.crossfadePrepared = true;
         
         const nextIndex = (this.state.currentTrackIndex + 1) % this.playlist.length;
         const nextTrack = this.playlist[nextIndex];
@@ -1298,12 +1470,31 @@ class PersistentMusicPlayer {
         console.log(`🎵 Prepared next track: ${nextTrack}`);
         
         // Start the crossfade when the inactive audio is ready
-        inactiveAudio.addEventListener('canplay', () => {
-            this.startCrossfade();
-        }, { once: true });
+        const startCrossfadeWhenReady = () => {
+            if (inactiveAudio.readyState >= 2) { // HAVE_CURRENT_DATA or better
+                this.startCrossfade();
+            } else {
+                inactiveAudio.addEventListener('canplay', () => {
+                    this.startCrossfade();
+                }, { once: true });
+                
+                // Fallback timeout in case canplay doesn't fire
+                setTimeout(() => {
+                    if (this.crossfadePrepared && !this.isCrossfading) {
+                        console.log('🎵 Fallback: Starting crossfade after timeout');
+                        this.startCrossfade();
+                    }
+                }, 2000);
+            }
+        };
+        
+        startCrossfadeWhenReady();
     }
     
     startCrossfade() {
+        // Don't start if already crossfading
+        if (this.isCrossfading) return;
+        
         const activeAudio = this.getActiveAudio();
         const inactiveAudio = this.getInactiveAudio();
         const steps = 60; // 60 steps for smooth transition (100ms intervals)
@@ -1311,9 +1502,14 @@ class PersistentMusicPlayer {
         let currentStep = 0;
         
         console.log('🎵 Starting crossfade...');
+        this.isCrossfading = true;
         
         // Start playing the new track
-        inactiveAudio.play().catch(e => console.error('Failed to start crossfade:', e));
+        inactiveAudio.play().catch(e => {
+            console.error('Failed to start crossfade:', e);
+            this.resetCrossfadeFlags();
+            return;
+        });
         
         this.crossfadeInterval = setInterval(() => {
             currentStep++;
@@ -1330,6 +1526,11 @@ class PersistentMusicPlayer {
             activeAudio.volume = Math.max(0, fadeOutVolume);
             inactiveAudio.volume = Math.max(0, fadeInVolume);
             
+            // Update button state periodically during crossfade
+            if (currentStep % 10 === 0) { // Every 10 steps
+                this.updatePlayPauseButton();
+            }
+            
             if (currentStep >= steps) {
                 // Crossfade complete
                 clearInterval(this.crossfadeInterval);
@@ -1340,14 +1541,50 @@ class PersistentMusicPlayer {
                 activeAudio.currentTime = 0;
                 this.activeAudio = this.activeAudio === 'A' ? 'B' : 'A';
                 
+                // CRITICAL FIX: Ensure new active audio has correct final volume
+                const newActiveAudio = this.getActiveAudio();
+                const finalVolume = this.isDucked ? this.duckedVolume : this.originalVolume;
+                newActiveAudio.volume = finalVolume;
+                
+                // Update volume slider and display to match final volume
+                if (this.volumeSlider) {
+                    this.volumeSlider.value = finalVolume;
+                }
+                this.updateVolumeDisplay();
+                
                 // Update state
                 this.state.currentTrackIndex = (this.state.currentTrackIndex + 1) % this.playlist.length;
                 this.state.currentTime = 0;
+                this.state.volume = finalVolume; // Ensure state reflects correct volume
+                
+                // Reset crossfade flags
+                this.resetCrossfadeFlags();
+                
+                // Ensure button state is correct after crossfade
+                this.state.isPlaying = true;
+                this.updatePlayPauseButton();
                 this.saveState();
                 
-                console.log(`🎵 Crossfade complete. Now playing from audio ${this.activeAudio}`);
+                console.log(`🎵 Crossfade complete. Now playing from audio ${this.activeAudio} at ${(finalVolume * 100).toFixed(0)}% volume`);
             }
         }, interval);
+    }
+    
+    resetCrossfadeFlags() {
+        this.isCrossfading = false;
+        this.crossfadePrepared = false;
+    }
+
+    // Public method to manually restore volume (for debugging)
+    manualVolumeRestore() {
+        console.log('🔧 Manual volume restore triggered');
+        this.forceRestoreVolume();
+        // Also reset all iframe states
+        this.videoElements.forEach(element => {
+            if (element.tagName === 'IFRAME' && element._setPlaying) {
+                element._setPlaying(false);
+            }
+        });
     }
 }
 
