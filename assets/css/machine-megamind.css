@@ -177,8 +177,13 @@ body.detail-page.machine-megamind {
     width: 100%;
     height: 100vh; /* Changed from 100% to 100vh */
     background-color: #000000; /* Black background for transitions */
+    background-image: url('../images/rooms/artificial-ingenious.jpg'); /* Fallback background image */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     overflow: hidden;
     z-index: -9; /* Adjusted z-index to be above dynamic-page-background but below content */
+
 }
 
 .machine-megamind .hero-background-slideshow .hero-bg-slide {

@@ -7,11 +7,10 @@
     CONTACT | MxM
   </title>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/mxm-logo.ico">
+
   <link rel="stylesheet" href="../assets/css/fonts.css">
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/detailed-pages.css">
-    <link rel="stylesheet" href="../assets/css/fourth-wall-breaking.css">
-    <link rel="stylesheet" href="../assets/css/micro-interactions.css">
     <link rel="stylesheet" href="../assets/css/contact-combined.css">
     <!-- Persistent Music Player Styles -->
     <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
@@ -73,7 +72,7 @@
     <div class="floating-elements-container"></div>
     
     <!-- Return to Homepage Button -->
-    <a href="../index.html" class="return-to-maison">
+    <a href="/" class="return-to-maison">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
@@ -502,7 +501,6 @@
         // Handle checkbox - set to "Yes" if checked, "No" if not
         data.newsletter = document.getElementById('newsletterCheck').checked ? 'Yes' : 'No';
         
-        console.log('Sending business inquiry data:', data);
         
         // Send to n8n webhook
         const response = await fetch('https://themxm.app.n8n.cloud/webhook/form-submission', {
@@ -538,7 +536,6 @@
                 clearMessages();
             }, 3000);
             
-            console.log('Business inquiry sent successfully!', result);
         } else {
             throw new Error('Network response was not ok');
         }

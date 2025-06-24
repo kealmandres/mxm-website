@@ -175,7 +175,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh; /* Changed from 100% to 100vh */
     background-color: #000000; /* Black background for transitions */
-    background-image: url('../images/rooms/machine-megamind.jpg'); /* Fallback background image */
+    background-image: url('../images/rooms/contact_bg.png'); /* Fallback background image */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
