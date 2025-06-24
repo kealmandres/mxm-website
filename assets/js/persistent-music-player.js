@@ -7,6 +7,10 @@
 class PersistentMusicPlayer {
     constructor() {
         this.audio = null;
+        this.audioB = null; // Second audio element for crossfading
+        this.activeAudio = 'A'; // Track which audio element is active
+        this.crossfadeDuration = 6000; // 6 seconds in milliseconds
+        this.crossfadeInterval = null;
         this.playPauseBtn = null;
         this.volumeSlider = null;
         this.volumeToggleBtn = null;
@@ -118,6 +122,12 @@ class PersistentMusicPlayer {
             this.createPlayerElements();
         }
         
+        // Create second audio element for crossfading
+        this.audioB = document.createElement('audio');
+        this.audioB.id = 'background-music-b';
+        this.audioB.style.display = 'none';
+        document.body.appendChild(this.audioB);
+        
         this.playPauseBtn = document.getElementById('play-pause-btn');
         this.volumeSlider = document.getElementById('volume-slider');
         this.volumeToggleBtn = document.getElementById('volume-toggle-btn');
@@ -130,6 +140,7 @@ class PersistentMusicPlayer {
         
         // Disable loop for playlist functionality
         this.audio.loop = false;
+        this.audioB.loop = false;
         
         // Load saved state (which will also trigger the seeded shuffle)
         this.loadState();
@@ -154,23 +165,25 @@ class PersistentMusicPlayer {
     
     loadState() {
         try {
-            const savedState = localStorage.getItem(this.storageKey);
+            const savedState = sessionStorage.getItem(this.storageKey);
             if (savedState) {
                 this.state = { ...this.defaultState, ...JSON.parse(savedState) };
                 console.log('📁 Loaded saved state:', this.state);
             } else {
                 this.state = { ...this.defaultState };
                 // Generate an initial seed for the very first visit
-                this.state.shuffleSeed = Math.floor(Math.random() * 100000);
+                // this.state.shuffleSeed = Math.floor(Math.random() * 100000);
+                this.state.currentSongIndex = 0;
                 console.log('🆕 No saved state found. Created new shuffle seed:', this.state.shuffleSeed);
             }
             // Shuffle the playlist deterministically using the loaded or new seed
-            this.shufflePlaylist();
+            // this.shufflePlaylist();
         } catch (error) {
             console.error('❌ Error loading state from localStorage:', error);
             this.state = { ...this.defaultState };
-            this.state.shuffleSeed = Math.floor(Math.random() * 100000);
-            this.shufflePlaylist();
+            this.state.currentSongIndex = 0;
+            // this.state.shuffleSeed = Math.floor(Math.random() * 100000);
+            // this.shufflePlaylist();
         }
     }
     
@@ -186,7 +199,7 @@ class PersistentMusicPlayer {
                 currentTrackIndex: this.state.currentTrackIndex,
                 shuffleSeed: this.state.shuffleSeed,
             };
-            localStorage.setItem(this.storageKey, JSON.stringify(stateToSave));
+            sessionStorage.setItem(this.storageKey, JSON.stringify(stateToSave));
         } catch (error) {
             console.error('❌ Error saving state to localStorage:', error);
         }
@@ -239,41 +252,70 @@ class PersistentMusicPlayer {
     setupEventListeners() {
         if (!this.audio) return;
         
-        // Audio event listeners
-        this.audio.addEventListener('play', () => {
-            this.state.isPlaying = true;
-            this.updatePlayPauseButton();
-            this.saveState();
-        });
-        
-        this.audio.addEventListener('pause', () => {
-            this.state.isPlaying = false;
-            this.updatePlayPauseButton();
-            this.saveState();
-        });
-        
-        this.audio.addEventListener('ended', () => {
-            console.log('🎵 Song ended, playing next...');
-            this.playNextSong();
-        });
-        
-        this.audio.addEventListener('volumechange', () => {
-            this.state.volume = this.audio.volume;
-            if (this.volumeSlider) {
-                this.volumeSlider.value = this.audio.volume;
-            }
-            this.saveState();
-        });
-        
-        this.audio.addEventListener('loadedmetadata', () => {
-            this.state.src = this.audio.src;
-            this.saveState();
-        });
-        
-        this.audio.addEventListener('error', (e) => {
-            console.error('❌ Audio error:', e);
-            this.state.isPlaying = false;
-            this.updatePlayPauseButton();
+        // Setup listeners for both audio elements
+        [this.audio, this.audioB].forEach((audioElement, index) => {
+            const elementName = index === 0 ? 'A' : 'B';
+            
+            // Audio event listeners
+            audioElement.addEventListener('play', () => {
+                if (this.getActiveAudio() === audioElement) {
+                    this.state.isPlaying = true;
+                    this.updatePlayPauseButton();
+                    this.saveState();
+                }
+            });
+            
+            audioElement.addEventListener('pause', () => {
+                if (this.getActiveAudio() === audioElement) {
+                    this.state.isPlaying = false;
+                    this.updatePlayPauseButton();
+                    this.saveState();
+                }
+            });
+            
+            audioElement.addEventListener('ended', () => {
+                if (this.getActiveAudio() === audioElement) {
+                    console.log(`🎵 Song ended on audio ${elementName}, crossfading to next...`);
+                    this.playNextSongWithCrossfade();
+                }
+            });
+            
+            audioElement.addEventListener('volumechange', () => {
+                if (this.getActiveAudio() === audioElement) {
+                    this.state.volume = audioElement.volume;
+                    if (this.volumeSlider) {
+                        this.volumeSlider.value = audioElement.volume;
+                    }
+                    this.saveState();
+                }
+            });
+            
+            audioElement.addEventListener('loadedmetadata', () => {
+                if (this.getActiveAudio() === audioElement) {
+                    this.state.src = audioElement.src;
+                    this.saveState();
+                }
+            });
+            
+            audioElement.addEventListener('error', (e) => {
+                console.error(`❌ Audio ${elementName} error:`, e);
+                if (this.getActiveAudio() === audioElement) {
+                    this.state.isPlaying = false;
+                    this.updatePlayPauseButton();
+                }
+            });
+            
+            // Add timeupdate listener to check for near-end of track
+            audioElement.addEventListener('timeupdate', () => {
+                if (this.getActiveAudio() === audioElement && audioElement.duration) {
+                    const timeRemaining = audioElement.duration - audioElement.currentTime;
+                    // Start crossfade 6 seconds before the end
+                    if (timeRemaining <= 6 && timeRemaining > 5.9 && !this.crossfadeInterval) {
+                        console.log('🎵 Starting crossfade preparation...');
+                        this.prepareNextTrackForCrossfade();
+                    }
+                }
+            });
         });
         
         // Play/Pause button
@@ -327,7 +369,7 @@ class PersistentMusicPlayer {
             } else {
                 // Page is visible, potentially resume if it was playing
                 console.log('📱 Page visible - checking music and video state');
-                if (this.state.isPlaying && this.audio.paused) {
+                if (this.state.isPlaying && this.getActiveAudio().paused) {
                     this.play();
                 }
                 // Re-check video states after page becomes visible
@@ -476,8 +518,10 @@ class PersistentMusicPlayer {
     async play() {
         if (!this.audio) return false;
         
+        const activeAudio = this.getActiveAudio();
+        
         try {
-            await this.audio.play();
+            await activeAudio.play();
             console.log('🎵 Music started playing');
             return true;
         } catch (error) {
@@ -493,14 +537,17 @@ class PersistentMusicPlayer {
     pause() {
         if (!this.audio) return;
         
-        this.audio.pause();
+        const activeAudio = this.getActiveAudio();
+        activeAudio.pause();
         console.log('⏸️ Music paused');
     }
     
     async togglePlayPause() {
         if (!this.audio) return;
         
-        if (this.audio.paused || this.audio.ended) {
+        const activeAudio = this.getActiveAudio();
+        
+        if (activeAudio.paused || activeAudio.ended) {
             await this.play();
         } else {
             this.pause();
@@ -513,13 +560,18 @@ class PersistentMusicPlayer {
         // Clamp volume between 0 and 1
         volume = Math.max(0, Math.min(1, volume));
         
+        // Set volume on both audio elements
+        const activeAudio = this.getActiveAudio();
+        const inactiveAudio = this.getInactiveAudio();
+        
         if (this.isDucked) {
             // If currently ducked, update the original volume but don't change current volume
             this.originalVolume = volume;
             console.log(`🔊 Original volume updated to: ${(volume * 100).toFixed(0)}% (will restore when video ends)`);
         } else {
             // Normal volume change
-            this.audio.volume = volume;
+            activeAudio.volume = volume;
+            inactiveAudio.volume = 0; // Keep inactive at 0
             this.originalVolume = volume;
             console.log(`🔊 Volume set to: ${(volume * 100).toFixed(0)}%`);
         }
@@ -528,7 +580,8 @@ class PersistentMusicPlayer {
     updatePlayPauseButton() {
         if (!this.playPauseBtn) return;
         
-        const isPlaying = !this.audio.paused && !this.audio.ended;
+        const activeAudio = this.getActiveAudio();
+        const isPlaying = !activeAudio.paused && !activeAudio.ended;
         
         // Update button text/icon
         if (isPlaying) {
@@ -618,26 +671,31 @@ class PersistentMusicPlayer {
         }
     }
     
-    // Public API methods
+    // Public API methods - update to use active audio
     getCurrentTime() {
-        return this.audio ? this.audio.currentTime : 0;
+        const activeAudio = this.getActiveAudio();
+        return activeAudio ? activeAudio.currentTime : 0;
     }
     
     getDuration() {
-        return this.audio ? this.audio.duration : 0;
+        const activeAudio = this.getActiveAudio();
+        return activeAudio ? activeAudio.duration : 0;
     }
     
     getVolume() {
-        return this.audio ? this.audio.volume : 0;
+        const activeAudio = this.getActiveAudio();
+        return activeAudio ? activeAudio.volume : 0;
     }
     
     isPlaying() {
-        return this.audio ? (!this.audio.paused && !this.audio.ended) : false;
+        const activeAudio = this.getActiveAudio();
+        return activeAudio ? (!activeAudio.paused && !activeAudio.ended) : false;
     }
     
     setCurrentTime(time) {
-        if (this.audio && this.audio.duration) {
-            this.audio.currentTime = Math.max(0, Math.min(time, this.audio.duration));
+        const activeAudio = this.getActiveAudio();
+        if (activeAudio && activeAudio.duration) {
+            activeAudio.currentTime = Math.max(0, Math.min(time, activeAudio.duration));
         }
     }
     
@@ -683,7 +741,7 @@ class PersistentMusicPlayer {
         }
     }
     
-    // Video ducking methods
+    // Video ducking methods - update to handle both audio elements
     setupVideoDucking() {
         // Find all video elements (including iframes with video content)
         this.findVideoElements();
@@ -716,17 +774,17 @@ class PersistentMusicPlayer {
         this.videoElements.push(video);
         
         video.addEventListener('play', () => {
-            console.log('🎬 Video started playing - ducking music volume');
+            console.log(`🎬 Video started playing - ducking music volume`);
             this.duckVolume();
         });
         
         video.addEventListener('pause', () => {
-            console.log('⏸️ Video paused - checking if should restore volume');
+            console.log(`⏸️ Video paused - checking if should restore volume`);
             this.checkRestoreVolume();
         });
         
         video.addEventListener('ended', () => {
-            console.log('🏁 Video ended - checking if should restore volume');
+            console.log(`🏁 Video ended - checking if should restore volume`);
             this.checkRestoreVolume();
         });
     }
@@ -750,27 +808,27 @@ class PersistentMusicPlayer {
                 const player = new Vimeo.Player(iframe);
                 
                 player.on('play', () => {
-                    console.log('🎬 Vimeo video started playing - ducking music volume');
+                    console.log(`🎬 Vimeo video started playing - ducking music volume`);
                     this.duckVolume();
                 });
                 
                 player.on('pause', () => {
-                    console.log('⏸️ Vimeo video paused - restoring music volume');
+                    console.log(`⏸️ Vimeo video paused - restoring music volume`);
                     this.restoreVolume();
                 });
                 
                 player.on('ended', () => {
-                    console.log('🏁 Vimeo video ended - restoring music volume');
+                    console.log(`🏁 Vimeo video ended - restoring music volume`);
                     this.restoreVolume();
                 });
                 
                 // Store player reference for cleanup
                 iframe._vimeoPlayer = player;
                 
-                console.log('✅ Vimeo Player API connected successfully');
+                console.log(`✅ Vimeo Player API connected successfully`);
                 return;
             } catch (error) {
-                console.log('⚠️ Vimeo Player API not available, using fallback detection');
+                console.log(`⚠️ Vimeo Player API not available, using fallback detection`);
             }
         }
         
@@ -789,7 +847,7 @@ class PersistentMusicPlayer {
                 if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
                     // Iframe is highly visible, likely playing
                     if (!isPlaying) {
-                        console.log('🎬 Iframe video likely started - ducking music volume');
+                        console.log(`🎬 Iframe video likely started - ducking music volume`);
                         this.duckVolume();
                         isPlaying = true;
                         
@@ -799,7 +857,7 @@ class PersistentMusicPlayer {
                 } else if (entry.intersectionRatio < 0.3) {
                     // Iframe is barely visible or hidden
                     if (isPlaying) {
-                        console.log('👁️ Iframe video likely stopped - restoring music volume');
+                        console.log(`👁️ Iframe video likely stopped - restoring music volume`);
                         this.restoreVolume();
                         isPlaying = false;
                         this.stopPlaybackMonitoring(iframe);
@@ -813,14 +871,14 @@ class PersistentMusicPlayer {
         
         // Method 2: Click detection to assume play/pause
         iframe.addEventListener('click', () => {
-            console.log('🖱️ Iframe clicked - toggling video state');
+            console.log(`🖱️ Iframe clicked - toggling video state`);
             if (isPlaying) {
-                console.log('⏸️ Assuming video paused - restoring volume');
+                console.log(`⏸️ Assuming video paused - restoring volume`);
                 this.restoreVolume();
                 isPlaying = false;
                 this.stopPlaybackMonitoring(iframe);
             } else {
-                console.log('▶️ Assuming video played - ducking volume');
+                console.log(`▶️ Assuming video played - ducking volume`);
                 this.duckVolume();
                 isPlaying = true;
                 this.startPlaybackMonitoring(iframe);
@@ -830,7 +888,7 @@ class PersistentMusicPlayer {
         // Method 3: Focus events
         iframe.addEventListener('focus', () => {
             if (!isPlaying) {
-                console.log('🎯 Iframe focused - likely video starting');
+                console.log(`🎯 Iframe focused - likely video starting`);
                 setTimeout(() => {
                     this.duckVolume();
                     isPlaying = true;
@@ -857,7 +915,7 @@ class PersistentMusicPlayer {
             const isLargeEnough = rect.width > 200 && rect.height > 150;
             
             if (!isVisible || !isLargeEnough || document.hidden) {
-                console.log('📱 Video monitoring detected stop condition - restoring volume');
+                console.log(`📱 Video monitoring detected stop condition - restoring volume`);
                 this.restoreVolume();
                 if (iframe._setPlaying) iframe._setPlaying(false);
                 this.stopPlaybackMonitoring(iframe);
@@ -917,10 +975,12 @@ class PersistentMusicPlayer {
         if (!this.audio || this.isDucked) return;
         
         // Store the current volume as original volume
-        this.originalVolume = this.audio.volume;
+        const activeAudio = this.getActiveAudio();
+        this.originalVolume = activeAudio.volume;
         
-        // Duck the volume
+        // Duck the volume on both audio elements
         this.audio.volume = this.duckedVolume;
+        this.audioB.volume = this.duckedVolume;
         this.isDucked = true;
         
         // Update volume slider to reflect ducked volume
@@ -934,8 +994,9 @@ class PersistentMusicPlayer {
     restoreVolume() {
         if (!this.audio || !this.isDucked) return;
         
-        // Restore the original volume
-        this.audio.volume = this.originalVolume;
+        // Restore the original volume on the active audio only
+        const activeAudio = this.getActiveAudio();
+        activeAudio.volume = this.originalVolume;
         this.isDucked = false;
         
         // Update volume slider to reflect restored volume
@@ -982,14 +1043,14 @@ class PersistentMusicPlayer {
         console.log(`🔍 Checking restore volume - any video playing: ${anyVideoPlaying}`);
         
         if (!anyVideoPlaying) {
-            console.log('✅ No videos playing - restoring volume');
+            console.log(`✅ No videos playing - restoring volume`);
             this.restoreVolume();
         }
     }
     
     // Force restore volume immediately (for navigation)
     forceRestoreVolume() {
-        console.log('🔊 Force restoring volume immediately');
+        console.log(`🔊 Force restoring volume immediately`);
         this.restoreVolume();
         
         // Also stop all monitoring
@@ -1003,7 +1064,7 @@ class PersistentMusicPlayer {
     
     // Enhanced method to force check video states
     forceCheckVideoState() {
-        console.log('🔄 Force checking all video states');
+        console.log(`🔄 Force checking all video states`);
         
         // If we're on a different page or no videos visible, restore volume
         const hasVisibleVideos = this.videoElements.some(element => {
@@ -1012,7 +1073,7 @@ class PersistentMusicPlayer {
         });
         
         if (!hasVisibleVideos) {
-            console.log('📭 No visible videos found - restoring volume');
+            console.log(`📭 No visible videos found - restoring volume`);
             this.forceRestoreVolume();
             return;
         }
@@ -1049,7 +1110,24 @@ class PersistentMusicPlayer {
         console.log(`🎶 Playlist shuffled with seed: ${seed}`);
     }
 
+    playNextSongWithCrossfade() {
+        // If crossfade is already in progress, let it complete
+        if (this.crossfadeInterval) {
+            console.log('🎵 Crossfade already in progress');
+            return;
+        }
+        
+        // If the track ended naturally, just play the next one
+        this.playNextSong();
+    }
+    
     playNextSong() {
+        // Clear any ongoing crossfade
+        if (this.crossfadeInterval) {
+            clearInterval(this.crossfadeInterval);
+            this.crossfadeInterval = null;
+        }
+        
         this.state.currentTrackIndex++;
         if (this.state.currentTrackIndex >= this.playlist.length) {
             // The playlist has finished. Generate a new seed for a fresh shuffle.
@@ -1059,10 +1137,11 @@ class PersistentMusicPlayer {
             console.log('✨ Playlist finished. Reshuffling with new seed:', this.state.shuffleSeed);
         }
         
-        this.audio.src = this.playlist[this.state.currentTrackIndex];
-        this.audio.currentTime = 0;
+        const activeAudio = this.getActiveAudio();
+        activeAudio.src = this.playlist[this.state.currentTrackIndex];
+        activeAudio.currentTime = 0;
         
-        const playPromise = this.audio.play();
+        const playPromise = activeAudio.play();
         if (playPromise !== undefined) {
             playPromise.catch(error => {
                 console.error("❌ Failed to play next song:", error);
@@ -1073,11 +1152,23 @@ class PersistentMusicPlayer {
         this.saveState();
     }
     
-    // Cleanup method
+    // Cleanup method - update to handle both audio elements
     destroy() {
         this.stopStateSaving();
         this.saveState();
         this.hideAutoplayPrompt();
+        
+        // Clear crossfade interval
+        if (this.crossfadeInterval) {
+            clearInterval(this.crossfadeInterval);
+            this.crossfadeInterval = null;
+        }
+        
+        // Remove second audio element
+        if (this.audioB && this.audioB.parentNode) {
+            this.audioB.parentNode.removeChild(this.audioB);
+        }
+        
         console.log('🧹 Persistent Music Player destroyed');
     }
 
@@ -1174,6 +1265,89 @@ class PersistentMusicPlayer {
             }
         `;
         document.head.appendChild(style);
+    }
+
+    getActiveAudio() {
+        return this.activeAudio === 'A' ? this.audio : this.audioB;
+    }
+    
+    getInactiveAudio() {
+        return this.activeAudio === 'A' ? this.audioB : this.audio;
+    }
+    
+    prepareNextTrackForCrossfade() {
+        // Don't prepare if already crossfading
+        if (this.crossfadeInterval) return;
+        
+        const nextIndex = (this.state.currentTrackIndex + 1) % this.playlist.length;
+        const nextTrack = this.playlist[nextIndex];
+        const inactiveAudio = this.getInactiveAudio();
+        
+        // If we're at the end of playlist, reshuffle
+        if (nextIndex === 0) {
+            this.state.shuffleSeed = Math.floor(Math.random() * 100000);
+            this.shufflePlaylist();
+            console.log('✨ Playlist finished. Reshuffling with new seed:', this.state.shuffleSeed);
+        }
+        
+        // Load next track on inactive audio element
+        inactiveAudio.src = nextTrack;
+        inactiveAudio.volume = 0;
+        inactiveAudio.currentTime = 0;
+        
+        console.log(`🎵 Prepared next track: ${nextTrack}`);
+        
+        // Start the crossfade when the inactive audio is ready
+        inactiveAudio.addEventListener('canplay', () => {
+            this.startCrossfade();
+        }, { once: true });
+    }
+    
+    startCrossfade() {
+        const activeAudio = this.getActiveAudio();
+        const inactiveAudio = this.getInactiveAudio();
+        const steps = 60; // 60 steps for smooth transition (100ms intervals)
+        const interval = this.crossfadeDuration / steps;
+        let currentStep = 0;
+        
+        console.log('🎵 Starting crossfade...');
+        
+        // Start playing the new track
+        inactiveAudio.play().catch(e => console.error('Failed to start crossfade:', e));
+        
+        this.crossfadeInterval = setInterval(() => {
+            currentStep++;
+            const progress = currentStep / steps;
+            
+            // Calculate volumes
+            const fadeOutVolume = this.isDucked ? 
+                this.duckedVolume * (1 - progress) : 
+                this.originalVolume * (1 - progress);
+            const fadeInVolume = this.isDucked ? 
+                this.duckedVolume * progress : 
+                this.originalVolume * progress;
+            
+            activeAudio.volume = Math.max(0, fadeOutVolume);
+            inactiveAudio.volume = Math.max(0, fadeInVolume);
+            
+            if (currentStep >= steps) {
+                // Crossfade complete
+                clearInterval(this.crossfadeInterval);
+                this.crossfadeInterval = null;
+                
+                // Switch active audio
+                activeAudio.pause();
+                activeAudio.currentTime = 0;
+                this.activeAudio = this.activeAudio === 'A' ? 'B' : 'A';
+                
+                // Update state
+                this.state.currentTrackIndex = (this.state.currentTrackIndex + 1) % this.playlist.length;
+                this.state.currentTime = 0;
+                this.saveState();
+                
+                console.log(`🎵 Crossfade complete. Now playing from audio ${this.activeAudio}`);
+            }
+        }, interval);
     }
 }
 

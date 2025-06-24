@@ -10,7 +10,7 @@ body.detail-page.artificial-ingenious {
     font-family: "Uniform Extra Condensed", sans-serif; /* Changed font */
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
-    /* overflow-y: auto; Ensure vertical scrolling is enabled */
+    padding: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
@@ -64,7 +64,7 @@ body.detail-page.artificial-ingenious {
 
 .artificial-ingenious .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 90%;
     padding-left: var(--ai-section-padding-horizontal-container);
     padding-right: var(--ai-section-padding-horizontal-container);
     margin-left: auto;
@@ -157,7 +157,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh; /* Covers the entire viewport height */
     z-index: -10; /* Behind all other page content */
-    background-image: url('../images/rooms/machine-megamind.jpg'); /* Updated image path */
+    background-image: url('../images/rooms/back-to-future.jpg'); /* Updated image path */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -214,9 +214,57 @@ body.detail-page.artificial-ingenious {
 .artificial-ingenious .video-hero-wrapper {
     margin-top: 30px; /* Original margin from video-hero-section */
     margin-bottom: 40px; /* Original margin from video-hero-section */
-    height: 70vh; /* Original height from video-hero-section */
-    max-height: 600px; /* Original max-height from video-hero-section */
+    height: clamp(200px, 50vw, 600px);
+    max-width: 1400px;
     position: relative; /* For potential future absolute children if any, not strictly needed now */
+    margin: 0 auto;
+}
+
+.video-yt-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 90%;
+    margin: 40px auto;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: var(--ai-card-border-radius);
+    border: 1px solid var(--ai-glass-border);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35),
+                inset 0 0 0 1.5px rgba(255,255,255,0.06),
+                0 0 60px rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+}
+
+.video-yt-wrapper .video-placeholder {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-yt-wrapper .video-placeholder iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Responsive adjustments for YouTube container */
+@media (max-width: 1200px) {
+    .video-yt-wrapper {
+        max-width: 95%;
+        margin: 30px auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-yt-wrapper {
+        max-width: 100%;
+        margin: 20px auto;
+        border-radius: calc(var(--ai-card-border-radius) / 2);
+    }
 }
 
 /* Video Hero Section - adjusted styles */
@@ -274,6 +322,20 @@ body.detail-page.artificial-ingenious {
     /* Transitions for CSS-controlled properties or for when class is removed and JS clears inline styles */
     transition: opacity 0.3s ease-in-out, box-shadow 0.4s ease-in-out;
     /* overflow: hidden; is already set on .video-hero-section */
+}
+
+@media (max-width: 768px) {
+    .im1 {
+        right: -3rem !important;
+        top: -5rem !important;
+    }
+    .im2 {
+        left: -2rem !important;
+        bottom: -90rem !important;
+    }
+    .artificial-ingenious .video-hero-section.video-pip-mode {
+       display: none;
+    }
 }
 
 .artificial-ingenious .video-hero-section.video-pip-mode .video-container,
@@ -875,7 +937,7 @@ body.detail-page.artificial-ingenious {
     width: clamp(150px, 18vw, 230px);
     height: auto;
     border-radius: 15px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+    /* box-shadow: 0 12px 35px rgba(0,0,0,0.3); */
     z-index: 5;
 }
 
@@ -896,18 +958,14 @@ body.detail-page.artificial-ingenious {
 }
 
 .artificial-ingenious .bb-process-intro {
-    bottom: calc(-1 * var(--ai-section-padding-vertical)); 
-    left: -10px; 
+    /* bottom: calc(-1 * var(--ai-section-padding-vertical)); 
+    left: -10px;  */
     transform: translateX(-50%) translateY(-50%) perspective(800px); 
     width: 250px;
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     animation: bobbing-float 3.5s ease-in-out infinite; 
 }
 
-.artificial-ingenious .bb-process-intro:hover {
-    transform: translateX(-50%) translateY(-50%) perspective(800px) rotateY(-8deg) scale(1.08); 
-    box-shadow: -3px 5px 20px rgba(0,0,0,0.35), 0 0 12px rgba(255, 255, 255, 0.1); /* Subtle white glow */
-}
 
 .artificial-ingenious .bb-cta {
     top: 50%;
@@ -964,12 +1022,6 @@ body.detail-page.artificial-ingenious {
 
     .artificial-ingenious .process-section > .container {
         /* padding-top: 20px; */
-    }
-    .artificial-ingenious .blonde-bot-image.bb-process-intro {
-        position: relative;
-        top: auto; left: auto; transform: none;
-        margin: 0 auto 20px auto;
-        width: clamp(120px, 25vw, 160px);
     }
 
     .artificial-ingenious .cta-section .cta-content {
@@ -1193,7 +1245,6 @@ body.detail-page.artificial-ingenious {
     bottom: 0; /* Stick to the bottom */
     left: 0; /* Stick to the left corner */
     z-index: 1; /* Positioned below the button but above the background */
-    border-bottom-left-radius: var(--ai-card-border-radius); /* Match parent card's radius */
 }
 
 /* ===== MUSIC PLAYER ===== */
@@ -1288,10 +1339,10 @@ body.detail-page.artificial-ingenious {
 
 /* Machine Megamind Offerings Grid Container */
 .mm-offerings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    padding: 2rem 0;
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center;
     max-width: 100%;
 }
 
@@ -1418,10 +1469,13 @@ body.detail-page.artificial-ingenious {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
+.bb-process-intro{
+    top: -110px !important;
+    }
+    
     .mm-offerings-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-        padding: 1rem 0;
+        flex-direction: column; 
     }
     
     .mm-offering-card {
@@ -1449,10 +1503,6 @@ body.detail-page.artificial-ingenious {
 }
 
 @media (max-width: 480px) {
-    .mm-offerings-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
     
     .mm-offering-card {
         padding: 0.75rem;
@@ -1474,14 +1524,227 @@ body.detail-page.artificial-ingenious {
 }
 
 /* Alternative grid layouts for different screen sizes */
-@media (min-width: 1200px) {
+@media (max-width: 1080px) {
+    .bb-process-intro{
+        top: -140px !important;
+        }
     .mm-offerings-grid {
-        grid-template-columns: repeat(3, 1fr);
+        flex-direction: column; 
     }
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
-    .mm-offerings-grid {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 1400px) {
+    .artificial-ingenious .room-info-section{
+        margin-top: 80px !important;
     }
+}
+
+@media (max-width: 1200px) {
+    .artificial-ingenious .video-hero-wrapper {
+        height: clamp(200px, 50vw, 530px);
+    }
+
+    .artificial-ingenious .room-info-section{
+        margin-top: 40px !important;
+    }
+}
+
+/* ===== CRYSTAL CUBE FORM STYLES ===== */
+.artificial-ingenious .form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.artificial-ingenious .form-container .offering-title {
+    margin-top: -20px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.artificial-ingenious .form-container form {
+    text-align: left;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.artificial-ingenious .form-container label {
+    display: block;
+    margin-bottom: 15px;
+    color: var(--ai-text-primary);
+    font-family: var(--ai-mono-font);
+    font-size: 0.95rem;
+}
+
+.artificial-ingenious .form-container input[type="text"],
+.artificial-ingenious .form-container input[type="email"],
+.artificial-ingenious .form-container textarea,
+.artificial-ingenious .form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--ai-glass-border);
+    border-radius: 8px;
+    color: white;
+    font-family: var(--ai-mono-font);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.artificial-ingenious .form-container textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.artificial-ingenious .form-container select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+.artificial-ingenious .form-container select option {
+    background: #1a1a1a;
+    color: white;
+}
+
+.artificial-ingenious .form-container input[type="checkbox"] {
+    margin-right: 10px;
+    width: auto;
+    cursor: pointer;
+}
+
+.artificial-ingenious .form-container label.checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.artificial-ingenious .form-container input:focus,
+.artificial-ingenious .form-container textarea:focus,
+.artificial-ingenious .form-container select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.artificial-ingenious .form-container input::placeholder,
+.artificial-ingenious .form-container textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.artificial-ingenious .form-container .cta-button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Form Responsive Styles */
+@media (max-width: 768px) {
+
+ 
+    .artificial-ingenious .form-container form {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .artificial-ingenious .form-container label {
+        font-size: 0.9rem;
+    }
+    
+    .artificial-ingenious .form-container input[type="text"],
+    .artificial-ingenious .form-container input[type="email"],
+    .artificial-ingenious .form-container textarea,
+    .artificial-ingenious .form-container select {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+    
+    .artificial-ingenious .form-container .offering-title {
+        font-size: 1.3rem;
+        margin-top: -10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .artificial-ingenious .form-container form {
+        padding: 0 5px;
+    }
+    
+    .artificial-ingenious .form-container label {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+    
+    .artificial-ingenious .form-container input[type="text"],
+    .artificial-ingenious .form-container input[type="email"],
+    .artificial-ingenious .form-container textarea,
+    .artificial-ingenious .form-container select {
+        padding: 6px;
+        font-size: 0.8rem;
+    }
+    
+    .artificial-ingenious .form-container textarea {
+        min-height: 80px;
+    }
+    
+    .artificial-ingenious .form-container .cta-button {
+        font-size: 0.95rem;
+        padding: 12px 25px;
+    }
+}
+
+/* Form hover and interaction states */
+.artificial-ingenious .form-container input:hover,
+.artificial-ingenious .form-container textarea:hover,
+.artificial-ingenious .form-container select:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Fix for the BB room info image in the form section */
+.artificial-ingenious .offering-card .bb-room-inf {
+    width: clamp(200px, 50vw, 530px);
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    right: -140px;
+    background-color: transparent;
+}
+
+@media (max-width: 1200px) {
+    .artificial-ingenious .offering-card .bb-room-inf {
+        width: 400px;
+        right: -80px;
+    }
+}
+
+@media (max-width: 992px) {
+    .artificial-ingenious .offering-card .bb-room-inf {
+        display: none !important;
+        width: 300px;
+        right: -50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .artificial-ingenious .offering-card .bb-room-inf {
+        position: relative;
+        width: 200px;
+        right: auto;
+        bottom: auto;
+        margin: 0 auto 20px auto;
+    }
+}
+
+/* Crystal Cube section offering card specific style */
+.artificial-ingenious section[data-section-key="Crystal Cube Interaction"] .offering-card {
+    padding: 30px;
 }

@@ -73,11 +73,11 @@
     </a>
     
     <!-- Video Hero Section -->
-            <div class="video-hero-wrapper">
+            <div class="video-hero-wrapper" >
                 <section class="page-section video-hero-section" data-section-type="video-hero">
                     <div class="video-container">
                         <div class="video-placeholder">
-                            <iframe src="https://player.vimeo.com/video/1087965557?h=0&amp;autoplay=1&amp;loop=0&amp;title=0&amp;byline=0&amp;portrait=0" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                            <iframe src="https://player.vimeo.com/video/1087965557?h=0&amp;autoplay=1&amp;loop=0&amp;title=0&amp;byline=0&amp;portrait=0" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius: 10px;"></iframe>
                         </div>
                     </div>
                     <div class="artistic-background-text" style="top: 20%; left: 10%;">MaCHiNE MEGaMiND</div>
@@ -86,7 +86,7 @@
             
     <!-- Room Info Section -->
     <section class="page-section room-info-section" data-section-type="room-info" style="padding: 0 0 40px 0; margin-top: 100px;">
-        <img src="../assets/images/machine-megamind/megamind-figure-blue.png" alt="Megamind Figure" class="blonde-bot-image bb-room-info">
+        <img src="../assets/images/machine-megamind/megamind-figure-blue.png" alt="Megamind Figure" class="blonde-bot-image bb-room-info" style="max-width: 100%;">
         <div class="container">
             <h1 class="room-title">MaCHiNE MEGaMiND</h1>
             <div class="room-title" style="text-align: left; font-size: 1.5rem; margin-bottom: 1rem; text-transform: uppercase;">AI Agents & Agentic Workflows</div>
@@ -106,7 +106,7 @@
                     <div class="step-main-content">
                         <div class="step-number">01</div>
                         <div class="step-content">
-                            <h3>ARCHITECT</h3>
+                            <h3 style="font-weight: normal;">ARCHITECT</h3>
                             <p>We design your custom agent ecosystem based on business goals and processes, identifying which tasks can be automated, how agents should interact (agentic workflows), and which tools they should share. This is where we investigate and gather all the context we need from you to train the agents - you would be amazed at the breadth and types of files you already have that are perfect for agent training.</p>
                         </div>
                     </div>
@@ -260,7 +260,7 @@
 
             <h2 class="section-title">AGENTIC WORKFLOWS</h2>
             <p class="intro-text">The true power of AI emerges when multiple agents work together in seamless workflows, creating end-to-end solutions that transform entire business processes. 'Agentic' will feel 'angelic' when you experience the level of support and proactivity your battalion brings.</p>
-            <div class="offerings-grid" style="padding: 0px;">
+            <div class="offerings-grid" style="padding: 0px; margin-top: 4rem;">
                 <!-- Research Agent -->
                 <div class="offering-card">
                     <div class="offering-text-content">
@@ -284,14 +284,14 @@
                 </div>
             </div>
 
-                <div class="offerings-grid" style="display: flex; justify-content: space-around; margin-top: -70px;">
+                <div class="offerings-grid" style="display: flex; justify-content: space-around; margin-top: -70px; margin-bottom: 100px;">
                     <!-- Research Agent -->
                     <div class="offering-card" style="padding-top: 5px; text-align: center;">
                         <div class="offering-text-content">
                             <img src="../assets/images/machine-megamind/ai_in_action.png"
                                  alt="Content Agent"
                                  class="offering-images"
-                                 style="width: 500px; height: 500px; margin-bottom: -100px; vertical-align: bottom;">
+                                 style="width: clamp(15rem, 100%, 580px); height: auto; margin-bottom: -50px; vertical-align: bottom;">
                 
                             <button onclick="openModal('timelineModal_2')"
                                     class="explore-btn"
@@ -307,7 +307,7 @@
                             <img src="../assets/images/machine-megamind/spotlightv2.png"
                                  alt="Content Agent"
                                  class="offering-images"
-                                 style="width: 580px; height: 580px; margin-bottom: -50px; transform: scaleX(-1); vertical-align: bottom; ">
+                                 style="width: clamp(15rem, 100%, 580px); height: auto; margin-bottom: -50px; transform: scaleX(-1); vertical-align: bottom; ">
                 
                             <button onclick="openModal('timelineModal_3')"
                                     class="explore-btn"
@@ -324,13 +324,13 @@
 
      <!-- Why Agentic AI Section -->
      <section id="why-agentic-ai" class="page-section why-agentic-section">
-        <div class="container">
+        <div class="container" >
                 <h2 class="section-title">WHY AGENTIC AI?</h2>
                 <p class="intro-text">Our approach goes beyond off-the-shelf solutions, offering distinct advantages that truly catapult your MO into the future. The work week is broken and we want your team to love their jobs and their lives again, here's how:</p>
                 <img src="../assets/images/machine-megamind/megamind-why-agentic-ai.jpg" alt="Why Agentic AI" class="section-image">
-                <div class="card-grid">
-                    <div class="card" >
-                        <h3>HUMaN + ai PaRTNERSHiP</h3>
+                <div class="card-grid" style="max-width: 100%;">
+                    <div class="card" style="max-width: 90%;">
+                        <h3 style="font-weight: 100;">HUMaN + ai PaRTNERSHiP</h3>
                         <ul >
                             <li>MxM staunchly advocates collaboration, not&nbsp;replacement</li>
                             <li>Your team's expertise guides agent&nbsp;development</li>
@@ -370,81 +370,6 @@
         </div>
     </section>
 
-    <!-- Implementation Timeline Section -->
-    <!-- <section class="page-section timeline-section" data-section-type="timeline" style="padding: 10px 0 -10px 0;">
-        <div class="container">
-            <h2 class="section-title">IMPLEMENTATION TIMELINE</h2>
-            <p class="intro-text">Our 12-week process ensures a smooth, successful integration of AI agents and workflows where your MaCHiNE MEGaMiND metamorphosises "business as usual" into "business as unreal"... seriously, once you go bot you never go back.</p>
-            
-            <div class="timeline-steps" style="padding-left: 90px; padding-right: 90px;">
-                <div class="timeline-step">
-                    <div class="timeline-step-main-content">
-                        <div class="timeline-step-number">01</div>
-                        <div class="timeline-step-content">
-                            <h3>DISCOVERY & DESIGN</h3>
-                            <ul>
-                                <li>Comprehensive business process&nbsp;analysis</li>
-                                <li>Stakeholder interviews and requirements&nbsp;gathering</li>
-                                <li>Opportunity identification and&nbsp;prioritization</li>
-                                <li>Agent and workflow architecture&nbsp;design</li>
-                                <li>Success metrics&nbsp;definition</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <img src="../assets/images/machine-megamind/timeline-images/design and discovery2.png" alt="Discovery & Design Visual" class="timeline-step-visual" style="height: 255px;">
-                </div>
-                <div class="timeline-step">
-                    <div class="timeline-step-main-content">
-                        <div class="timeline-step-number">02</div>
-                        <div class="timeline-step-content">
-                            <h3>DEVELOPMENT & TRAINING</h3>
-                            <ul>
-                                <li>AI agent development and&nbsp;customization</li>
-                                <li>Data integration and connection&nbsp;setup</li>
-                                <li>Initial agent training with your business&nbsp;data</li>
-                                <li>Workflow sequence&nbsp;programming</li>
-                                <li>Security and compliance&nbsp;implementation</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <img src="../assets/images/machine-megamind/timeline-images/development and training1.png" alt="Development & Training Visual" class="timeline-step-visual">
-                </div>
-                <div class="timeline-step">
-                    <div class="timeline-step-main-content">
-                        <div class="timeline-step-number">03</div>
-                        <div class="timeline-step-content">
-                            <h3>DEPLOYMENT & VALIDATION</h3>
-                            <ul>
-                                <li>Controlled deployment in production&nbsp;environment</li>
-                                <li>Performance testing and&nbsp;refinement</li>
-                                <li>User training and adoption&nbsp;support</li>
-                                <li>Workflow integration with existing&nbsp;systems</li>
-                                <li>Initial performance&nbsp;measurement</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <img src="../assets/images/machine-megamind/timeline-images/deployment and validation (1).png" alt="Deployment & Validation Visual" class="timeline-step-visual">
-                </div>
-                <div class="timeline-step">
-                    <div class="timeline-step-main-content">
-                        <div class="timeline-step-number">04</div>
-                        <div class="timeline-step-content">
-                            <h3>OPTIMIZATION & EXPANSION</h3>
-                            <ul>
-                                <li>Performance analysis and&nbsp;optimization</li>
-                                <li>Advanced training with operational&nbsp;feedback</li>
-                                <li>Workflow refinement based on real-world&nbsp;results</li>
-                                <li>Expansion planning for additional&nbsp;agents/workflows</li>
-                                <li>Long-term support and enhancement&nbsp;strategy</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <img src="../assets/images/machine-megamind/timeline-images/optimization and expansion (1).png" alt="Optimization & Expansion Visual" class="timeline-step-visual">
-                </div>
-            </div>
-        </div>
-    </section> -->
-
     <!-- Investment Section -->
     <section class="page-section diagnosis-section" data-section-type="diagnosis">
         <div class="container">
@@ -453,6 +378,7 @@
             
             <div class="investment-grid">
                 <!-- Starter Fleet -->
+                 
                 <div class="investment-card">
                     <div class="investment-image-wrapper">
                         <img src="../assets/images/machine-megamind/megamind-pricing-starter.jpg" alt="Starter Fleet" class="investment-image">
@@ -468,7 +394,7 @@
                             <li>30 days of&nbsp;optimization</li>
                             <li>Bi-weekly performance&nbsp;reports</li>
                         </ul>
-                        <a  href="https://tally.so/r/mKOoVz" class="explore-btn">Activate</a>
+                        <a  href="https://tally.so/r/meyA00" class="explore-btn">Activate</a>
                     </div>
                 </div>
                 <!-- Business Battalion -->
@@ -488,7 +414,7 @@
                             <li>Weekly performance&nbsp;reports</li>
                             <li>Training session for your team Best for businesses ready to deploy AI across key functions.</li>
                         </ul>
-                        <a href="#" class="explore-btn">Activate</a>
+                        <a href="https://tally.so/r/meyA00" class="explore-btn">Activate</a>
                     </div>
                 </div>
 
@@ -512,94 +438,12 @@
                             <li>Comprehensive AI transformation for large-scale operations</li>
                           
                         </ul>
-                        <a href="#" class="explore-btn">Contact Us</a>
+                        <a href="contact.html" class="explore-btn">Contact Us</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Agentic AI in Action Section -->
-    <!-- <section class="page-section agentic-in-action-section" style="padding: 0 0 30px 0;">
-        <img src="../assets/images/machine-megamind/bb-brain.png" alt="Megamind Figure" class="blonde-bot-image bb-room-info" style="height: 650px; width: auto;">
-
-        <div class="container">
-            <h2 class="section-title">AGENTIC AI IN ACTION</h2>
-            <p class="intro-text">How Bespoke Bot Battalions drive results across key business functions:</p>
-            
-            <div class="action-categories">
-                <div class="category">
-                    <h3>Marketing & Content</h3>
-                    <ul>
-                        <li><span>Content Calendar Agent:</span> Plans, creates, schedules, and optimizes content across platforms.</li>
-                        <li><span>Social Listening Team:</span> Monitors brand mentions, analyzes sentiment, and flags opportunities.</li>
-                        <li><span>Campaign Performance Agents:</span> Tracks metrics, adjusts spend, and optimizes in real-time.</li>
-                    </ul>
-                </div>
-                <div class="category">
-                    <h3>Sales & Business Development</h3>
-                    <ul>
-                        <li><span>Lead Generation Squad:</span> Identifies prospects, enriches data, and initiates personalized outreach.</li>
-                        <li><span>Sales Enablement Agents:</span> Prepares briefs, suggests talking points, and follows up with leads.</li>
-                        <li><span>CRM Enhancement Team:</span> Updates records, tags opportunities, and predicts client needs.</li>
-                    </ul>
-                </div>
-                <div class="category">
-                    <h3>Operations</h3>
-                    <ul>
-                        <li><span>Project Management Agents:</span> Tracks tasks, allocates resources, and identifies bottlenecks.</li>
-                        <li><span>Data Analysis Team:</span> Aggregates reports, visualizes trends, and delivers actionable insights.</li>
-                        <li><span>Customer Service Agents:</span> Handles inquiries, escalates issues, and maintains satisfaction.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-    <!-- Workflow Spotlight Section -->
-    <!-- <section class="page-section workflow-spotlight-section" style="padding: 10px 0;">
-        <div class="container">
-            <h2 class="section-title">WORKFLOW SPOTLIGHT: CONTENT MARKETING</h2>
-            <p class="intro-text">How our agents collaborate in an end-to-end content marketing workflow:</p>
-            <img src="../assets/images/machine-megamind/workflow-spotlight.png" alt="Why Agentic AI" class="section-image">
-
-            <div class="spotlight-categories" style="display: flex; flex-wrap: wrap; gap: 20px;">
-                <div class="category" style="flex: 1 1 calc(50% - 10px); box-sizing: border-box;">
-                  <h3>Strategy Agent</h3>
-                  <ul>
-                    <li>Analyzes market trends and competitor content</li>
-                    <li>Recommends content themes and topics</li>
-                    <li>Sets KPIs and performance targets</li>
-                  </ul>
-                </div>
-                <div class="category" style="flex: 1 1 calc(50% - 10px); box-sizing: border-box;">
-                  <h3>Creation Agents</h3>
-                  <ul>
-                    <li><span>Research Agent:</span> Gathers relevant data and sources</li>
-                    <li><span>Writing Agent:</span> Drafts content based on brand voice</li>
-                    <li><span>Design Agent:</span> Creates visual assets and formatting</li>
-                  </ul>
-                </div>
-                <div class="category" style="flex: 1 1 calc(50% - 10px); box-sizing: border-box;">
-                  <h3>Distribution Agents</h3>
-                  <ul>
-                    <li><span>Channel Agent:</span> Optimizes content for each platform</li>
-                    <li><span>Scheduling Agent:</span> Posts at optimal times</li>
-                    <li><span>Engagement Agent:</span> Replies to comments and messages</li>
-                  </ul>
-                </div>
-                <div class="category" style="flex: 1 1 calc(50% - 10px); box-sizing: border-box;">
-                  <h3>Analytics Agents</h3>
-                  <ul>
-                    <li><span>Tracking Agent:</span> Monitors performance metrics</li>
-                    <li><span>Insight Agent:</span> Identifies successful patterns</li>
-                    <li><span>Reporting Agent:</span> Delivers digestible analytics</li>
-                  </ul>
-                </div>
-              </div>
-              
-        </div>
-    </section> -->
 
     <!-- FAQ Section -->
     <section class="page-section faq-section" data-section-type="faq">
@@ -608,7 +452,7 @@
             <div class="faq-accordion">
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>What exactly are "Bespoke Bot Battalions" and AI agents?</h3>
+                        <h3 class="faq-question-title">What exactly are "Bespoke Bot Battalions" and AI agents?</h3>
                         <div class="accordion-icon">+</div>
                     </div>
                     <div class="faq-answer">
@@ -617,23 +461,31 @@
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>How is this different from using standard AI chatbots?</h3>
+                        <h3 class="faq-question-title">How is this different from using standard AI chatbots?</h3>
                         <div class="accordion-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>While standard chatbots are powerful general tools, our custom agents are:
                             <ul>
-                                <li><b>Tailored:</b> Built for your unique business processes.</li>
-                                <li><b>Integrated:</b> Designed to work seamlessly within your existing software stack.</li>
-                                <li><b>Autonomous:</b> Capable of performing multi-step tasks and collaborating with other agents.</li>
-                                <li><b>Context-Aware:</b> Trained on your specific business knowledge for more relevant outputs.</li>
+                                <li><p>
+                                    <b>Tailored:</b> Built for your unique business processes.
+                                </p></li>
+                                <li><p>
+                                    <b>Integrated:</b> Designed to work seamlessly within your existing software stack.
+                                </p></li>
+                                <li><p>
+                                    <b>Autonomous:</b> Capable of performing multi-step tasks and collaborating with other agents.
+                                </p></li>
+                                <li><p>
+                                    <b>Context-Aware:</b> Trained on your specific business knowledge for more relevant outputs.
+                                </p></li>
                             </ul>
                         </p>
                     </div>
                 </div>
                  <div class="faq-item">
                     <div class="faq-question">
-                        <h3>What information do you need during the "Architect" phase?</h3>
+                        <h3 class="faq-question-title">What information do you need during the "Architect" phase?</h3>
                         <div class="accordion-icon">+</div>
                     </div>
                     <div class="faq-answer">
@@ -642,7 +494,7 @@
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Can these AI agents integrate with the software and tools we already use?</h3>
+                        <h3 class="faq-question-title">Can these AI agents integrate with the software and tools we already use?</h3>
                         <div class="accordion-icon">+</div>
                     </div>
                     <div class="faq-answer">
@@ -670,9 +522,8 @@
             <div class="footer-content">
                 <div class="footer-nav">
                     <a href="../index.html">Home</a>
-                    <a href="#">Services</a>
                     <a href="#">About</a>
-                    <a href="#">Contact</a>
+                    <a href="contact.html">Contact</a>
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
                 </div>
@@ -772,7 +623,7 @@
                     <h2 class="section-title">IMPLEMENTATION TIMELINE</h2>
                     <p class="intro-text">Our 12-week process ensures a smooth, successful integration of AI agents and workflows where your MaCHiNE MEGaMiND metamorphosises "business as usual" into "business as unreal"... seriously, once you go bot you never go back.</p>
         
-                    <div class="timeline-steps" style="padding: 0 5%; box-sizing: border-box;">
+                    <div class="timeline-steps" style="padding: 0 5%; box-sizing: border-box;margin-top: 5.5rem;">
                          <!-- Step 1: Discovery & Design -->
                          <div class="timeline-step">
                             <div class="timeline-step-main-content">
@@ -825,7 +676,7 @@
                             <img src="../assets/images/machine-megamind/timeline-images/deployment and validation (1).png" alt="Deployment & Validation Visual" class="timeline-step-visual">
                         </div>
                         <!-- Step 4: Optimization & Expansion -->
-                        <div class="timeline-step">
+                        <div class="timeline-step" style="margin-bottom: 0;">
                             <div class="timeline-step-main-content">
                                 <div class="timeline-step-number">04</div>
                                 <div class="timeline-step-content">
@@ -911,6 +762,7 @@
     max-width: 1500px;
     margin: 0 auto;
     align-content: center;
+    margin-top: 2.5rem;
 ">
   <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px; margin-left: 20px;">
     <h3 style="font-weight: 300;">Strategy Agent</h3>
@@ -958,12 +810,12 @@
     // Get modal element
     function openModal(modalId) {
     document.getElementById(modalId).style.display = "flex";
-    console.log("Modal opened");
+    ("Modal opened");
 }
 
 // Close specific modal
 function closeModal(modalId) {
-    console.log("Modal closed");
+    ("Modal closed");
     document.getElementById(modalId).style.display = "none";
 
 }
@@ -1014,5 +866,237 @@ document.addEventListener('keydown', function(event) {
         setInterval(updateMusicLabel, 1000);
     </script>
         
+    <style>
+    /* Responsive styles for narrow devices */
+
+    @media (max-width: 1200px) {
+        .offerings-grid {
+            flex-direction: column !important;
+            margin-top: 20px !important;
+            gap: 20px;
+            align-items: center !important;
+        }
+        
+        .offering-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+        
+        .offering-text-content {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+        
+        .offering-images {
+            /* width: 100% !important; */
+            height: auto !important;
+            max-width: 100% !important;
+            /* margin-bottom: 20px !important; */
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        
+        .explore-btn {
+            width: 100% !important;
+            max-width: 300px !important;
+            font-size: 1.2rem !important;
+            padding: 15px !important;
+            margin: 0 auto !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .offerings-grid {
+            flex-direction: column !important;
+            margin-top: 20px !important;
+            gap: 20px;
+            align-items: center !important;
+        }
+        
+        .offering-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+        
+        .offering-text-content {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+        
+        .offering-images {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 300px !important;
+            margin-bottom: 20px !important;
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        
+        .explore-btn {
+            width: 100% !important;
+            max-width: 300px !important;
+            font-size: 1.2rem !important;
+            padding: 15px !important;
+            margin: 0 auto !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .offering-images {
+            max-width: 250px !important;
+        }
+        
+        .explore-btn {
+            font-size: 1rem !important;
+            max-width: 250px !important;
+        }
+    }
+    
+    /* Fix Investment section responsiveness */
+    .investment-grid {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .investment-card {
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+    
+    .investment-features {
+        padding-left: 20px !important;
+        padding-right: 10px !important;
+    }
+    
+    .investment-features li {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    @media (max-width: 1200px) {
+        .investment-grid {
+            grid-template-columns: 1fr !important;
+            padding: 0 20px;
+        }
+        
+        .investment-card {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+ 
+        .investment-card {
+            flex-direction: column !important;
+            align-items: center !important;
+            padding: 20px !important;
+        }
+        
+        .investment-image-wrapper {
+            width: 100% !important;
+            text-align: center !important;
+            margin-bottom: 20px !important;
+        }
+        
+        .investment-image {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+            max-height: 300px !important;
+        }
+        
+        .investment-text-content {
+            width: 100% !important;
+            padding: 0 !important;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .investment-title {
+            font-size: 1.3rem !important;
+            text-align: center !important;
+        }
+        
+        .investment-price {
+            font-size: 1.8rem !important;
+            text-align: center !important;
+        }
+        
+        .investment-description {
+            font-size: 0.9rem !important;
+            padding: 0 10px !important;
+            text-align: center !important;
+        }
+        
+        .investment-features {
+            font-size: 0.85rem !important;
+            padding-left: 25px !important;
+            padding-right: 15px !important;
+        }
+        
+        .investment-features li {
+            margin-bottom: 8px !important;
+            line-height: 1.4 !important;
+        }
+        
+        .investment-card .explore-btn {
+            width: calc(100% - 40px) !important;
+            max-width: 250px !important;
+            margin: 20px auto 0 auto !important;
+            display: block !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .investment-card {
+            padding: 15px !important;
+        }
+        
+        .investment-title {
+            font-size: 1.1rem !important;
+        }
+        
+        .investment-price {
+            font-size: 1.5rem !important;
+        }
+        
+        .investment-description {
+            font-size: 0.85rem !important;
+            padding: 0 5px !important;
+        }
+        
+        .investment-features {
+            font-size: 0.8rem !important;
+            padding-left: 20px !important;
+            padding-right: 10px !important;
+        }
+    }
+    </style>
 </body>
 </html>

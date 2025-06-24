@@ -11,7 +11,7 @@ body.detail-page.artificial-ingenious {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
-    padding: 3.5rem 3.5rem 0 3.5rem;
+    padding: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
@@ -65,7 +65,7 @@ body.detail-page.artificial-ingenious {
 
 .artificial-ingenious .container {
     width: 90%;
-    max-width: 1200px;
+    max-width: 90%;
     padding-left: var(--ai-section-padding-horizontal-container);
     padding-right: var(--ai-section-padding-horizontal-container);
     margin-left: auto;
@@ -106,7 +106,7 @@ body.detail-page.artificial-ingenious {
     line-height: 1.75;
     text-align: center; /* Default center, can be overridden */
     margin-bottom: 1.5rem;
-    max-width: 1000px; /* For readability of centered text blocks */
+    max-width: 90%; /* For readability of centered text blocks */
     margin-left: auto;
     margin-right: auto;
 }
@@ -158,7 +158,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh; /* Covers the entire viewport height */
     z-index: -10; /* Behind all other page content */
-    background-image: url('../images/rooms/machine-megamind.jpg'); /* Updated image path */
+    background-image: url('../images/rooms/contact_bg.png'); /* Updated image path */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -539,6 +539,13 @@ body.detail-page.artificial-ingenious {
     /* box-shadow: 0 8px 25px rgba(0,0,0,0.3), 0 0 15px rgba(var(--ai-accent-pink-glow), 0.15); */ /* Kept hover transform, removed shadow */
 }
 
+
+.contact-methods-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
 /* Use Cases Section */
 .artificial-ingenious .use-cases-grid {
     display: grid;
@@ -895,11 +902,11 @@ body.detail-page.artificial-ingenious {
 
 .blonde-bot-fast-track {
     position: absolute;
-    top: -35%;
-    right: -10%;
+    top: -15%;
+    right: -5%;
     width: auto;
     max-height: 350px;
-    height: 2000vh;
+    height: clamp(100px, 20vw, 350px);
     transform: scale(0.9);
     z-index: 10;
     transition: transform 0.5s ease, opacity 0.5s ease;
@@ -1287,6 +1294,9 @@ body.detail-page.artificial-ingenious {
     #contactForm {
         padding: 0 20px;
     }
+    .blonde-bot-fast-track {
+        top: -10%;
+    }
     
     .contact-form-container input,
     .contact-form-container select,
@@ -1483,6 +1493,12 @@ body.detail-page.artificial-ingenious {
 }
 
 @media (max-width: 1024px) {
+    .fast-track-card{
+        flex-direction: column !important;
+    }
+    .fast-track-card .explore-btn{
+        width: 90% !important;
+    }
     .social-media-section .offering-card {
         padding: 40px 40px;
     }
@@ -1594,6 +1610,7 @@ body.detail-page.artificial-ingenious {
     font-family: var(--ai-mono-font);
     font-size: 0.9rem;
     margin-bottom: 5px;
+    white-space: nowrap;
 }
 
 /* Contact Social Links in Sidebar */
@@ -1714,7 +1731,7 @@ body.detail-page.artificial-ingenious {
 .flex-center-start {
     display: flex;
     align-items: start;
-    justify-content: center;
+    justify-content: start;
 }
 
 .contact-image-style {
@@ -1722,6 +1739,7 @@ body.detail-page.artificial-ingenious {
     height: auto;
     object-fit: contain;
     animation: simple-float 3.5s ease-in-out infinite;
+    flex-shrink: 0;
 }
 
 .margin-bottom-40 {
@@ -1787,4 +1805,362 @@ body.detail-page.artificial-ingenious {
     margin-top:  -30px;
     justify-content: space-between;
     
+}
+
+/* Responsive styles for blonde bot intro image */
+@media (max-width: 1400px) {
+    .blonde-bot-contact-intro {
+        width: 350px;
+        left: 30px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .blonde-bot-contact-intro {
+        width: 300px;
+        left: 20px;
+    }
+}
+
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+    .contact-methods-container {
+        padding-left: 20%; /* Remove the 20% left margin that was causing issues */
+    }
+    .blonde-bot-contact-intro {
+        width: clamp(10rem, 50vw, 20rem);
+        z-index: 1;
+    }
+    
+    .section-padding-margin {
+        margin-top: 60px;
+        padding: 0 0 30px 0;
+    }
+    
+    .contact-two-column-layout {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+    }
+    
+    .contact-info-sidebar {
+        max-width: none;
+        order: 2;
+        text-align: center;
+    }
+    
+    .contact-form-sidebar {
+        order: 1;
+        padding: 15px;
+        margin: 0;
+        min-height: auto;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .contact-methods-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .contact-social-links {
+        justify-content: center;
+        margin-top: 30px;
+    }
+    
+    .contact-form-container {
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .contact-form-container input,
+    .contact-form-container select,
+    .contact-form-container textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .contact-form-container textarea {
+        min-height: 100px;
+    }
+    
+    .newsletter-checkbox {
+        margin: 10px 0;
+        font-size: 0.9rem;
+    }
+    
+    .newsletter-checkbox label {
+        font-size: 0.85rem;
+    }
+    
+    .submit-button-container {
+        padding-top: 10px;
+    }
+    
+    .intro-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+    
+    /* Ensure the form doesn't overflow */
+    #contactForm {
+        padding: 0;
+        width: 100%;
+    }
+    
+    .offering-card.contact-form-sidebar {
+        overflow: visible;
+        width: 100%;
+        margin: 0;
+    }
+    
+    .contact-image-style {
+        width: 80px;
+    }
+    
+    .flex-center-start,
+    .flex-start-start {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .contact-method {
+        text-align: center;
+    }
+    
+    /* Adjust send button for mobile */
+    .send-message-button {
+        padding: 10px 25px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .blonde-bot-contact-intro {
+        width: 12rem;
+    }
+
+    .contact-methods-container {
+        padding-left: 10%; /* Remove the 20% left margin that was causing issues */
+    }
+   
+}
+
+/* Improved responsive styles for contact section layout */
+@media (max-width: 1200px) {
+    .contact-two-column-layout {
+        gap: 40px;
+    }
+    
+    .contact-info-sidebar {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .contact-two-column-layout {
+        gap: 30px;
+    }
+    
+    .contact-form-sidebar {
+        padding: 30px;
+    }
+    
+    .contact-info-sidebar {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-padding-margin {
+        margin-top: 60px;
+        padding: 0 0 30px 0;
+    }
+    
+    .contact-two-column-layout {
+        flex-direction: column;
+        gap: 30px;
+        align-items: stretch;
+    }
+    
+    .contact-info-sidebar {
+        max-width: none;
+        order: 2;
+        text-align: center;
+    }
+    
+    .contact-form-sidebar {
+        order: 1;
+        padding: 25px;
+    }
+    
+    .contact-methods-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .contact-social-links {
+        justify-content: center;
+        margin-top: 30px;
+    }
+    
+    .contact-form-container input,
+    .contact-form-container select,
+    .contact-form-container textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .intro-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-padding-margin {
+        margin-top: 40px;
+        padding: 0 0 20px 0;
+    }
+    
+    .contact-two-column-layout {
+        gap: 20px;
+    }
+    
+    .contact-form-sidebar {
+        padding: 20px;
+        border-radius: 8px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .intro-text {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        padding: 0 10px;
+    }
+    
+    .newsletter-checkbox {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .newsletter-checkbox label {
+        flex-direction: column;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+    
+    .newsletter-checkbox input[type="checkbox"] {
+        margin: 0 0 10px 0;
+    }
+    
+    .send-message-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        width: 100%;
+    }
+    
+    .contact-method h3 {
+        font-size: 1rem;
+    }
+    
+    .contact-method p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .contact-form-sidebar {
+        padding: 15px;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .intro-text {
+        font-size: 0.85rem;
+    }
+    
+    .contact-form-container input,
+    .contact-form-container select,
+    .contact-form-container textarea {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+/* Responsive styles for contact images */
+@media (max-width: 1200px) {
+    .contact-image-style {
+        width: 120px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .contact-image-style {
+        width: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-image-style {
+        width: 80px;
+    }
+    
+    .flex-center-start,
+    .flex-start-start {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .contact-method {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-image-style {
+        width: 60px;
+    }
+}
+
+.margin-bottom-40 {
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .margin-bottom-40 {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .margin-bottom-40 {
+        margin-bottom: 20px;
+    }
 }

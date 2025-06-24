@@ -11,6 +11,8 @@ body.detail-page.artificial-ingenious {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
+    padding: clamp(2.5rem, 5vw, 3.5rem);
+
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
@@ -64,7 +66,7 @@ body.detail-page.artificial-ingenious {
 
 .artificial-ingenious .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 90%;
     padding-left: var(--ai-section-padding-horizontal-container);
     padding-right: var(--ai-section-padding-horizontal-container);
     margin-left: auto;
@@ -157,7 +159,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh; /* Covers the entire viewport height */
     z-index: -10; /* Behind all other page content */
-    background-image: url('../images/rooms/machine-megamind.jpg'); /* Updated image path */
+    background-image: url('../images/rooms/consults-coded.jpg'); /* Updated image path */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -214,9 +216,27 @@ body.detail-page.artificial-ingenious {
 .artificial-ingenious .video-hero-wrapper {
     margin-top: 30px; /* Original margin from video-hero-section */
     margin-bottom: 40px; /* Original margin from video-hero-section */
-    height: 70vh; /* Original height from video-hero-section */
-    max-height: 600px; /* Original max-height from video-hero-section */
+    height: clamp(200px, 50vw, 600px);
+    max-width: 1400px;
     position: relative; /* For potential future absolute children if any, not strictly needed now */
+    margin: 0 auto;
+}
+
+@media (max-width: 1400px) {
+
+    .artificial-ingenious .room-info-section{
+        margin-top: 80px !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .artificial-ingenious .video-hero-wrapper {
+        height: clamp(200px, 50vw, 530px);
+    }
+
+    .artificial-ingenious .room-info-section{
+        margin-top: 40px !important;
+    }
 }
 
 /* Video Hero Section - adjusted styles */
@@ -274,6 +294,12 @@ body.detail-page.artificial-ingenious {
     /* Transitions for CSS-controlled properties or for when class is removed and JS clears inline styles */
     transition: opacity 0.3s ease-in-out, box-shadow 0.4s ease-in-out;
     /* overflow: hidden; is already set on .video-hero-section */
+}
+
+@media (max-width: 768px) {
+    .artificial-ingenious .video-hero-section.video-pip-mode {
+        display: none;
+    }
 }
 
 .artificial-ingenious .video-hero-section.video-pip-mode .video-container,
@@ -1485,3 +1511,59 @@ body.detail-page.artificial-ingenious {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+
+.engagement-options-container {
+    position: relative;
+    margin: 40px auto;
+    margin-bottom: 220px;
+  }
+
+  .engagement-options-images {
+    position: absolute; 
+    bottom: -260px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    display: flex; 
+    gap: 40px; 
+    z-index: 10; 
+    width: 100%; 
+    max-width: 1200px; 
+    justify-content: center;
+}
+
+.engagament-card-image { 
+    display: none;
+    width: 400px;
+    margin-bottom: -40px;
+   height: auto; object-fit: contain; animation: simple-float 3.5s ease-in-out infinite; max-width: 100%; max-height: 100%; transition: transform 0.3s ease;
+}
+
+
+
+@media (max-width: 1400px) { 
+    .engagement-options-container {
+        margin-bottom: 1rem;
+    }
+    .engagement-options-images {
+        display: none;
+    }
+    .engagament-card-image { 
+        display: block;
+    }
+    
+    }
+
+    @media (max-width: 1024px) { 
+        .offering-text-content{
+
+        }
+        .engagement-options-grid{
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        .discovery-call-card {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+    }

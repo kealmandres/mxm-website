@@ -11,7 +11,7 @@ body.detail-page.artificial-ingenious {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
-    padding: 0 3.5rem;
+    padding: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
@@ -69,7 +69,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 
 .artificial-ingenious .container {
     width: 90%;
-    max-width: 1200px;
+    max-width: 90%;
     padding-left: var(--ai-section-padding-horizontal-container);
     padding-right: var(--ai-section-padding-horizontal-container);
     margin-left: auto;
@@ -115,6 +115,10 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     margin-right: auto;
 }
 
+.p3, .p4, .p5, .p6 {
+    padding-right: 13rem;
+    text-align: left;
+}
 /* Restore text-align: left for room-description on larger screens */
 .artificial-ingenious .room-info-section .room-description {
     text-align: left;
@@ -162,7 +166,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     width: 100%;
     height: 100vh; /* Covers the entire viewport height */
     z-index: -10; /* Behind all other page content */
-    background-image: url('../images/rooms/machine-megamind.jpg'); /* Updated image path */
+    background-image: url('../images/rooms/blonde-bot-lair.jpg'); /* Updated image path */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -219,9 +223,10 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 .artificial-ingenious .video-hero-wrapper {
     margin-top: 30px; /* Original margin from video-hero-section */
     margin-bottom: 40px; /* Original margin from video-hero-section */
-    height: 70vh; /* Original height from video-hero-section */
-    max-height: 600px; /* Original max-height from video-hero-section */
+    height: clamp(200px, 50vw, 600px);
+    max-width: 1400px;
     position: relative; /* For potential future absolute children if any, not strictly needed now */
+    margin: 0 auto;
 }
 
 /* Video Hero Section - adjusted styles */
@@ -280,6 +285,13 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     transition: opacity 0.3s ease-in-out, box-shadow 0.4s ease-in-out;
     /* overflow: hidden; is already set on .video-hero-section */
 }
+
+@media (max-width: 768px) {
+    .artificial-ingenious .video-hero-section.video-pip-mode {
+       display: none;
+    }
+}
+
 
 .artificial-ingenious .video-hero-section.video-pip-mode .video-container,
 .artificial-ingenious .video-hero-section.video-pip-mode .video-placeholder,
@@ -991,21 +1003,49 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
   }
 }
 
+@media (max-width: 920px) {
+    .mvs{
+        flex-direction: column !important;
+    }
+    .mv1{
+        max-width: 100% !important;
+        width: 90% !important;
+    }
+    .mv2{
+        max-width: 100% !important;
+        width: 90% !important;
+    }
+}
+
 /* Responsive adjustments for sections and blonde-bot images */
+@media (max-width: 820px) {
+    .p5{
+        padding-right: 0;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+}
+
+@media (max-width: 768px) {
+    .p6{
+        padding-right: 0;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    .t2{
+        margin-top: -25px !important;
+    }
+}
 @media (max-width: 992px) {
     .artificial-ingenious .room-info-section .room-info-content {
         flex-direction: column;
         padding-left: 0;
         text-align: center;
     }
-    .artificial-ingenious .room-info-section .room-description {
-        text-align: center;
+    .p4{
+        padding-right: 0;
     }
     .artificial-ingenious .blonde-bot-image.bb-room-info {
-        position: relative;
-        top: auto; left: auto; transform: none;
-        margin: 0 auto 20px auto;
-        width: clamp(150px, 30vw, 200px);
+       
+        width: clamp(150px, 60vw, 580px);
     }
 
     .artificial-ingenious .process-section > .container {
@@ -1051,7 +1091,6 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
         text-align: center;
     }
     .artificial-ingenious .room-info-section .room-description {
-        text-align: center; /* Changed from right to center for consistency on mobile */
     }
     .artificial-ingenious .process-step {
         flex-direction: column;
@@ -1439,6 +1478,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 1rem;
     text-align: left;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Machine Megamind Features List */
@@ -1548,11 +1588,19 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     .mm-offerings-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+
+   
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
     .mm-offerings-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .p3{
+        padding-right: 0;
     }
 }
 

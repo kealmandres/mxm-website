@@ -1,6 +1,6 @@
 // JavaScript for the Artificial Ingenious page
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Artificial Ingenious page specific JS loaded.');
+    ('Artificial Ingenious page specific JS loaded.');
 
     // FAQ Accordion functionality
     const faqItems = document.querySelectorAll('.artificial-ingenious .faq-item');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('z-index', 'auto', 'important'); // Changed from 999 to auto, CSS should handle layering
         
         img.addEventListener('load', function() {
-            console.log(`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
+            (`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
         });
         
         img.addEventListener('error', function() {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn(`Blonde Bot image #${index + 1} might be missing or failed to load initially: ${img.src}`);
         }
     });
-    console.log('Found', blondeBotImages.length, 'Blonde Bot images to monitor.');
+    ('Found', blondeBotImages.length, 'Blonde Bot images to monitor.');
 
     // Blonde Bot Image Loader for offerings (if applicable, or general image lazy loader)
     // This was a previous example, adjust if this specific image is no longer there or logic needs change
@@ -277,7 +277,7 @@ function setupScrollDrivenHeroSlideshow() {
     const firstBgImage = document.querySelector('.artificial-ingenious .hero-background-slideshow .hero-bg-slide:first-child');
     if (firstBgImage) {
         firstBgImage.style.opacity = '1';
-        console.log('First background image set to visible');
+        ('First background image set to visible');
     }
 
     const sections = Array.from(document.querySelectorAll('.artificial-ingenious .page-section[data-section-key]'));
@@ -513,7 +513,7 @@ function initAiMusicPlayer() {
             console.error("Failed to initialize Vimeo Player. Music controls will work independently.", e);
         }
     } else {
-        console.log("No Vimeo player found. Music player will operate independently.");
+        ("No Vimeo player found. Music player will operate independently.");
     }
     
     // Attempt to autoplay audio, gracefully handle failure

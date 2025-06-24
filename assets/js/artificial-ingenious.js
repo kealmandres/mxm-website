@@ -1,6 +1,6 @@
 // JavaScript for the Artificial Ingenious page
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Artificial Ingenious page specific JS loaded.');
+    ('Artificial Ingenious page specific JS loaded.');
 
     // FAQ Accordion functionality
     const faqItems = document.querySelectorAll('.artificial-ingenious .faq-item');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('z-index', 'auto', 'important'); // Changed from 999 to auto, CSS should handle layering
         
         img.addEventListener('load', function() {
-            console.log(`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
+            (`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
         });
         
         img.addEventListener('error', function() {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn(`Blonde Bot image #${index + 1} might be missing or failed to load initially: ${img.src}`);
         }
     });
-    console.log('Found', blondeBotImages.length, 'Blonde Bot images to monitor.');
+    ('Found', blondeBotImages.length, 'Blonde Bot images to monitor.');
 
     // Blonde Bot Image Loader for offerings (if applicable, or general image lazy loader)
     // This was a previous example, adjust if this specific image is no longer there or logic needs change
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstBgImage = document.querySelector('.artificial-ingenious .hero-background-slideshow .hero-bg-slide:first-child');
     if (firstBgImage) {
         firstBgImage.style.opacity = '1';
-        console.log('First background image set to visible');
+        ('First background image set to visible');
     }
 
     // Initialize Offering Card Tilt Effect
@@ -179,6 +179,80 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize AI Music Player
     initAiMusicPlayer();
 
+    // Vimeo Player PiP and Music Interaction Control
+    const vimeoIframe = document.querySelector('.video-hero-section iframe[src*="vimeo.com"]');
+    const audioPlayer = document.getElementById('ai-audio-player');
+    const pipBreakpoint = 768; // The width (in px) below which PiP is disabled
+    let vimeoPlayer;
+
+    function initializeVimeoPlayer() {
+        // Ensure we have a fresh iframe reference
+        const currentIframe = document.querySelector('.video-hero-section iframe[src*="vimeo.com"]');
+        if (!currentIframe) {
+            console.error("Vimeo iframe not found on re-initialization.");
+            return;
+        }
+
+        const isNarrow = window.innerWidth < pipBreakpoint;
+        let currentSrc = new URL(currentIframe.src);
+        const hasPipDisabled = currentSrc.searchParams.get('pip') === '0';
+
+        let needsUpdate = false;
+        if (isNarrow && !hasPipDisabled) {
+            currentSrc.searchParams.set('pip', '0');
+            needsUpdate = true;
+        } else if (!isNarrow && hasPipDisabled) {
+            currentSrc.searchParams.delete('pip');
+            needsUpdate = true;
+        }
+
+        // Only update src if needed to avoid unnecessary reloads
+        if (needsUpdate) {
+            currentIframe.src = currentSrc.toString();
+        }
+
+        // Now, initialize the player API on the potentially updated iframe
+        try {
+            vimeoPlayer = new Vimeo.Player(currentIframe);
+            
+            vimeoPlayer.on('play', () => {
+                if (audioPlayer && !audioPlayer.paused) {
+                    audioPlayer.pause();
+                }
+            });
+
+            vimeoPlayer.on('pause', (data) => {
+                if (audioPlayer && data.percent < 1 && audioPlayer.paused) {
+                    audioPlayer.play().catch(e => console.warn('Audio autoplay on video pause prevented.', e));
+                }
+            });
+
+            vimeoPlayer.on('ended', () => {
+                if (audioPlayer && audioPlayer.paused) {
+                    audioPlayer.play().catch(e => console.warn('Audio autoplay on video end prevented.', e));
+                }
+            });
+            
+            vimeoPlayer.ready().catch(error => {
+                console.error('Error initializing Vimeo player:', error);
+            });
+        } catch (e) {
+            console.error("Failed to initialize Vimeo Player.", e);
+        }
+    }
+
+    if (vimeoIframe && audioPlayer) {
+        initializeVimeoPlayer();
+        // Use a debounced resize handler to avoid spamming re-initializations
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(initializeVimeoPlayer, 250);
+        });
+    } else {
+        if (!vimeoIframe) ("No Vimeo player found.");
+        if (!audioPlayer) ("No audio player for Vimeo interaction found.");
+    }
 }); 
 
 // NEW Scrolling Image Animation for Process Section
@@ -458,7 +532,8 @@ function initAiMusicPlayer() {
     const musicButton = musicPlayer ? musicPlayer.querySelector('.music-button') : null;
     const playIcon = musicButton ? musicButton.querySelector('.play-icon') : null;
     const pauseIcon = musicButton ? musicButton.querySelector('.pause-icon') : null;
-    const videoIframe = document.querySelector('.video-hero-section iframe[src*="player.vimeo.com"]');
+    // This function will no longer handle Vimeo player logic.
+    // That logic is now combined in the initializeVimeoPlayer function.
 
     if (!musicPlayer || !audioPlayer || !musicButton || !playIcon || !pauseIcon) {
         console.error('Music player elements not found.');
@@ -493,41 +568,6 @@ function initAiMusicPlayer() {
 
     // Set initial UI state
     updateMusicPlayerUI(false);
-    
-    if (videoIframe) {
-        try {
-            const vimeoPlayer = new Vimeo.Player(videoIframe);
-
-            vimeoPlayer.on('play', () => {
-                if (!audioPlayer.paused) {
-                    audioPlayer.pause();
-                }
-            });
-
-            vimeoPlayer.on('pause', (data) => {
-                // Resume audio if video is paused manually (not ended)
-                if (data.percent < 1 && audioPlayer.paused) {
-                    audioPlayer.play().catch(e => console.warn('Audio autoplay on video pause prevented.', e));
-                }
-            });
-
-            // Optional: resume audio when video ends
-            vimeoPlayer.on('ended', () => {
-                if (audioPlayer.paused) {
-                    audioPlayer.play().catch(e => console.warn('Audio autoplay on video end prevented.', e));
-                }
-            });
-            
-            vimeoPlayer.ready().catch(error => {
-                console.error('Error initializing Vimeo player:', error);
-            });
-
-        } catch (e) {
-            console.error("Failed to initialize Vimeo Player. Music controls will work independently.", e);
-        }
-    } else {
-        console.log("No Vimeo player found. Music player will operate independently.");
-    }
     
     // Attempt to autoplay audio, gracefully handle failure
     const playPromise = audioPlayer.play();

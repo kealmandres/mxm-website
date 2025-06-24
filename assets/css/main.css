@@ -49,6 +49,7 @@ body, html {
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+
 }
 
 .container::before {
@@ -60,6 +61,7 @@ body, html {
   height: 100%;
   background: radial-gradient(circle at center, rgba(10,10,15,0.4) 0%, var(--dark-bg) 85%);
   z-index: -1;
+  
 }
 
 .container.transitioning::before {
@@ -99,6 +101,7 @@ body, html {
   perspective-origin: center center;
   filter: brightness(1.1);
   backface-visibility: hidden;
+  
 }
 
 .room.active {

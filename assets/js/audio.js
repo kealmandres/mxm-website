@@ -34,7 +34,7 @@ class MxMAudioManager {
     }
     
     initialize() {
-        console.log('🎵 Initializing MxM Audio Manager...');
+        ('🎵 Initializing MxM Audio Manager...');
         this.createMusicPlayer();
         this.setupAudio();
         this.setupEventListeners();
@@ -84,7 +84,7 @@ class MxMAudioManager {
         // Add click handler
         musicButton.addEventListener('click', () => this.toggleMusic());
         
-        console.log('🎵 Music player created');
+        ('🎵 Music player created');
     }
     
     setupAudio() {
@@ -108,11 +108,11 @@ class MxMAudioManager {
     
     setupAudioEventListeners() {
         this.audioElement.addEventListener('loadstart', () => {
-            console.log('🎵 Audio loading started...');
+            ('🎵 Audio loading started...');
         });
         
         this.audioElement.addEventListener('canplay', () => {
-            console.log('✅ Audio ready to play');
+            ('✅ Audio ready to play');
             this.updateMusicLabel('MxM Mix');
             this.silentMode = false;
             
@@ -123,7 +123,7 @@ class MxMAudioManager {
         });
         
         this.audioElement.addEventListener('canplaythrough', () => {
-            console.log('✅ Audio fully loaded');
+            ('✅ Audio fully loaded');
         });
         
         this.audioElement.addEventListener('error', (e) => {
@@ -137,19 +137,19 @@ class MxMAudioManager {
         });
         
         this.audioElement.addEventListener('play', () => {
-            console.log('🎵 Audio started playing');
+            ('🎵 Audio started playing');
             this.isPlaying = true;
             this.updatePlayButton(true);
         });
         
         this.audioElement.addEventListener('pause', () => {
-            console.log('⏸️ Audio paused');
+            ('⏸️ Audio paused');
             this.isPlaying = false;
             this.updatePlayButton(false);
         });
         
         this.audioElement.addEventListener('ended', () => {
-            console.log('🔄 Audio ended, looping...');
+            ('🔄 Audio ended, looping...');
             this.isPlaying = false;
             this.updatePlayButton(false);
         });
@@ -163,7 +163,7 @@ class MxMAudioManager {
         }
         
         const source = this.audioSources[sourceIndex];
-        console.log(`🎵 Trying audio source ${sourceIndex + 1}/${this.audioSources.length}: ${source}`);
+        (`🎵 Trying audio source ${sourceIndex + 1}/${this.audioSources.length}: ${source}`);
         
         // Remove previous error listener to avoid conflicts
         this.audioElement.removeEventListener('error', this.currentErrorHandler);
@@ -182,7 +182,7 @@ class MxMAudioManager {
     }
     
     createSilentMode() {
-        console.log('🔇 Entering silent mode - no audio available');
+        ('🔇 Entering silent mode - no audio available');
         this.silentMode = true;
         this.updateMusicLabel('MxM Mix (Silent Mode)');
         
@@ -195,7 +195,7 @@ class MxMAudioManager {
         // This function sets up a one-time listener for the first interaction.
         const enableAudio = () => {
             this.userInteracted = true;
-            console.log('✅ User interaction detected - audio enabled.');
+            ('✅ User interaction detected - audio enabled.');
 
             // If audio isn't playing and the initial autoplay has already been
             // attempted and failed, this interaction should start the music.
@@ -215,7 +215,7 @@ class MxMAudioManager {
         if (this.autoplayAttempted || this.silentMode || this.isPlaying) return;
         
         this.autoplayAttempted = true;
-        console.log('🎵 Attempting autoplay...');
+        ('🎵 Attempting autoplay...');
         
         try {
             // Try silent autoplay first (some browsers allow this)
@@ -231,10 +231,10 @@ class MxMAudioManager {
                 this.showNotification('🎵 Background music started!', 'success');
             }, 500);
             
-            console.log('✅ Autoplay successful');
+            ('✅ Autoplay successful');
             
         } catch (error) {
-            console.log('❌ Autoplay blocked:', error.name);
+            ('❌ Autoplay blocked:', error.name);
             
             // If autoplay fails, show a subtle prompt
             this.showAutoplayButton();
@@ -417,7 +417,7 @@ class MxMAudioManager {
     }
     
     async toggleMusic() {
-        console.log(`🎵 Toggle music - Current state: ${this.isPlaying ? 'playing' : 'paused'}`);
+        (`🎵 Toggle music - Current state: ${this.isPlaying ? 'playing' : 'paused'}`);
         
         if (this.silentMode) {
             // Visual-only toggle for silent mode
@@ -441,14 +441,14 @@ class MxMAudioManager {
             if (this.isPlaying) {
                 // Pause audio
                 this.audioElement.pause();
-                console.log('⏸️ Audio paused by user');
+                ('⏸️ Audio paused by user');
             } else {
                 // Play audio
-                console.log('▶️ Attempting to play audio...');
+                ('▶️ Attempting to play audio...');
                 
                 // Ensure audio is loaded
                 if (this.audioElement.readyState < 2) {
-                    console.log('🔄 Audio not ready, loading first...');
+                    ('🔄 Audio not ready, loading first...');
                     this.audioElement.load();
                     
                     // Wait for it to be ready
@@ -472,7 +472,7 @@ class MxMAudioManager {
                 
                 if (playPromise !== undefined) {
                     await playPromise;
-                    console.log('✅ Audio playing successfully');
+                    ('✅ Audio playing successfully');
                     this.showNotification('Music started! 🎵', 'success');
                 }
             }
@@ -555,7 +555,7 @@ class MxMAudioManager {
     
     handleRoomChange(roomId) {
         this.currentRoom = roomId;
-        console.log(`🏠 Room changed to: ${roomId}`);
+        (`🏠 Room changed to: ${roomId}`);
         
         // Ensure music player always stays in corner position
         if (this.musicPlayer.className !== 'music-player corner-position') {
@@ -576,21 +576,21 @@ class MxMAudioManager {
         if (this.audioElement) {
             this.audioElement.volume = this.currentVolume;
         }
-        console.log(`🔊 Volume set to: ${this.currentVolume}`);
+        (`🔊 Volume set to: ${this.currentVolume}`);
     }
     
     enableAutoplay() {
         this.autoplayEnabled = true;
-        console.log('✅ Autoplay enabled');
+        ('✅ Autoplay enabled');
     }
     
     disableAutoplay() {
         this.autoplayEnabled = false;
-        console.log('❌ Autoplay disabled');
+        ('❌ Autoplay disabled');
     }
     
     destroy() {
-        console.log('🗑️ Destroying audio manager...');
+        ('🗑️ Destroying audio manager...');
         if (this.audioElement) {
             this.audioElement.pause();
             this.audioElement.remove();
@@ -603,12 +603,12 @@ class MxMAudioManager {
 
 // Initialize audio manager with error handling
 try {
-    console.log('🎵 Starting MxM Audio Manager...');
+    ('🎵 Starting MxM Audio Manager...');
     const audioManager = new MxMAudioManager();
     
     // Make it globally available for debugging
     window.audioManager = audioManager;
-    console.log('✅ Audio manager initialized successfully');
+    ('✅ Audio manager initialized successfully');
 } catch (error) {
     console.error('❌ Failed to initialize audio manager:', error);
 }

@@ -1,7 +1,7 @@
 // JavaScript for Machine Megamind page
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Machine Megamind page specific JS loaded.');
+    ('Machine Megamind page specific JS loaded.');
 
     // FAQ Accordion functionality (if present on Machine Megamind)
     const faqItems = document.querySelectorAll('.machine-megamind .faq-item');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('z-index', 'auto', 'important');
         
         img.addEventListener('load', function() {
-            console.log(`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
+            (`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
         });
         
         img.addEventListener('error', function() {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     if (blondeBotImages.length > 0) {
-        console.log('Found', blondeBotImages.length, 'Blonde Bot images to monitor on Machine Megamind page.');
+        ('Found', blondeBotImages.length, 'Blonde Bot images to monitor on Machine Megamind page.');
     }
 
     // Dynamic Page Background Scroll Logic
@@ -221,7 +221,7 @@ function initProcessScrollImageAnimation() {
 
     window.addEventListener('scroll', handleAnimation, { passive: true });
     window.addEventListener('resize', handleAnimation, { passive: true });
-    console.log("Machine Megamind: Process scroll image animation initialized.");
+    ("Machine Megamind: Process scroll image animation initialized.");
 }
 
 // Scroll-Driven Hero Background Slideshow Functionality
@@ -325,14 +325,14 @@ function setupScrollDrivenHeroSlideshow() {
     });
 
     updateSlideshowBasedOnScroll(); // Initial call
-    console.log("Machine Megamind: Advanced scroll-driven hero background slideshow initialized.");
+    ("Machine Megamind: Advanced scroll-driven hero background slideshow initialized.");
 }
 
 // Function to initialize the 3D tilt effect on offering cards (if present)
 function initOfferingCardTilt() {
     const cards = document.querySelectorAll('.machine-megamind .offering-card');
     if (cards.length === 0) {
-        // console.log('Machine Megamind: No offering cards found for tilt effect. Feature not active.');
+        // ('Machine Megamind: No offering cards found for tilt effect. Feature not active.');
         return;
     }
     const MAX_ROTATION = 2; 
@@ -353,18 +353,18 @@ function initOfferingCardTilt() {
             card.style.setProperty('--rotateY', '0deg');
         });
     });
-    console.log("Machine Megamind: Offering card tilt effect initialized for", cards.length, "cards.");
+    ("Machine Megamind: Offering card tilt effect initialized for", cards.length, "cards.");
 }
 
 // Placeholder for any specific Machine Megamind logic that might differ significantly
 // from Artificial Ingenious or is unique to this page.
 function initMachineMegamindSpecificFeatures() {
-    console.log("Initializing Machine Megamind specific features...");
+    ("Initializing Machine Megamind specific features...");
     // Example: if Machine Megamind has a unique interactive element
     // const specialElement = document.querySelector('.machine-megamind .special-interactive-element');
     // if (specialElement) {
     //     specialElement.addEventListener('click', () => {
-    //         console.log('Machine Megamind special element clicked!');
+    //         ('Machine Megamind special element clicked!');
     //     });
     // }
 }

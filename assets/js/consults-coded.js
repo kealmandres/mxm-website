@@ -1,6 +1,6 @@
 // JavaScript for the Consults Coded page
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Consults Coded page specific JS loaded.');
+    ('Consults Coded page specific JS loaded.');
 
     // Dynamic Page Background Scroll Logic
     const dynamicBg = document.getElementById('dynamic-page-background');

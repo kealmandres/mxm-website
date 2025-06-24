@@ -81,7 +81,7 @@ class MxMFramework {
     // Logging utility
     log(message, ...args) {
         if (this.options.debugMode) {
-            console.log(`[MxM Framework] ${message}`, ...args);
+            (`[MxM Framework] ${message}`, ...args);
         }
     }
 

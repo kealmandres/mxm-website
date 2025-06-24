@@ -11,7 +11,8 @@ body.detail-page.machine-megamind {
     font-family: "Uniform Extra Condensed", sans-serif; /* Changed font */
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
-    /* overflow-y: auto; Ensure vertical scrolling is enabled */
+    padding: clamp(2.5rem, 5vw, 3.5rem);
+
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
@@ -65,7 +66,7 @@ body.detail-page.machine-megamind {
 
 .machine-megamind .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 90%;
     padding-left: var(--mm-section-padding-horizontal-container);
     padding-right: var(--mm-section-padding-horizontal-container);
     margin-left: auto;
@@ -208,9 +209,27 @@ body.detail-page.machine-megamind {
 .machine-megamind .video-hero-wrapper {
     margin-top: 30px; /* Original margin from video-hero-section */
     margin-bottom: 40px; /* Original margin from video-hero-section */
-    height: 70vh; /* Original height from video-hero-section */
-    max-height: 600px; /* Original max-height from video-hero-section */
+    height: clamp(200px, 50vw, 600px);
+    max-width: 1400px;
     position: relative; /* For potential future absolute children if any, not strictly needed now */
+    margin: 0 auto;
+}
+
+@media (max-width: 1400px) {
+
+    .machine-megamind .room-info-section{
+        margin-top: 80px !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .machine-megamind .video-hero-wrapper {
+        height: clamp(200px, 50vw, 530px);
+    }
+
+    .machine-megamind .room-info-section{
+        margin-top: 40px !important;
+    }
 }
 
 /* Video Hero Section - adjusted styles */
@@ -255,6 +274,12 @@ body.detail-page.machine-megamind {
     margin: 0; /* Reset margin */
     padding: 0; /* Reset padding */
     transition: opacity 0.3s ease-in-out, box-shadow 0.4s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .machine-megamind .video-hero-section.video-pip-mode {
+       display: none;
+    }
 }
 
 .machine-megamind .video-hero-section.video-pip-mode .video-container,
@@ -420,7 +445,7 @@ body.detail-page.machine-megamind {
 }
 
 .machine-megamind .diagnosis-section .investment-card .investment-image-wrapper {
-    flex: 0 0 65%; 
+    /* flex: 0 0 65%;  */
     position: relative; 
     background-color: rgba(0,0,0,0.2); 
 }
@@ -561,7 +586,7 @@ body.detail-page.machine-megamind {
     align-items: center; 
     justify-content: space-between; 
     gap: 30px; 
-    margin-bottom: 3rem; 
+    margin-bottom: 6rem; 
     position: relative;
 }
 
@@ -1019,7 +1044,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
     align-items: center;
     justify-content: space-between;
     gap: 5rem;
-    margin-bottom: 4rem;
+    margin-bottom: 6rem;
     position: relative;
 }
 
@@ -1211,4 +1236,11 @@ artificial-ingenious .bb-diagnosis-cta-image {
 
 .machine-megamind h3 {
     text-transform: uppercase;
+    font-weight: 100;
+}
+
+.machine-megamind .faq-question-title {
+    font-weight: 100;
+    text-transform: none;
+
 }
