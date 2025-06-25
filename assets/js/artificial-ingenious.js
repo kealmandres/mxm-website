@@ -216,23 +216,23 @@ document.addEventListener('DOMContentLoaded', () => {
             vimeoPlayer = new Vimeo.Player(currentIframe);
             
             vimeoPlayer.on('play', () => {
-                // Pause persistent music player when video plays
-                if (persistentPlayer && persistentPlayer.isPlaying()) {
-                    persistentPlayer.pause();
+                // Duck volume of persistent music player when video plays (instead of pausing)
+                if (persistentPlayer && persistentPlayer.duckVolume) {
+                    persistentPlayer.duckVolume();
                 }
             });
 
             vimeoPlayer.on('pause', (data) => {
-                // Resume persistent music player when video pauses (if not at end)
-                if (persistentPlayer && data.percent < 1 && !persistentPlayer.isPlaying()) {
-                    persistentPlayer.play().catch(e => console.warn('Music autoplay on video pause prevented.', e));
+                // Check if should restore volume when video pauses (if not at end)
+                if (persistentPlayer && data.percent < 1 && persistentPlayer.checkRestoreVolume) {
+                    persistentPlayer.checkRestoreVolume();
                 }
             });
 
             vimeoPlayer.on('ended', () => {
-                // Resume persistent music player when video ends
-                if (persistentPlayer && !persistentPlayer.isPlaying()) {
-                    persistentPlayer.play().catch(e => console.warn('Music autoplay on video end prevented.', e));
+                // Check if should restore volume when video ends
+                if (persistentPlayer && persistentPlayer.checkRestoreVolume) {
+                    persistentPlayer.checkRestoreVolume();
                 }
             });
             

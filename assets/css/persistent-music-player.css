@@ -319,7 +319,7 @@ body.persistent-music-active .volume-control-container.show:hover {
 
 .autoplay-content p {
   font-family: "Cartograph Mono", monospace;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
   margin: 0;
@@ -463,7 +463,7 @@ body.persistent-music-active .volume-control-container.show:hover {
   }
   
   .autoplay-content p {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
   }
   
   .autoplay-content button {
