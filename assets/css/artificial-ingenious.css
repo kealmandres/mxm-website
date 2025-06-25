@@ -9,7 +9,18 @@ body.detail-page.artificial-ingenious {
     font-family: "Uniform Extra Condensed", sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
-    padding: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-left: clamp(6.5rem, 5vw, 6.5rem);
+    padding-right: clamp(6.5rem, 5vw, 6.5rem);
+}
+
+
+@media (max-width: 500px) {
+    body.detail-page.artificial-ingenious {
+        padding-top: clamp(2.5rem, 5vw, 3.5rem);
+        padding-left: clamp(3.5rem, 5vw, 6.5rem);
+        padding-right: clamp(3.5rem, 5vw, 6.5rem);
+    }
 }
 
 :root {
@@ -180,7 +191,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh;
     z-index: -10;
-    background-image: url('../images/rooms/machine-megamind.jpg');
+    background-image: url('../images/rooms/machine-megamind.webp');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -196,7 +207,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh;
     background-color: #000000;
-    background-image: url('../images/rooms/machine-megamind.jpg');
+    background-image: url('../images/rooms/machine-megamind.webp');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -988,7 +999,7 @@ body.detail-page.artificial-ingenious {
 
 /* Continue the Tour Section */
 .artificial-ingenious .continue-tour-section {
-    background-image: url('../images/rooms/artificial-ingenious.jpg');
+    background-image: url('../images/rooms/artificial-ingenious.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -149,15 +149,15 @@ body, html {
 }
 
 /* ===== ROOM BACKGROUND IMAGES ===== */
-#entrance-hall { background-image: url('../images/rooms/entrance-hall.jpg'); }
-#machine-megamind { background-image: url('../images/rooms/artificial-ingenious.jpg'); }
-#artificial-ingenious { background-image: url('../images/rooms/machine-megamind.jpg'); }
-#consults-coded { background-image: url('../images/rooms/consults-coded.jpg'); }
-#back-to-future { background-image: url('../images/rooms/back-to-future.jpg'); }
-#blonde-bot-lair { background-image: url('../images/rooms/blonde-bot-lair.jpg'); }
-#success-gallery { background-image: url('../images/rooms/success-gallery.jpg'); }
-#future-observatory { background-image: url('../images/rooms/observatory-2.png'); }
-#chat-chamber { background-image: url('../images/rooms/contact_bg.png'); }
+#entrance-hall { background-image: url('../images/rooms/entrance-hall.webp'); }
+#machine-megamind { background-image: url('../images/rooms/artificial-ingenious.webp'); }
+#artificial-ingenious { background-image: url('../images/rooms/machine-megamind.webp'); }
+#consults-coded { background-image: url('../images/rooms/consults-coded.webp'); }
+#back-to-future { background-image: url('../images/rooms/back-to-future.webp'); }
+#blonde-bot-lair { background-image: url('../images/rooms/blonde-bot-lair.webp'); }
+#success-gallery { background-image: url('../images/rooms/success-gallery.webp'); }
+#future-observatory { background-image: url('../images/rooms/observatory-2.webp'); }
+#chat-chamber { background-image: url('../images/rooms/contact_bg.webp'); }
 
 /* ===== ENTRANCE HALL SPECIFIC STYLES ===== */
 #entrance-hall .title-container {

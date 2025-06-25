@@ -11,8 +11,18 @@ body.detail-page.artificial-ingenious {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
-    padding: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-left: clamp(6.5rem, 5vw, 6.5rem);
+    padding-right: clamp(6.5rem, 5vw, 6.5rem);
+}
 
+
+@media (max-width: 500px) {
+    body.detail-page.artificial-ingenious {
+        padding-top: clamp(2.5rem, 5vw, 3.5rem);
+        padding-left: clamp(3.5rem, 5vw, 6.5rem);
+        padding-right: clamp(3.5rem, 5vw, 6.5rem);
+    }
 }
 
 /* Override some overly broad styles from detailed-pages.css or inline if necessary */
@@ -159,7 +169,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh; /* Covers the entire viewport height */
     z-index: -10; /* Behind all other page content */
-    background-image: url('../images/rooms/consults-coded.jpg'); /* Updated image path */
+    background-image: url('../images/rooms/consults-coded.webp'); /* Updated image path */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -176,7 +186,7 @@ body.detail-page.artificial-ingenious {
     width: 100%;
     height: 100vh; /* Changed from 100% to 100vh */
     background-color: #000000; /* Black background for transitions */
-    background-image: url('../images/rooms/consults-coded.jpg'); /* Fallback background image */
+    background-image: url('../images/rooms/consults-coded.webp'); /* Fallback background image */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -243,7 +253,7 @@ body.detail-page.artificial-ingenious {
 .artificial-ingenious .video-hero-section {
     padding: 0; /* Remains */
     background: transparent; /* Set to transparent */
-    /* background-image: url('../images/rooms/machine-megamind.jpg'); */ /* Reverted */
+    /* background-image: url('../images/rooms/machine-megamind.webp'); */ /* Reverted */
     /* background-size: cover; */ /* Reverted */
     /* background-position: center; */ /* Reverted */
     /* background-repeat: no-repeat; */ /* Reverted */
@@ -1146,7 +1156,7 @@ body.detail-page.artificial-ingenious {
 
 /* New Continue the Tour Section Styles */
 .artificial-ingenious .continue-tour-section {
-    background-image: url('../images/rooms/artificial-ingenious.jpg'); /* Added background image */
+    background-image: url('../images/rooms/artificial-ingenious.webp'); /* Added background image */
     background-size: cover; /* Ensure image covers the section */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent image tiling */

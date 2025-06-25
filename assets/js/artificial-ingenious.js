@@ -176,12 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Offering Card Tilt Effect
     initOfferingCardTilt();
 
-    // Initialize AI Music Player
-    initAiMusicPlayer();
+    // Initialize AI Music Player - DISABLED: Using persistent music player instead
+    // initAiMusicPlayer();
 
     // Vimeo Player PiP and Music Interaction Control
     const vimeoIframe = document.querySelector('.video-hero-section iframe[src*="vimeo.com"]');
-    const audioPlayer = document.getElementById('ai-audio-player');
+    const persistentPlayer = window.persistentMusicPlayer; // Use persistent music player instead
     const pipBreakpoint = 768; // The width (in px) below which PiP is disabled
     let vimeoPlayer;
 
@@ -216,20 +216,23 @@ document.addEventListener('DOMContentLoaded', () => {
             vimeoPlayer = new Vimeo.Player(currentIframe);
             
             vimeoPlayer.on('play', () => {
-                if (audioPlayer && !audioPlayer.paused) {
-                    audioPlayer.pause();
+                // Pause persistent music player when video plays
+                if (persistentPlayer && persistentPlayer.isPlaying()) {
+                    persistentPlayer.pause();
                 }
             });
 
             vimeoPlayer.on('pause', (data) => {
-                if (audioPlayer && data.percent < 1 && audioPlayer.paused) {
-                    audioPlayer.play().catch(e => console.warn('Audio autoplay on video pause prevented.', e));
+                // Resume persistent music player when video pauses (if not at end)
+                if (persistentPlayer && data.percent < 1 && !persistentPlayer.isPlaying()) {
+                    persistentPlayer.play().catch(e => console.warn('Music autoplay on video pause prevented.', e));
                 }
             });
 
             vimeoPlayer.on('ended', () => {
-                if (audioPlayer && audioPlayer.paused) {
-                    audioPlayer.play().catch(e => console.warn('Audio autoplay on video end prevented.', e));
+                // Resume persistent music player when video ends
+                if (persistentPlayer && !persistentPlayer.isPlaying()) {
+                    persistentPlayer.play().catch(e => console.warn('Music autoplay on video end prevented.', e));
                 }
             });
             
@@ -241,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (vimeoIframe && audioPlayer) {
+    if (vimeoIframe) {
         initializeVimeoPlayer();
         // Use a debounced resize handler to avoid spamming re-initializations
         let resizeTimeout;
@@ -250,8 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resizeTimeout = setTimeout(initializeVimeoPlayer, 250);
         });
     } else {
-        if (!vimeoIframe) ("No Vimeo player found.");
-        if (!audioPlayer) ("No audio player for Vimeo interaction found.");
+        console.log("No Vimeo player found.");
     }
 }); 
 
@@ -272,9 +274,8 @@ function initProcessScrollImageAnimation() {
 
     const scrollingImage = animationContainer.querySelector('.scrolling-process-image');
     if (!scrollingImage) {
-        // Image is now a direct child of animationContainer
-        // This should not happen if HTML is correct
-        console.error('Scrolling process image element not found within #process-scroll-animation-host.');
+        // Image is commented out or removed - skip animation gracefully
+        console.log('Scrolling process image not found - skipping scroll animation.');
         return;
     }
 
@@ -525,7 +526,8 @@ function initOfferingCardTilt() {
     });
 }
 
-// NEW AI Music Player Functionality
+// NEW AI Music Player Functionality - DISABLED: Using persistent music player instead
+/*
 function initAiMusicPlayer() {
     const musicPlayer = document.getElementById('ai-music-player');
     const audioPlayer = document.getElementById('ai-audio-player');
@@ -585,3 +587,4 @@ function initAiMusicPlayer() {
         }
     });
 }
+*/

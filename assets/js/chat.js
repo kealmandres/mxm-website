@@ -169,9 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Offering Card Tilt Effect
     initOfferingCardTilt();
 
-    // Initialize AI Music Player
-    initAiMusicPlayer();
+    // Initialize AI Music Player - DISABLED: Using persistent music player instead
+    // initAiMusicPlayer();
 
+    // Vimeo Player PiP and Music Interaction Control
 }); 
 
 // NEW Scrolling Image Animation for Process Section
@@ -438,7 +439,8 @@ function initOfferingCardTilt() {
     });
 }
 
-// NEW AI Music Player Functionality
+// NEW AI Music Player Functionality - DISABLED: Using persistent music player instead
+/*
 function initAiMusicPlayer() {
     const musicPlayer = document.getElementById('ai-music-player');
     const audioPlayer = document.getElementById('ai-audio-player');
@@ -513,7 +515,7 @@ function initAiMusicPlayer() {
             console.error("Failed to initialize Vimeo Player. Music controls will work independently.", e);
         }
     } else {
-        ("No Vimeo player found. Music player will operate independently.");
+        console.log("No Vimeo player found. Music player will operate independently.");
     }
     
     // Attempt to autoplay audio, gracefully handle failure
@@ -532,3 +534,4 @@ function initAiMusicPlayer() {
         }
     });
 }
+*/
