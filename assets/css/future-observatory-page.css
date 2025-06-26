@@ -15,11 +15,12 @@ body.detail-page.artificial-ingenious {
 }
 
 
-@media (max-width: 500px) {
+
+@media (max-width: 768px) {
     body.detail-page.artificial-ingenious {
-        padding-top: clamp(2.5rem, 5vw, 3.5rem);
-        padding-left: clamp(3.5rem, 5vw, 6.5rem);
-        padding-right: clamp(3.5rem, 5vw, 6.5rem);
+        padding-top: clamp(1.5rem, 5vw, 3.5rem);
+        padding-left: clamp(1rem, 5vw, 6.5rem);
+        padding-right: clamp(1rem, 5vw, 6.5rem);
     }
 }
 
