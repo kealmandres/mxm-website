@@ -1089,6 +1089,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 
     .artificial-ingenious .page-section {
         margin: 25px auto;
+        padding: 0 clamp(15px, 4vw, 30px) clamp(30px, 6vh, 60px) clamp(15px, 4vw, 30px);
     }
     
     .artificial-ingenious .room-title { font-size: clamp(2rem, 6vw, 2.5rem); }

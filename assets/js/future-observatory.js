@@ -35,16 +35,15 @@ function loadSubstackFeed() {
                 
                 
                 feed.innerHTML += `
-                    <a href="${post.link}" target="_blank" style="text-decoration: none; color: inherit; margin-right: 3rem; padding: 2rem;">
-                        <div class="mm-offering-card" style="padding-top: 5px; height: 350px; width: 400px; display: flex; flex-direction: column; justify-content: space-between;">
-                            <div class="mm-offering-text-content" style="display: flex; flex-direction: column; align-items: center;">
+                    <a href="${post.link}" target="_blank">
+                        <div class="mm-offering-card">
+                            <div class="mm-offering-text-content">
                                 <img src="${thumbnailSrc}" 
                                      alt="${post.title}"
                                      onerror="this.style.display='none'; console.log('Image failed to load:', this.src);"
-                                     onload="console.log('Image loaded successfully:', this.src);"
-                                     style="width: 400px; height: auto; object-fit: contain; max-width: 100%; max-height: 100%;">
-                                <h3 class="mm-offering-title" style="text-align: center;">${post.title}</h3>
-                                <p class="mm-offering-description" style="font-size: .9rem;">${post.description}</p>
+                                     onload="console.log('Image loaded successfully:', this.src);">
+                                <h3 class="mm-offering-title">${post.title}</h3>
+                                <p class="mm-offering-description">${post.description}</p>
                             </div>
                         </div>
                     </a>

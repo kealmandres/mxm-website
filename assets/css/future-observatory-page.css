@@ -1362,6 +1362,100 @@ body.detail-page.artificial-ingenious {
     max-width: 100%;
 }
 
+/* Substack Feed Container Specific Styles */
+.substack-feed-container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    max-width: 100%;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.substack-feed-container a {
+    flex: 0 1 400px;
+    max-width: 400px;
+    min-width: 300px;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.substack-feed-container .mm-offering-card {
+    height: 350px;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.substack-feed-container .mm-offering-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.substack-feed-container .mm-offering-title {
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+}
+
+.substack-feed-container .mm-offering-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/* Substack Subscribe Button Styles */
+.substack-subscribe-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.substack-subscribe-link {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.substack-subscribe-btn {
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55px;
+    padding: 0 20px;
+    line-height: 1;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
 /* Individual Machine Megamind Offering Card */
 .mm-offering-card {
     background: var(--glass-bg);
@@ -1494,6 +1588,41 @@ body.detail-page.artificial-ingenious {
         flex-direction: column; 
     }
     
+    .substack-feed-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 0 10px;
+    }
+    
+    .substack-feed-container a {
+        flex: none;
+        width: 100%;
+        max-width: 350px;
+        min-width: auto;
+    }
+    
+    .substack-feed-container .mm-offering-card {
+        height: auto;
+        min-height: 300px;
+    }
+    
+    .substack-feed-container .mm-offering-card img {
+        height: 120px;
+    }
+    
+    .substack-subscribe-container {
+        margin-top: 2rem;
+        padding: 0 15px;
+    }
+    
+    .substack-subscribe-btn {
+        font-size: 1.3rem;
+        height: 50px;
+        min-width: 180px;
+        max-width: 300px;
+    }
+    
     .mm-offering-card {
         padding: 1rem;
         padding-top: 5px;
@@ -1536,6 +1665,19 @@ body.detail-page.artificial-ingenious {
     .mm-offering-description {
         font-size: 0.7rem;
         text-align: left;
+    }
+    
+    .substack-subscribe-container {
+        margin-top: 1.5rem;
+        padding: 0 10px;
+    }
+    
+    .substack-subscribe-btn {
+        font-size: 1.2rem;
+        height: 45px;
+        min-width: 150px;
+        max-width: 280px;
+        padding: 0 15px;
     }
 }
 
