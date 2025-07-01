@@ -70,7 +70,7 @@
 
         body {
             font-family: 'Uniform', 'Arial', sans-serif;
-            background: #000000;
+            background: #000000 url('assets/images/blonde-bot/backgrounds/BG3.webp') center center/cover no-repeat fixed;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -107,6 +107,12 @@
             width: 100%;
             text-align: center;
             z-index: 1;
+            background: rgba(70, 6, 11, 0.39);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 18px;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .profile-section {
@@ -133,11 +139,14 @@
             font-family: 'Ethnocentric', sans-serif;
             font-size: 1.8rem;
             font-weight: 300;
-            margin-bottom: 10px;
+            margin-bottom: 2rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #ffffff !important;
             text-shadow: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .profile-subtitle {
@@ -163,7 +172,9 @@
         .link-item {
             display: block;
             padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(70, 6, 11, 0.39);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
             text-decoration: none;
@@ -192,9 +203,11 @@
 
         .link-item:hover {
             transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(70, 6, 11, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(70, 6, 11, 0.3);
         }
 
         .link-item .link-title {
@@ -222,12 +235,24 @@
             color: #1DB954;
         }
 
-        .fa-linkedin-in {
-            color: #0077B5;
+        .fa-tiktok {
+            color: #000000;
+        }
+
+        .fa-facebook-f {
+            color: #1877F2;
         }
 
         .fa-instagram {
             color: #E4405F;
+        }
+
+        .fa-linkedin-in {
+            color: #0077B5;
+        }
+
+        .fa-book-open {
+            color: #FF6719;
         }
 
         .link-item .link-subtitle {
@@ -307,10 +332,7 @@
     <div class="linktree-container">
         <!-- Profile Section -->
         <div class="profile-section">
-            <div class="profile-image">
-                <img src="assets/images/lair-of-blonde-bot/Lair8_BGR.webp" alt="Marissa Kos - MxM">
-            </div>
-            <h1 class="profile-title">MaCHiNE MaiSON</h1>
+            <h1 class="profile-title">THE<br/>BLONDE BOT</h1>
             <p class="profile-subtitle">Australia's First AI Agency</p>
             <p class="profile-description">AI Coaching • Custom AI Agents • Business Consulting</p>
         </div>
@@ -319,7 +341,7 @@
         <div class="links-section">
             <!-- Main Website -->
             <a href="https://themxm.ai" class="link-item primary" target="_blank" rel="noopener">
-                <span class="link-title"><i class="fas fa-home"></i> Visit MaCHiNE MaiSON</span>
+                <span class="link-title"><i class="fas fa-home"></i> Visit MaCHiNE x MaiSON</span>
                 <span class="link-subtitle">Explore all our AI services</span>
             </a>
 
@@ -334,24 +356,31 @@
                 <span class="link-title"><i class="fas fa-microphone"></i> The Agency Podcast</span>
                 <span class="link-subtitle">Featured episode with Dain Walker</span>
             </a>
+               <!-- Substack -->
+               <a href="https://marissakos.substack.com/" class="link-item" target="_blank" rel="noopener">
+                <span class="link-title"><i class="fas fa-book-open"></i> Substack</span>
+                <span class="link-subtitle">Read my latest insights</span>
+            </a>
 
             <!-- LinkedIn -->
             <a href="https://www.linkedin.com/in/marissa-kos-ai/" class="link-item" target="_blank" rel="noopener">
                 <span class="link-title"><i class="fab fa-linkedin-in"></i> LinkedIn</span>
                 <span class="link-subtitle">Connect with Marissa Kos</span>
             </a>
+
+         
         </div>
 
         <!-- Social Links -->
         <div class="social-links">
-            <a href="https://www.linkedin.com/in/marissa-kos-ai/" class="social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
-                <i class="fab fa-linkedin-in"></i>
+            <a href="https://www.tiktok.com/@marissa_kos?_t=ZS-8vxY3DBrSh6&_r=1" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
+                <i class="fab fa-tiktok"></i>
             </a>
-            <a href="https://www.instagram.com/machinemaison" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <a href="https://www.facebook.com/themxm.a.i/" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/marissa_kos/" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
                 <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://www.youtube.com/@marissa_kos" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
-                <i class="fab fa-youtube"></i>
             </a>
         </div>
 
