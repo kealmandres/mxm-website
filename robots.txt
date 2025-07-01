@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://themxm.ai/sitemap.xml
+
+# Disallow sensitive pages if any
+Disallow: /debug-assets.html
+Disallow: /test.html 

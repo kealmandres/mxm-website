@@ -11,6 +11,8 @@
     { "source": "/coming-soon", "destination": "/pages/coming-soon.html" },
     { "source": "/about", "destination": "/pages/blonde-bot-lair.html" },
     { "source": "/privacy-policy", "destination": "/pages/privacy-policy.html" },
-    { "source": "/terms-of-service", "destination": "/pages/terms-of-service.html" }
+    { "source": "/terms-of-service", "destination": "/pages/terms-of-service.html" },
+    { "source": "/links", "destination": "/linktree.html" },
+    { "source": "/linktree", "destination": "/linktree.html" }
   ]
 } 

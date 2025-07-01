@@ -3,8 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | MxM</title>
-    <meta name="description" content="Privacy Policy for MaCHiNE x MaiSON - How we collect, use, and protect your personal data in compliance with GDPR and UK data protection laws."/>
+    <title>Privacy Policy | Data Protection | MaCHiNE MaiSON</title>
+    <meta name="description" content="Privacy Policy for MaCHiNE MaiSON - How we collect, use, and protect your personal data in compliance with GDPR and data protection laws."/>
+    <meta name="keywords" content="privacy policy, data protection, GDPR compliance, personal data, MxM privacy">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Privacy Policy | Data Protection | MaCHiNE MaiSON">
+    <meta property="og:description" content="Privacy Policy for MaCHiNE MaiSON - How we collect, use, and protect your personal data.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://themxm.ai/privacy-policy">
+    <meta property="og:image" content="https://themxm.ai/assets/images/logo.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Privacy Policy | Data Protection | MaCHiNE MaiSON">
+    <meta name="twitter:description" content="Privacy Policy for MaCHiNE MaiSON - How we collect, use, and protect your personal data.">
+    <meta name="twitter:image" content="https://themxm.ai/assets/images/logo.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://themxm.ai/privacy-policy">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TGW0QRR2X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-TGW0QRR2X6');
+    </script>
+    
+    <!-- Facebook Pixel -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'FB_PIXEL_ID');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=FB_PIXEL_ID&ev=PageView&noscript=1"
+    /></noscript>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/images/mxm-logo.ico">
@@ -13,13 +56,49 @@
     <link rel="stylesheet" href="../assets/css/fonts.css">
     <link rel="stylesheet" href="../assets/css/mxm-universal.css">
     <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
+    <link rel="stylesheet" href="../assets/css/cookie-consent.css">
     <link rel="stylesheet" href="../assets/css/privacy-policy.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* Legal Pages Specific Styles */
-    
+        .cookie-preferences-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        
+        .cookie-preferences-section h4 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .cookie-preferences-section p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .cookie-manage-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Uniform', Arial, sans-serif;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        
+        .cookie-manage-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 
@@ -209,6 +288,14 @@
             </ul>
             
             <p>You can control cookie settings through your browser preferences. However, disabling certain cookies may affect website functionality.</p>
+            
+            <div class="cookie-preferences-section">
+                <h4>Manage Your Cookie Preferences</h4>
+                <p>You can review and change your cookie consent preferences at any time using the button below:</p>
+                <button onclick="if(window.cookieConsent) window.cookieConsent.revokeConsent()" class="cookie-manage-btn">
+                    Manage Cookie Preferences
+                </button>
+            </div>
         </section>
 
         <!-- Third-Party Services -->
@@ -347,6 +434,8 @@
     </footer>
 
     <!-- Scripts -->
+    <!-- Cookie Consent Script -->
+    <script src="../assets/js/cookie-consent.js"></script>
     <!-- <script src="../assets/js/persistent-music-player.js"></script> -->
     
     <script>
