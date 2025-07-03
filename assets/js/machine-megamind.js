@@ -141,8 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Process Section Scroll Image Animation (if present)
     initProcessScrollImageAnimation();
 
-    // Initialize Hero Background Slideshow
-    setupScrollDrivenHeroSlideshow();
+    // Initialize Hero Background Slideshow with a small delay to ensure lazy loading doesn't interfere
+    setTimeout(() => {
+        setupScrollDrivenHeroSlideshow();
+    }, 100);
 
     // Initialize Offering Card Tilt Effect (if present)
     initOfferingCardTilt();
@@ -229,27 +231,41 @@ function setupScrollDrivenHeroSlideshow() {
     const slideshowContainer = document.querySelector('body.machine-megamind .hero-background-slideshow');
     const sections = Array.from(document.querySelectorAll('.machine-megamind .page-section'));
 
+    console.log('Machine Megamind: Slideshow container found:', !!slideshowContainer);
+    console.log('Machine Megamind: Sections found:', sections.length);
+
     if (!slideshowContainer || sections.length === 0) {
         console.warn('Machine Megamind: Slideshow container or sections not found for scroll-driven background. Feature disabled.');
         return;
     }
 
     const images = Array.from(slideshowContainer.querySelectorAll('.hero-bg-slide'));
+    console.log('Machine Megamind: Images found:', images.length);
+    
     if (images.length === 0) {
         console.warn('Machine Megamind: No images found for scroll-driven hero background slideshow.');
         return;
     }
 
-    // Initialize image styles
-    images.forEach(img => {
+    // Initialize image styles and protect from lazy loading interference
+    images.forEach((img, index) => {
         img.style.position = 'absolute';
         img.style.top = '0';
         img.style.left = '0';
         img.style.width = '100%';
         img.style.height = '100%';
         img.style.objectFit = 'cover';
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.5s ease-out'; // Smooth transition for opacity changes
+        img.style.opacity = index === 0 ? '1' : '0'; // First image visible by default
+        
+        // Ensure the image is loaded eagerly and remove any lazy loading attributes
+        img.setAttribute('loading', 'eager');
+        img.removeAttribute('data-lazy');
+        
+        // Remove any inline transitions that might have been added by lazy loading
+        img.style.transition = '';
+        
+        // Force reflow to ensure styles are applied
+        img.offsetHeight;
     });
 
     const numImages = images.length;
@@ -257,60 +273,21 @@ function setupScrollDrivenHeroSlideshow() {
 
     function updateSlideshowBasedOnScroll() {
         const vh = window.innerHeight;
-        const scrollCenter = vh / 2;
-        let activeImageIndex = -1;
-        let nextImageIndex = -1;
-        let transitionProgress = 0;
-
-        // Find which section is most prominent or which two are transitioning
-        for (let i = 0; i < sections.length; i++) {
-            const rect = sections[i].getBoundingClientRect();
-            // Check if the section is visible in the viewport
-            if (rect.top < vh && rect.bottom > 0) {
-                const sectionCenter = rect.top + rect.height / 2;
-                // If section center is near the viewport center, it's the active one
-                if (rect.top <= scrollCenter && rect.bottom >= scrollCenter) {
-                    activeImageIndex = i % numImages;
-                    break;
-                }
-                // Check for transition between section i and i+1
-                else if (rect.bottom < scrollCenter && i + 1 < sections.length) {
-                    const nextRect = sections[i+1].getBoundingClientRect();
-                    if (nextRect.top > scrollCenter) {
-                        activeImageIndex = i % numImages;
-                        nextImageIndex = (i + 1) % numImages;
-                        // Calculate progress based on the gap between the two sections
-                        const gap = nextRect.top - rect.bottom;
-                        transitionProgress = (scrollCenter - rect.bottom) / gap;
-                        transitionProgress = Math.max(0, Math.min(1, transitionProgress));
-                        break;
-                    }
-                }
-            }
-        }
+        const scrollY = window.scrollY;
+        const documentHeight = document.documentElement.scrollHeight;
         
-        // If no specific section is active (e.g., at the very top or bottom), default to the first or last
-        if (activeImageIndex === -1) {
-            if (window.scrollY === 0) {
-                activeImageIndex = 0;
-            } else {
-                 // Fallback to the last calculated active index if out of bounds
-                 activeImageIndex = lastActiveImageIndex !== -1 ? lastActiveImageIndex : 0;
-            }
-        }
-
-        // Apply opacities
+        // Simple approach: divide scroll position by number of images
+        const scrollProgress = scrollY / (documentHeight - vh);
+        const activeImageIndex = Math.floor(scrollProgress * (numImages - 1));
+        const clampedIndex = Math.max(0, Math.min(numImages - 1, activeImageIndex));
+        
+        // Apply opacities - only show one image at a time for clarity
         images.forEach((img, imgIndex) => {
-            let targetOpacity = 0;
-            if (imgIndex === activeImageIndex) {
-                targetOpacity = 1 - transitionProgress;
-            } else if (imgIndex === nextImageIndex) {
-                targetOpacity = transitionProgress;
-            }
+            const targetOpacity = imgIndex === clampedIndex ? 1 : 0;
             img.style.opacity = targetOpacity.toString();
         });
         
-        lastActiveImageIndex = activeImageIndex;
+        lastActiveImageIndex = clampedIndex;
     }
 
     let ticking = false;
@@ -325,7 +302,7 @@ function setupScrollDrivenHeroSlideshow() {
     });
 
     updateSlideshowBasedOnScroll(); // Initial call
-    ("Machine Megamind: Advanced scroll-driven hero background slideshow initialized.");
+    console.log(`Machine Megamind: Hero background slideshow initialized with ${numImages} images.`);
 }
 
 // Function to initialize the 3D tilt effect on offering cards (if present)

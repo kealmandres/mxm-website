@@ -100,9 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', handlePageBackgroundScroll);
         // Initial call to set state based on current scroll (e.g. if page is reloaded scrolled down)
         handlePageBackgroundScroll(); 
-    } else {
-        if (!dynamicBg) console.error('Error: #dynamic-page-background element not found.');
-        if (!heroSection) console.error('Error: .video-hero-section element not found for dynamic background.');
     }
 
     // Video Picture-in-Picture (PiP) scroll behavior
@@ -155,9 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const videoObserver = new IntersectionObserver(observerCallback, observerOptions);
         videoObserver.observe(videoHeroWrapper); // Observe the wrapper
-    } else {
-        if (!videoHeroWrapper) console.error('Error: .video-hero-wrapper element not found for PiP.');
-        if (!videoHeroSectionForPip) console.error('Error: .video-hero-section element not found for PiP class application.');
     }
 
     // Initialize Process Section Scroll Image Animation
@@ -177,24 +171,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // NEW Scrolling Image Animation for Process Section
 function initProcessScrollImageAnimation() {
+    // Only run on artificial-ingenious page
+    if (!document.body.classList.contains('artificial-ingenious')) {
+        return;
+    }
+    
     const processSection = document.querySelector('body.artificial-ingenious .process-section');
     if (!processSection) {
-        console.error('Process section for scroll image animation not found.');
         return;
     }
     
     // Updated to target the new fixed host layer
     const animationContainer = document.getElementById('process-scroll-animation-host');
     if (!animationContainer) {
-        console.error('Process scroll animation host (#process-scroll-animation-host) not found.');
         return;
     }
 
     const scrollingImage = animationContainer.querySelector('.scrolling-process-image');
     if (!scrollingImage) {
-        // Image is now a direct child of animationContainer
-        // This should not happen if HTML is correct
-        console.error('Scrolling process image element not found within #process-scroll-animation-host.');
         return;
     }
 
@@ -247,7 +241,6 @@ function initProcessScrollImageAnimation() {
     } else {
         scrollingImage.onload = setupInitialPosition;
         scrollingImage.onerror = () => {
-            console.error("Scrolling process image failed to load for animation.");
             scrollingImage.style.visibility = 'hidden';
         };
         // Ensure it gets setup if already loaded but event missed (e.g. from cache)
@@ -264,9 +257,13 @@ function initProcessScrollImageAnimation() {
 
 // NEW: Scroll-Driven Hero Background Slideshow Functionality
 function setupScrollDrivenHeroSlideshow() {
+    // Only run on artificial-ingenious page
+    if (!document.body.classList.contains('artificial-ingenious')) {
+        return;
+    }
+    
     const slideshowContainer = document.querySelector('body.artificial-ingenious .hero-background-slideshow');
     if (!slideshowContainer) {
-        console.error('Hero background slideshow container (.hero-background-slideshow) not found. Ensure it is a child of body.artificial-ingenious.');
         return;
     }
     
@@ -284,7 +281,6 @@ function setupScrollDrivenHeroSlideshow() {
     const sections = Array.from(document.querySelectorAll('.artificial-ingenious .page-section[data-section-key]'));
     
     if (images.length === 0 || sections.length === 0) {
-        console.error('No images (.hero-bg-slide) or sections found for scroll-driven hero background slideshow.');
         return;
     }
 

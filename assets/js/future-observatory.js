@@ -40,8 +40,8 @@ function loadSubstackFeed() {
                             <div class="mm-offering-text-content">
                                 <img src="${thumbnailSrc}" 
                                      alt="${post.title}"
-                                     onerror="this.style.display='none'; console.log('Image failed to load:', this.src);"
-                                     onload="console.log('Image loaded successfully:', this.src);">
+                                     onerror="this.style.display='none';"
+                                     onload="">
                                 <h3 class="mm-offering-title">${post.title}</h3>
                                 <p class="mm-offering-description">${post.description}</p>
                             </div>

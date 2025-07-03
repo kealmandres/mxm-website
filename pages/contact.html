@@ -23,6 +23,78 @@
    <!-- Canonical URL -->
    <link rel="canonical" href="https://themxm.ai/contact">
   
+  <!-- Schema.org LocalBusiness Markup -->
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "MaCHiNE MaiSON",
+      "alternateName": "MxM",
+      "description": "Australia's first AI agency specializing in AI coaching, custom AI agents, and agentic workflows",
+      "url": "https://themxm.ai/",
+      "logo": "https://themxm.ai/assets/images/logo.png",
+      "image": "https://themxm.ai/assets/images/contact-page/ContactBackground.webp",
+      "telephone": "+61-XXX-XXX-XXX",
+      "email": "info@themxm.ai",
+      "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "AU",
+          "addressLocality": "Australia"
+      },
+      "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "-25.274398",
+          "longitude": "133.775136"
+      },
+      "areaServed": [
+          {
+              "@type": "Country",
+              "name": "Australia"
+          },
+          {
+              "@type": "Place",
+              "name": "Global"
+          }
+      ],
+      "serviceArea": {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+              "@type": "GeoCoordinates",
+              "latitude": "-25.274398",
+              "longitude": "133.775136"
+          },
+          "geoRadius": "20000000"
+      },
+      "priceRange": "$$",
+      "currenciesAccepted": "AUD, USD",
+      "paymentAccepted": "Bank Transfer, Credit Card, PayPal",
+      "openingHours": "Mo-Fr 09:00-17:00",
+      "contactPoint": [
+          {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "telephone": "+61-XXX-XXX-XXX",
+              "email": "info@themxm.ai",
+              "url": "https://themxm.ai/contact",
+              "availableLanguage": "English"
+          },
+          {
+              "@type": "ContactPoint",
+              "contactType": "sales",
+              "email": "info@themxm.ai",
+              "url": "https://themxm.ai/contact"
+          }
+      ],
+      "sameAs": [
+          "https://www.youtube.com/@marissa_kos",
+          "https://www.instagram.com/marissa_kos/",
+          "https://www.linkedin.com/in/marissa-kos-ai/",
+          "https://www.facebook.com/themxm.a.i/",
+          "https://marissakos.substack.com/"
+      ]
+  }
+  </script>
+  
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TGW0QRR2X6"></script>
   <script>
@@ -32,7 +104,8 @@
       gtag('config', 'G-TGW0QRR2X6');
   </script>
   
-  <!-- Facebook Pixel -->
+  <!-- Facebook Pixel - Disabled for development -->
+  <!--
   <script>
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -48,6 +121,7 @@
   <noscript><img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=FB_PIXEL_ID&ev=PageView&noscript=1"
   /></noscript>
+  -->
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="../assets/images/mxm-logo.ico">
@@ -60,8 +134,6 @@
     <link rel="stylesheet" href="../assets/css/cookie-consent.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script crossorigin="anonymous" src="https://kit.fontawesome.com/a076d05399.js">
-  </script>
  </head>
  <body class="detail-page artificial-ingenious persistent-music-active contact-page">
     <!-- Required Audio Element for Persistent Music Player -->
@@ -370,7 +442,8 @@
     <script src="../js/animated-transitions.js"></script>
     <script src="../js/fourth-wall-breaking.js"></script>
     <script src="../js/micro-interactions.js"></script> -->
-    <script src="../assets/js/chat.js" defer></script>
+    <!-- <script src="../assets/js/lazy-loading.js" defer></script> -->
+    <script src="../assets/js/artificial-ingenious.js" defer></script>
     
     <!-- Cookie Consent Script -->
     <script src="../assets/js/cookie-consent.js"></script>

@@ -326,6 +326,14 @@
             border-color: rgba(255, 255, 255, 0.5);
             box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
         }
+
+        /* Mobile & iOS Fixes */
+        @media (max-width: 1024px) {
+            body {
+                /* Fix for iOS background-attachment: fixed issue. 'scroll' is the default and is more compatible. */
+                background-attachment: scroll;
+            }
+        }
     </style>
 </head>
 <body>
@@ -413,13 +421,16 @@
 
         // Add some interactive animations
         document.querySelectorAll('.link-item').forEach(item => {
-            item.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-3px) scale(1.02)';
-            });
-            
-            item.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
+            // Only add hover effects on devices that support it
+            if (window.matchMedia('(hover: hover)').matches) {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            }
         });
     </script>
     

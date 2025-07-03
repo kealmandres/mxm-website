@@ -987,3 +987,156 @@ body, p, div {
 #entrance-hall .room-content {
   display: none;
 }
+
+/* ===========================
+   MOBILE IMAGE OPTIMIZATIONS
+   ========================== */
+
+/* Progressive Image Loading */
+img[data-lazy] {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    transition: opacity 0.3s ease;
+}
+
+img[data-lazy]:not([src]) {
+    opacity: 0.7;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Mobile-First Responsive Images */
+@media (max-width: 768px) {
+    /* Hero background optimization */
+    .hero-bg-slide {
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+    }
+    
+    /* Content images optimization */
+    .offering-image,
+    .blonde-bot-image,
+    .section-image,
+    .process-overview-image {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+    
+    /* Specific mobile optimizations for large images */
+    .blonde-bot-image.bb-room-info {
+        max-width: 90vw;
+        height: auto;
+        object-fit: contain;
+    }
+    
+    /* Timeline images mobile optimization */
+    .timeline-step-visual {
+        max-width: 100%;
+        height: auto !important;
+        object-fit: contain;
+    }
+    
+    /* Carousel optimization */
+    .gif-carousel-slide {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .hero-bg-slide {
+        object-position: center center;
+    }
+    
+    .offering-image {
+        max-width: 100%;
+        height: 200px;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    .blonde-bot-image {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* WebP Support Detection with Fallbacks */
+.no-webp .hero-bg-slide {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.no-webp .offering-image {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Image Loading States */
+.image-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: loading-shine 1.5s infinite;
+    z-index: 1;
+}
+
+@keyframes loading-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Critical Image Priority Loading */
+.home-logo,
+.hero-bg-slide:first-child {
+    /* Ensure critical images load immediately */
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
+}
+
+/* Performance Optimizations */
+img {
+    /* Enable hardware acceleration for smooth animations */
+    transform: translateZ(0);
+    will-change: opacity, transform;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    img[data-lazy],
+    .image-loading::before {
+        animation: none;
+    }
+    
+    img {
+        transition: none;
+    }
+}
+
+/* High DPI Display Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .offering-image,
+    .blonde-bot-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}

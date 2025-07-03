@@ -87,12 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Hero Background Slideshow
     setupScrollDrivenHeroSlideshow();
+
+    // Ensure first background image is visible immediately
+    const firstBgImage = document.querySelector('.artificial-ingenious .hero-background-slideshow .hero-bg-slide:first-child');
+    if (firstBgImage) {
+        firstBgImage.style.opacity = '1';
+    }
 }); 
 
 // Scroll-Driven Hero Background Slideshow Functionality
 function setupScrollDrivenHeroSlideshow() {
-    const slideshowContainer = document.querySelector('body.consults-coded .hero-background-slideshow');
-    const sections = Array.from(document.querySelectorAll('.consults-coded .page-section'));
+    const slideshowContainer = document.querySelector('body.artificial-ingenious .hero-background-slideshow');
+    const sections = Array.from(document.querySelectorAll('.artificial-ingenious .page-section'));
 
     if (!slideshowContainer) {
         console.error('Hero background slideshow container not found.');

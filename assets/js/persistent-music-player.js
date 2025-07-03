@@ -1,7 +1,10 @@
 /**
  * Persistent Music Player
- * Maintains continuous background music playback across multiple HTML pages
- * Uses localStorage to persist audio state (currentTime, volume, isPlaying)
+ * Requirements:
+ * 1. Crossfade between tracks ✅
+ * 2. Video play = duck to 10%, video pause = restore volume ✅
+ * 3. Continuous play through different pages ✅
+ * 4. Never auto-pause (only user can pause) ✅
  */
 
 class PersistentMusicPlayer {
@@ -26,7 +29,7 @@ class PersistentMusicPlayer {
         
         // Video ducking properties
         this.originalVolume = 0.5;
-        this.duckedVolume = 0.1; // 10% volume when video is playing (changed from 0.05)
+        this.duckedVolume = 0.1; // 10% volume when video is playing
         this.isDucked = false;
         this.videoElements = [];
         
@@ -83,6 +86,11 @@ class PersistentMusicPlayer {
             shuffleSeed: null // Used for deterministic shuffling
         };
         
+        // Cleanup arrays to prevent memory leaks
+        this.eventListeners = [];
+        this.timeouts = [];
+        this.intervals = [];
+        
         this.init();
     }
     
@@ -96,49 +104,59 @@ class PersistentMusicPlayer {
     }
     
     initialize() {
-        // Get DOM elements, or create them if they don't exist
-        this.audio = document.getElementById('background-music');
-        if (!this.audio) {
-            this.createPlayerElements();
+        try {
+            // Get DOM elements, or create them if they don't exist
+            this.audio = document.getElementById('background-music');
+            if (!this.audio) {
+                this.createPlayerElements();
+            }
+            
+            // Create second audio element for crossfading
+            this.audioB = document.createElement('audio');
+            this.audioB.id = 'background-music-b';
+            this.audioB.style.display = 'none';
+            document.body.appendChild(this.audioB);
+            
+            this.playPauseBtn = document.getElementById('play-pause-btn');
+            this.volumeSlider = document.getElementById('volume-slider');
+            this.volumeToggleBtn = document.getElementById('volume-toggle-btn');
+            this.volumeControlContainer = document.getElementById('volume-control-container');
+            
+            if (!this.audio) {
+                throw new Error('Audio element with id "background-music" not found');
+            }
+            
+            // Disable loop for playlist functionality
+            this.audio.loop = false;
+            this.audioB.loop = false;
+            
+            // Load saved state (which will also trigger the seeded shuffle)
+            this.loadState();
+            
+            // Setup event listeners
+            this.setupEventListeners();
+            
+            // Setup video ducking
+            this.setupVideoDucking();
+            
+            // Setup user interaction detection for autoplay
+            this.setupUserInteractionDetection();
+            
+            // Apply saved state to audio element
+            this.applyState();
+            
+            // Start periodic state saving
+            this.startStateSaving();
+        } catch (error) {
+            // Fallback initialization without throwing
+            this.initializeFallback();
         }
-        
-        // Create second audio element for crossfading
-        this.audioB = document.createElement('audio');
-        this.audioB.id = 'background-music-b';
-        this.audioB.style.display = 'none';
-        document.body.appendChild(this.audioB);
-        
-        this.playPauseBtn = document.getElementById('play-pause-btn');
-        this.volumeSlider = document.getElementById('volume-slider');
-        this.volumeToggleBtn = document.getElementById('volume-toggle-btn');
-        this.volumeControlContainer = document.getElementById('volume-control-container');
-        
-        if (!this.audio) {
-            console.error('❌ Audio element with id "background-music" not found');
-            return;
-        }
-        
-        // Disable loop for playlist functionality
-        this.audio.loop = false;
-        this.audioB.loop = false;
-        
-        // Load saved state (which will also trigger the seeded shuffle)
-        this.loadState();
-        
-        // Setup event listeners
-        this.setupEventListeners();
-        
-        // Setup video ducking
-        this.setupVideoDucking();
-        
-        // Setup user interaction detection for autoplay
-        this.setupUserInteractionDetection();
-        
-        // Apply saved state to audio element
-        this.applyState();
-        
-        // Start periodic state saving
-        this.startStateSaving();
+    }
+    
+    initializeFallback() {
+        // Minimal initialization if main init fails
+        this.state = { ...this.defaultState };
+        this.state.currentSongIndex = 0;
     }
     
     loadState() {
@@ -148,18 +166,11 @@ class PersistentMusicPlayer {
                 this.state = { ...this.defaultState, ...JSON.parse(savedState) };
             } else {
                 this.state = { ...this.defaultState };
-                // Generate an initial seed for the very first visit
-                // this.state.shuffleSeed = Math.floor(Math.random() * 100000);
                 this.state.currentSongIndex = 0;
             }
-            // Shuffle the playlist deterministically using the loaded or new seed
-            // this.shufflePlaylist();
         } catch (error) {
-            console.error('❌ Error loading state from localStorage:', error);
             this.state = { ...this.defaultState };
             this.state.currentSongIndex = 0;
-            // this.state.shuffleSeed = Math.floor(Math.random() * 100000);
-            // this.shufflePlaylist();
         }
     }
     
@@ -177,7 +188,7 @@ class PersistentMusicPlayer {
             };
             sessionStorage.setItem(this.storageKey, JSON.stringify(stateToSave));
         } catch (error) {
-            console.error('❌ Error saving state to localStorage:', error);
+            // Silently fail if sessionStorage is not available
         }
     }
     
@@ -210,7 +221,12 @@ class PersistentMusicPlayer {
         if (this.audio.readyState >= 2) {
             setCurrentTimeAndResume();
         } else {
-            this.audio.addEventListener('canplay', setCurrentTimeAndResume, { once: true });
+            const listener = () => {
+                setCurrentTimeAndResume();
+                this.audio.removeEventListener('canplay', listener);
+            };
+            this.audio.addEventListener('canplay', listener);
+            this.eventListeners.push({ element: this.audio, event: 'canplay', listener });
         }
         
         this.updatePlayPauseButton();
@@ -233,30 +249,36 @@ class PersistentMusicPlayer {
             const elementName = index === 0 ? 'A' : 'B';
             
             // Audio event listeners
-            audioElement.addEventListener('play', () => {
+            const playListener = () => {
                 if (this.getActiveAudio() === audioElement) {
                     this.state.isPlaying = true;
                     this.updatePlayPauseButton();
                     this.saveState();
                 }
-            });
+            };
+            audioElement.addEventListener('play', playListener);
+            this.eventListeners.push({ element: audioElement, event: 'play', listener: playListener });
             
-            audioElement.addEventListener('pause', () => {
+            const pauseListener = () => {
                 // Don't update button state if we're crossfading and this is the old audio being paused
                 if (this.getActiveAudio() === audioElement && !this.isCrossfading) {
                     this.state.isPlaying = false;
                     this.updatePlayPauseButton();
                     this.saveState();
                 }
-            });
+            };
+            audioElement.addEventListener('pause', pauseListener);
+            this.eventListeners.push({ element: audioElement, event: 'pause', listener: pauseListener });
             
-            audioElement.addEventListener('ended', () => {
+            const endedListener = () => {
                 if (this.getActiveAudio() === audioElement) {
                     this.playNextSongWithCrossfade();
                 }
-            });
+            };
+            audioElement.addEventListener('ended', endedListener);
+            this.eventListeners.push({ element: audioElement, event: 'ended', listener: endedListener });
             
-            audioElement.addEventListener('volumechange', () => {
+            const volumeChangeListener = () => {
                 if (this.getActiveAudio() === audioElement) {
                     this.state.volume = audioElement.volume;
                     if (this.volumeSlider) {
@@ -266,25 +288,30 @@ class PersistentMusicPlayer {
                     this.updateVolumeDisplay();
                     this.saveState();
                 }
-            });
+            };
+            audioElement.addEventListener('volumechange', volumeChangeListener);
+            this.eventListeners.push({ element: audioElement, event: 'volumechange', listener: volumeChangeListener });
             
-            audioElement.addEventListener('loadedmetadata', () => {
+            const loadedMetadataListener = () => {
                 if (this.getActiveAudio() === audioElement) {
                     this.state.src = audioElement.src;
                     this.saveState();
                 }
-            });
+            };
+            audioElement.addEventListener('loadedmetadata', loadedMetadataListener);
+            this.eventListeners.push({ element: audioElement, event: 'loadedmetadata', listener: loadedMetadataListener });
             
-            audioElement.addEventListener('error', (e) => {
-                console.error(`❌ Audio ${elementName} error:`, e);
+            const errorListener = (e) => {
                 if (this.getActiveAudio() === audioElement) {
                     this.state.isPlaying = false;
                     this.updatePlayPauseButton();
                 }
-            });
+            };
+            audioElement.addEventListener('error', errorListener);
+            this.eventListeners.push({ element: audioElement, event: 'error', listener: errorListener });
             
             // Add timeupdate listener to check for near-end of track
-            audioElement.addEventListener('timeupdate', () => {
+            const timeupdateListener = () => {
                 if (this.getActiveAudio() === audioElement && audioElement.duration) {
                     const timeRemaining = audioElement.duration - audioElement.currentTime;
                     // Improved crossfade trigger - start preparation earlier and with wider window
@@ -296,52 +323,66 @@ class PersistentMusicPlayer {
                         this.prepareNextTrackForCrossfade();
                     }
                 }
-            });
+            };
+            audioElement.addEventListener('timeupdate', timeupdateListener);
+            this.eventListeners.push({ element: audioElement, event: 'timeupdate', listener: timeupdateListener });
         });
         
         // Play/Pause button
         if (this.playPauseBtn) {
-            this.playPauseBtn.addEventListener('click', () => {
+            const playPauseListener = () => {
                 this.togglePlayPause();
-            });
+            };
+            this.playPauseBtn.addEventListener('click', playPauseListener);
+            this.eventListeners.push({ element: this.playPauseBtn, event: 'click', listener: playPauseListener });
         }
         
         // Volume slider
         if (this.volumeSlider) {
-            this.volumeSlider.addEventListener('input', (e) => {
+            const volumeSliderListener = (e) => {
                 this.setVolume(parseFloat(e.target.value));
-            });
+            };
+            this.volumeSlider.addEventListener('input', volumeSliderListener);
+            this.eventListeners.push({ element: this.volumeSlider, event: 'input', listener: volumeSliderListener });
         }
         
         // Volume toggle button
         if (this.volumeToggleBtn) {
-            this.volumeToggleBtn.addEventListener('click', () => {
+            const volumeToggleListener = () => {
                 this.toggleVolumeControl();
-            });
+            };
+            this.volumeToggleBtn.addEventListener('click', volumeToggleListener);
+            this.eventListeners.push({ element: this.volumeToggleBtn, event: 'click', listener: volumeToggleListener });
         }
         
         // Auto-hide volume control when clicking outside
-        document.addEventListener('click', (e) => {
+        const documentClickListener = (e) => {
             if (this.volumeControlVisible && 
-                !this.volumeControlContainer.contains(e.target) && 
-                !this.volumeToggleBtn.contains(e.target)) {
+                this.volumeControlContainer && !this.volumeControlContainer.contains(e.target) && 
+                this.volumeToggleBtn && !this.volumeToggleBtn.contains(e.target)) {
                 this.hideVolumeControl();
             }
-        });
+        };
+        document.addEventListener('click', documentClickListener);
+        this.eventListeners.push({ element: document, event: 'click', listener: documentClickListener });
         
         // Keep volume control visible when interacting with it
         if (this.volumeControlContainer) {
-            this.volumeControlContainer.addEventListener('mouseenter', () => {
+            const mouseEnterListener = () => {
                 this.clearVolumeHideTimeout();
-            });
+            };
+            this.volumeControlContainer.addEventListener('mouseenter', mouseEnterListener);
+            this.eventListeners.push({ element: this.volumeControlContainer, event: 'mouseenter', listener: mouseEnterListener });
             
-            this.volumeControlContainer.addEventListener('mouseleave', () => {
+            const mouseLeaveListener = () => {
                 this.scheduleVolumeHide();
-            });
+            };
+            this.volumeControlContainer.addEventListener('mouseleave', mouseLeaveListener);
+            this.eventListeners.push({ element: this.volumeControlContainer, event: 'mouseleave', listener: mouseLeaveListener });
         }
         
         // Page visibility change (pause when tab is hidden, resume when visible)
-        document.addEventListener('visibilitychange', () => {
+        const visibilityChangeListener = () => {
             if (document.hidden) {
                 // Page is hidden, save current state and immediately restore volume
                 this.saveState();
@@ -352,39 +393,55 @@ class PersistentMusicPlayer {
                     this.play();
                 }
                 // Re-check video states after page becomes visible
-                setTimeout(() => this.forceCheckVideoState(), 1000);
+                const timeout = setTimeout(() => this.forceCheckVideoState(), 1000);
+                this.timeouts.push(timeout);
             }
-        });
+        };
+        document.addEventListener('visibilitychange', visibilityChangeListener);
+        this.eventListeners.push({ element: document, event: 'visibilitychange', listener: visibilityChangeListener });
         
         // Enhanced navigation detection
-        window.addEventListener('beforeunload', () => {
+        const beforeUnloadListener = () => {
             this.saveState();
             this.forceRestoreVolume();
-        });
+        };
+        window.addEventListener('beforeunload', beforeUnloadListener);
+        this.eventListeners.push({ element: window, event: 'beforeunload', listener: beforeUnloadListener });
         
         // Handle browser back/forward navigation
-        window.addEventListener('popstate', () => {
+        const popstateListener = () => {
             this.forceRestoreVolume();
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 this.forceCheckVideoState();
             }, 500);
-        });
+            this.timeouts.push(timeout);
+        };
+        window.addEventListener('popstate', popstateListener);
+        this.eventListeners.push({ element: window, event: 'popstate', listener: popstateListener });
         
         // Handle hash changes (SPA navigation)
-        window.addEventListener('hashchange', () => {
-            setTimeout(() => {
+        const hashchangeListener = () => {
+            const timeout = setTimeout(() => {
                 this.forceCheckVideoState();
             }, 300);
-        });
+            this.timeouts.push(timeout);
+        };
+        window.addEventListener('hashchange', hashchangeListener);
+        this.eventListeners.push({ element: window, event: 'hashchange', listener: hashchangeListener });
         
         // Handle focus/blur for the entire window
-        window.addEventListener('focus', () => {
-            setTimeout(() => this.forceCheckVideoState(), 300);
-        });
+        const focusListener = () => {
+            const timeout = setTimeout(() => this.forceCheckVideoState(), 300);
+            this.timeouts.push(timeout);
+        };
+        window.addEventListener('focus', focusListener);
+        this.eventListeners.push({ element: window, event: 'focus', listener: focusListener });
         
-        window.addEventListener('blur', () => {
+        const blurListener = () => {
             this.forceRestoreVolume();
-        });
+        };
+        window.addEventListener('blur', blurListener);
+        this.eventListeners.push({ element: window, event: 'blur', listener: blurListener });
     }
     
     setupUserInteractionDetection() {
@@ -443,11 +500,12 @@ class PersistentMusicPlayer {
         // Enhanced listeners for home page autoplay
         if (isHomePage) {
             // Attempt immediate autoplay on page load
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 if (!this.userInteracted && !this.state.isPlaying) {
                     this.attemptImmediateAutoplay();
                 }
-            }, 1000); // Wait 1 second for page to settle
+            }, 1000);
+            this.timeouts.push(timeout);
             
             // Listen for minimal interactions
             document.addEventListener('mousemove', handleMinimalInteraction, { once: true });
@@ -490,7 +548,6 @@ class PersistentMusicPlayer {
             await activeAudio.play();
             return true;
         } catch (error) {
-            console.error('❌ Failed to play audio:', error);
             if (error.name === 'NotAllowedError') {
                 this.autoplayBlocked = true;
                 this.showAutoplayPrompt();
@@ -607,24 +664,30 @@ class PersistentMusicPlayer {
         const enableBtn = document.getElementById('enable-autoplay-btn');
         const dismissBtn = document.getElementById('dismiss-autoplay-btn');
         
-        enableBtn.addEventListener('click', async () => {
-            try {
-                await this.audio.play();
-                this.state.isPlaying = true;
-                this.userInteracted = true;
-                this.state.userInteracted = true;
-                this.updatePlayPauseButton();
-                this.saveState();
-                this.autoplayBlocked = false;
-                this.hideAutoplayPrompt();
-            } catch (error) {
-                console.error('❌ Failed to enable music:', error);
-            }
-        });
+        if (enableBtn) {
+            const enableListener = async () => {
+                try {
+                    await this.audio.play();
+                    this.state.isPlaying = true;
+                    this.userInteracted = true;
+                    this.state.userInteracted = true;
+                    this.updatePlayPauseButton();
+                    this.saveState();
+                    this.autoplayBlocked = false;
+                    this.hideAutoplayPrompt();
+                } catch (error) {
+                    // Silently fail
+                }
+            };
+            enableBtn.addEventListener('click', enableListener);
+        }
         
-        dismissBtn.addEventListener('click', () => {
-            this.hideAutoplayPrompt();
-        });
+        if (dismissBtn) {
+            const dismissListener = () => {
+                this.hideAutoplayPrompt();
+            };
+            dismissBtn.addEventListener('click', dismissListener);
+        }
     }
     
     hideAutoplayPrompt() {
@@ -636,11 +699,13 @@ class PersistentMusicPlayer {
     
     startStateSaving() {
         // Save state every 5 seconds while playing
-        this.updateInterval = setInterval(() => {
+        const interval = setInterval(() => {
             if (this.audio && !this.audio.paused) {
                 this.saveState();
             }
         }, 5000);
+        this.intervals.push(interval);
+        this.updateInterval = interval;
     }
     
     stopStateSaving() {
@@ -708,14 +773,21 @@ class PersistentMusicPlayer {
     
     scheduleVolumeHide() {
         this.clearVolumeHideTimeout();
-        this.volumeHideTimeout = setTimeout(() => {
+        const timeout = setTimeout(() => {
             this.hideVolumeControl();
         }, 3000);
+        this.timeouts.push(timeout);
+        this.volumeHideTimeout = timeout;
     }
     
     clearVolumeHideTimeout() {
         if (this.volumeHideTimeout) {
             clearTimeout(this.volumeHideTimeout);
+            // Remove from timeouts array
+            const index = this.timeouts.indexOf(this.volumeHideTimeout);
+            if (index > -1) {
+                this.timeouts.splice(index, 1);
+            }
             this.volumeHideTimeout = null;
         }
     }
@@ -727,8 +799,6 @@ class PersistentMusicPlayer {
         
         // Setup observers for dynamically added videos
         this.setupVideoObserver();
-        
-        console.log(`🎬 Found ${this.videoElements.length} video elements for ducking`);
     }
     
     findVideoElements() {
@@ -752,20 +822,23 @@ class PersistentMusicPlayer {
     addVideoListeners(video) {
         this.videoElements.push(video);
         
-        video.addEventListener('play', () => {
-            console.log(`🎬 Video started playing - ducking music volume`);
+        const playListener = () => {
             this.duckVolume();
-        });
+        };
+        video.addEventListener('play', playListener);
+        this.eventListeners.push({ element: video, event: 'play', listener: playListener });
         
-        video.addEventListener('pause', () => {
-            console.log(`⏸️ Video paused - checking if should restore volume`);
+        const pauseListener = () => {
             this.checkRestoreVolume();
-        });
+        };
+        video.addEventListener('pause', pauseListener);
+        this.eventListeners.push({ element: video, event: 'pause', listener: pauseListener });
         
-        video.addEventListener('ended', () => {
-            console.log(`🏁 Video ended - checking if should restore volume`);
+        const endedListener = () => {
             this.checkRestoreVolume();
-        });
+        };
+        video.addEventListener('ended', endedListener);
+        this.eventListeners.push({ element: video, event: 'ended', listener: endedListener });
     }
     
     addIframeListeners(iframe) {
@@ -787,27 +860,23 @@ class PersistentMusicPlayer {
                 const player = new Vimeo.Player(iframe);
                 
                 player.on('play', () => {
-                    console.log(`🎬 Vimeo video started playing - ducking music volume to 10%`);
-                    this.duckVolume();
+                    this.duckVolume(); // Duck to 10% when video plays
                 });
                 
                 player.on('pause', () => {
-                    console.log(`⏸️ Vimeo video paused - checking if should restore music volume`);
-                    this.checkRestoreVolume();
+                    this.checkRestoreVolume(); // Restore original volume when video pauses
                 });
                 
                 player.on('ended', () => {
-                    console.log(`🏁 Vimeo video ended - checking if should restore music volume`);
-                    this.checkRestoreVolume();
+                    this.checkRestoreVolume(); // Restore original volume when video ends
                 });
                 
                 // Store player reference for cleanup
                 iframe._vimeoPlayer = player;
                 
-                console.log(`✅ Vimeo Player API connected successfully`);
                 return;
             } catch (error) {
-                console.log(`⚠️ Vimeo Player API not available, using fallback detection`);
+                // Vimeo Player API not available, use fallback
             }
         }
         
@@ -820,8 +889,6 @@ class PersistentMusicPlayer {
         let isPlaying = false;
         let playCheckInterval = null;
         const isYouTube = iframe.src.toLowerCase().includes('youtube');
-        
-        console.log(`🎬 Setting up ${isYouTube ? 'YouTube' : 'generic'} iframe detection`);
         
         // Method 1: Intersection Observer for visibility (with debouncing)
         let lastVisibilityChange = 0;
@@ -836,14 +903,12 @@ class PersistentMusicPlayer {
                 if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
                     // For YouTube, don't auto-duck just because it's visible
                     if (isYouTube) {
-                        console.log(`👁️ YouTube iframe is visible but NOT auto-ducking volume (waiting for user interaction)`);
                         // Only duck if we have clear evidence of playing
                         return;
                     }
                     
                     // For non-YouTube iframes, assume playing when highly visible
                     if (!isPlaying) {
-                        console.log(`🎬 Non-YouTube iframe video likely started - ducking music volume`);
                         this.duckVolume();
                         isPlaying = true;
                         
@@ -853,7 +918,6 @@ class PersistentMusicPlayer {
                 } else if (entry.intersectionRatio < 0.3) {
                     // Iframe is barely visible or hidden
                     if (isPlaying) {
-                        console.log(`👁️ ${isYouTube ? 'YouTube' : 'Iframe'} video likely stopped - checking if should restore volume`);
                         this.checkRestoreVolume(); // Use checkRestoreVolume instead of direct restore
                         isPlaying = false;
                         this.stopPlaybackMonitoring(iframe);
@@ -867,46 +931,42 @@ class PersistentMusicPlayer {
         
         // Method 2: Enhanced click detection for YouTube (with debouncing)
         let lastClickTime = 0;
-        iframe.addEventListener('click', () => {
+        const clickListener = () => {
             const now = Date.now();
             if (now - lastClickTime < 1000) { // 1 second debounce for clicks
                 return;
             }
             lastClickTime = now;
             
-            console.log(`🖱️ ${isYouTube ? 'YouTube' : 'Iframe'} clicked - toggling video state`);
             if (isPlaying) {
-                console.log(`⏸️ Assuming video paused - checking if should restore volume`);
                 this.checkRestoreVolume(); // Use checkRestoreVolume instead of direct restore
                 isPlaying = false;
                 this.stopPlaybackMonitoring(iframe);
             } else {
-                console.log(`▶️ Assuming video played - ducking volume`);
                 this.duckVolume();
                 isPlaying = true;
                 this.startPlaybackMonitoring(iframe);
             }
-        });
+        };
+        iframe.addEventListener('click', clickListener);
+        this.eventListeners.push({ element: iframe, event: 'click', listener: clickListener });
         
         // Method 3: Focus events
-        iframe.addEventListener('focus', () => {
+        const focusListener = () => {
             if (!isPlaying && !isYouTube) {
-                console.log(`🎯 Non-YouTube iframe focused - likely video starting`);
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     this.duckVolume();
                     isPlaying = true;
                     this.startPlaybackMonitoring(iframe);
                 }, 1000);
-            } else if (isYouTube) {
-                console.log(`🎯 YouTube iframe focused - waiting for user interaction (NOT auto-ducking)`);
-                // Don't auto-duck for YouTube focus, wait for explicit click
+                this.timeouts.push(timeout);
             }
-        });
+        };
+        iframe.addEventListener('focus', focusListener);
+        this.eventListeners.push({ element: iframe, event: 'focus', listener: focusListener });
         
         // Method 4: YouTube-specific enhancements
         if (isYouTube) {
-            // Remove aggressive mouse enter/leave detection - only use scroll-based detection
-            
             // Enhanced scroll detection for YouTube (only restore if playing)
             let scrollTimeout;
             const handleScroll = () => {
@@ -920,32 +980,30 @@ class PersistentMusicPlayer {
                     const isLargeEnough = rect.width > 200 && rect.height > 150;
                     
                     if (!isVisible || !isLargeEnough) {
-                        console.log(`📜 YouTube scrolled out of view - restoring volume`);
                         this.restoreVolume();
                         isPlaying = false;
                         this.stopPlaybackMonitoring(iframe);
                     }
                 }, 500);
+                this.timeouts.push(scrollTimeout);
             };
             
             window.addEventListener('scroll', handleScroll);
+            this.eventListeners.push({ element: window, event: 'scroll', listener: handleScroll });
             iframe._scrollHandler = handleScroll;
         }
         
         // Store state and cleanup function
         iframe._isPlaying = () => isPlaying;
         iframe._setPlaying = (playing) => { 
-            console.log(`🎬 ${isYouTube ? 'YouTube' : 'Iframe'} playing state set to: ${playing}`);
             const wasPlaying = isPlaying;
             isPlaying = playing;
             
             // Handle volume ducking/restoration based on state change
             if (playing && !wasPlaying) {
-                console.log(`🔉 Video started playing - ducking volume`);
                 this.duckVolume();
                 this.startPlaybackMonitoring(iframe);
             } else if (!playing && wasPlaying) {
-                console.log(`🔊 Video stopped playing - restoring volume`);
                 this.restoreVolume();
                 this.stopPlaybackMonitoring(iframe);
             }
@@ -968,12 +1026,10 @@ class PersistentMusicPlayer {
         }
         
         const isYouTube = iframe.src.toLowerCase().includes('youtube');
-        const monitorInterval = isYouTube ? 2000 : 3000; // Reduced frequency: Check YouTube every 2s, others every 3s
-        
-        console.log(`🔍 Starting playback monitoring for ${isYouTube ? 'YouTube' : 'generic'} iframe (${monitorInterval}ms interval)`);
+        const monitorInterval = isYouTube ? 2000 : 3000; // Check YouTube every 2s, others every 3s
         
         let lastMonitorAction = 0;
-        iframe._playbackMonitor = setInterval(() => {
+        const monitorFunction = () => {
             // Debounce monitoring actions
             const now = Date.now();
             if (now - lastMonitorAction < 1000) { // 1 second debounce for monitoring actions
@@ -1001,23 +1057,29 @@ class PersistentMusicPlayer {
                 // If YouTube iframe is more than 80% of viewport height away from center, likely not focused
                 if (distanceFromCenter > viewportHeight * 0.8) {
                     shouldStop = true;
-                    console.log(`📜 YouTube iframe too far from viewport center - assuming paused`);
                 }
             }
             
             if (shouldStop) {
                 lastMonitorAction = now;
-                console.log(`📱 Video monitoring detected stop condition - checking if should restore volume`);
                 this.checkRestoreVolume(); // Use checkRestoreVolume instead of direct restore
                 if (iframe._setPlaying) iframe._setPlaying(false);
                 this.stopPlaybackMonitoring(iframe);
             }
-        }, monitorInterval);
+        };
+        
+        iframe._playbackMonitor = setInterval(monitorFunction, monitorInterval);
+        this.intervals.push(iframe._playbackMonitor);
     }
     
     stopPlaybackMonitoring(iframe) {
         if (iframe._playbackMonitor) {
             clearInterval(iframe._playbackMonitor);
+            // Remove from intervals array
+            const index = this.intervals.indexOf(iframe._playbackMonitor);
+            if (index > -1) {
+                this.intervals.splice(index, 1);
+            }
             iframe._playbackMonitor = null;
         }
     }
@@ -1061,6 +1123,9 @@ class PersistentMusicPlayer {
             childList: true,
             subtree: true
         });
+        
+        // Store observer for cleanup
+        this.mutationObserver = observer;
     }
     
     duckVolume() {
@@ -1091,6 +1156,12 @@ class PersistentMusicPlayer {
         
         // Update volume display
         this.updateVolumeDisplay();
+        
+        // Reset the flag after a short delay
+        const timeout = setTimeout(() => {
+            this.volumeChangeInProgress = false;
+        }, 100);
+        this.timeouts.push(timeout);
     }
     
     restoreVolume() {
@@ -1117,6 +1188,12 @@ class PersistentMusicPlayer {
         
         // Update volume display
         this.updateVolumeDisplay();
+        
+        // Reset the flag after a short delay
+        const timeout = setTimeout(() => {
+            this.volumeChangeInProgress = false;
+        }, 100);
+        this.timeouts.push(timeout);
     }
     
     checkRestoreVolume() {
@@ -1143,7 +1220,7 @@ class PersistentMusicPlayer {
                     return true;
                 }
                 
-                // Fallback: check visibility and size (removed intersectionRatio bug)
+                // Fallback: check visibility and size
                 const rect = iframe.getBoundingClientRect();
                 const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
                 const isLargeEnough = rect.width > 200 && rect.height > 150;
@@ -1199,7 +1276,8 @@ class PersistentMusicPlayer {
         this.findVideoElements();
         
         // Check current state
-        setTimeout(() => this.checkRestoreVolume(), 500);
+        const timeout = setTimeout(() => this.checkRestoreVolume(), 500);
+        this.timeouts.push(timeout);
     }
     
     seededRandom(seed) {
@@ -1211,7 +1289,6 @@ class PersistentMusicPlayer {
     shufflePlaylist() {
         const seed = this.state.shuffleSeed;
         if (seed === null) {
-            console.error("🚫 Cannot shuffle playlist without a seed.");
             return;
         }
 
@@ -1246,6 +1323,11 @@ class PersistentMusicPlayer {
         // Clear any ongoing crossfade and reset flags
         if (this.crossfadeInterval) {
             clearInterval(this.crossfadeInterval);
+            // Remove from intervals array
+            const index = this.intervals.indexOf(this.crossfadeInterval);
+            if (index > -1) {
+                this.intervals.splice(index, 1);
+            }
             this.crossfadeInterval = null;
         }
         this.resetCrossfadeFlags();
@@ -1276,7 +1358,8 @@ class PersistentMusicPlayer {
         const playPromise = activeAudio.play();
         if (playPromise !== undefined) {
             playPromise.catch(error => {
-                setTimeout(() => this.playNextSong(), 1000);
+                const timeout = setTimeout(() => this.playNextSong(), 1000);
+                this.timeouts.push(timeout);
             });
         }
         this.saveState();
@@ -1288,6 +1371,14 @@ class PersistentMusicPlayer {
         this.saveState();
         this.hideAutoplayPrompt();
         
+        // Clear all timeouts
+        this.timeouts.forEach(timeout => clearTimeout(timeout));
+        this.timeouts = [];
+        
+        // Clear all intervals
+        this.intervals.forEach(interval => clearInterval(interval));
+        this.intervals = [];
+        
         // Clear crossfade interval and reset flags
         if (this.crossfadeInterval) {
             clearInterval(this.crossfadeInterval);
@@ -1295,12 +1386,27 @@ class PersistentMusicPlayer {
         }
         this.resetCrossfadeFlags();
         
+        // Remove all event listeners
+        this.eventListeners.forEach(({ element, event, listener }) => {
+            try {
+                element.removeEventListener(event, listener);
+            } catch (error) {
+                // Ignore errors when removing listeners
+            }
+        });
+        this.eventListeners = [];
+        
         // Clean up all video element listeners
         this.videoElements.forEach(element => {
             if (element.tagName === 'IFRAME' && element._cleanup) {
                 element._cleanup();
             }
         });
+        
+        // Disconnect mutation observer
+        if (this.mutationObserver) {
+            this.mutationObserver.disconnect();
+        }
         
         // Force restore volume before cleanup
         this.forceRestoreVolume();
@@ -1312,8 +1418,6 @@ class PersistentMusicPlayer {
     }
 
     createPlayerElements() {
-        console.log('🎨 Creating player DOM elements because they were not found.');
-
         // Create audio element
         this.audio = document.createElement('audio');
         this.audio.id = 'background-music';
@@ -1440,16 +1544,19 @@ class PersistentMusicPlayer {
             if (inactiveAudio.readyState >= 2) { // HAVE_CURRENT_DATA or better
                 this.startCrossfade();
             } else {
-                inactiveAudio.addEventListener('canplay', () => {
+                const listener = () => {
                     this.startCrossfade();
-                }, { once: true });
+                    inactiveAudio.removeEventListener('canplay', listener);
+                };
+                inactiveAudio.addEventListener('canplay', listener);
                 
                 // Fallback timeout in case canplay doesn't fire
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     if (this.crossfadePrepared && !this.isCrossfading) {
                         this.startCrossfade();
                     }
                 }, 2000);
+                this.timeouts.push(timeout);
             }
         };
         
@@ -1474,7 +1581,7 @@ class PersistentMusicPlayer {
             return;
         });
         
-        this.crossfadeInterval = setInterval(() => {
+        const crossfadeFunction = () => {
             currentStep++;
             const progress = currentStep / steps;
             
@@ -1497,6 +1604,11 @@ class PersistentMusicPlayer {
             if (currentStep >= steps) {
                 // Crossfade complete
                 clearInterval(this.crossfadeInterval);
+                // Remove from intervals array
+                const index = this.intervals.indexOf(this.crossfadeInterval);
+                if (index > -1) {
+                    this.intervals.splice(index, 1);
+                }
                 this.crossfadeInterval = null;
                 
                 // Switch active audio
@@ -1528,7 +1640,10 @@ class PersistentMusicPlayer {
                 this.updatePlayPauseButton();
                 this.saveState();
             }
-        }, interval);
+        };
+        
+        this.crossfadeInterval = setInterval(crossfadeFunction, interval);
+        this.intervals.push(this.crossfadeInterval);
     }
     
     resetCrossfadeFlags() {
@@ -1545,6 +1660,59 @@ class PersistentMusicPlayer {
                 element._setPlaying(false);
             }
         });
+    }
+    
+    // Debugging methods to diagnose volume=0 issues
+    debugVolumeState() {
+        const activeAudio = this.getActiveAudio();
+        const inactiveAudio = this.getInactiveAudio();
+        
+        return {
+            activeAudioVolume: activeAudio ? activeAudio.volume : 'null',
+            inactiveAudioVolume: inactiveAudio ? inactiveAudio.volume : 'null', 
+            isDucked: this.isDucked,
+            originalVolume: this.originalVolume,
+            duckedVolume: this.duckedVolume,
+            volumeChangeInProgress: this.volumeChangeInProgress,
+            activeAudioElement: this.activeAudio,
+            isCrossfading: this.isCrossfading,
+            crossfadePrepared: this.crossfadePrepared,
+            volumeSliderValue: this.volumeSlider ? this.volumeSlider.value : 'null',
+            savedStateVolume: this.state ? this.state.volume : 'null',
+            videosDetected: this.videoElements.length,
+            pageHidden: document.hidden
+        };
+    }
+    
+    // Force fix for stuck volume
+    forceVolumeReset() {
+        // Reset all volume-related flags
+        this.isDucked = false;
+        this.volumeChangeInProgress = false;
+        
+        // Force both audio elements to original volume
+        const targetVolume = this.originalVolume || 0.5;
+        if (this.audio) this.audio.volume = targetVolume;
+        if (this.audioB) this.audioB.volume = targetVolume;
+        
+        // Update UI to match
+        if (this.volumeSlider) {
+            this.volumeSlider.value = targetVolume;
+        }
+        this.updateVolumeDisplay();
+        
+        // Reset all video states
+        this.videoElements.forEach(element => {
+            if (element.tagName === 'IFRAME' && element._setPlaying) {
+                element._setPlaying(false);
+            }
+        });
+        
+        // Update saved state
+        this.state.volume = targetVolume;
+        this.saveState();
+        
+        return `Volume reset to ${Math.round(targetVolume * 100)}%`;
     }
 }
 
@@ -1563,4 +1731,4 @@ if (typeof window !== 'undefined') {
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = PersistentMusicPlayer;
-} 
+}

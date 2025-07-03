@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MxM Performance Test Page</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .performance-stats {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            max-width: 300px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .test-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: opacity 0.3s ease;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: rgba(0,255,0,0.2); }
+        .warning { background: rgba(255,255,0,0.2); }
+        .info { background: rgba(0,150,255,0.2); }
+    </style>
+</head>
+<body data-performance-monitor>
+    <div class="performance-stats" id="performanceStats">
+        <h3>🎯 Performance Monitor</h3>
+        <div id="stats-content">Loading...</div>
+        <small>Press Ctrl/Cmd + Shift + P for detailed report</small>
+    </div>
+
+    <h1>🚀 MxM Mobile Optimization Demo</h1>
+    
+    <div class="status success">
+        ✅ Lazy Loading System Active
+    </div>
+    
+    <div class="status info">
+        📊 Performance monitoring enabled - check console for real-time metrics
+    </div>
+
+    <div class="test-section">
+        <h2>Critical Images (Load Immediately)</h2>
+        <p>These images have loading="eager" and load immediately:</p>
+        <div class="image-grid">
+            <img src="assets/images/logo.png" alt="Critical Logo" class="test-image home-logo">
+            <img src="assets/images/rooms/entrance-hall.webp" alt="Critical Background" class="test-image hero-bg-slide">
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Lazy Loaded Images</h2>
+        <p>These images have data-lazy attributes and load when scrolled into view:</p>
+        <div class="image-grid">
+            <img src="assets/images/machine-megamind/backgrounds/BG1.webp" 
+                 alt="Lazy Image 1" 
+                 class="test-image" 
+                 data-lazy="assets/images/machine-megamind/backgrounds/BG1.webp">
+            <img src="assets/images/machine-megamind/backgrounds/BG2.webp" 
+                 alt="Lazy Image 2" 
+                 class="test-image" 
+                 data-lazy="assets/images/machine-megamind/backgrounds/BG2.webp">
+            <img src="assets/images/blonde-bot/backgrounds/BG1.webp" 
+                 alt="Lazy Image 3" 
+                 class="test-image" 
+                 data-lazy="assets/images/blonde-bot/backgrounds/BG1.webp">
+            <img src="assets/images/future-observatory/backgrounds/BG1.webp" 
+                 alt="Lazy Image 4" 
+                 class="test-image" 
+                 data-lazy="assets/images/future-observatory/backgrounds/BG1.webp">
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Native Lazy Loading</h2>
+        <p>These images use native loading="lazy" for modern browsers:</p>
+        <div class="image-grid">
+            <img src="assets/images/machine-megamind/custom_agents/ResearchAgent.webp" 
+                 alt="Native Lazy 1" 
+                 class="test-image" 
+                 loading="lazy">
+            <img src="assets/images/machine-megamind/custom_agents/ContentAgent.webp" 
+                 alt="Native Lazy 2" 
+                 class="test-image" 
+                 loading="lazy">
+        </div>
+    </div>
+
+    <!-- Add some spacing to test scroll-based lazy loading -->
+    <div style="height: 100vh; display: flex; align-items: center; justify-content: center; border: 2px dashed #666;">
+        <h2>👇 Scroll down to see lazy loading in action 👇</h2>
+    </div>
+
+    <div class="test-section">
+        <h2>More Lazy Loaded Content</h2>
+        <p>These images should only load when you scroll to them:</p>
+        <div class="image-grid">
+            <img src="assets/images/machine-megamind/custom_agents/SalesAgent.webp" 
+                 alt="Scroll Lazy 1" 
+                 class="test-image" 
+                 data-lazy="assets/images/machine-megamind/custom_agents/SalesAgent.webp">
+            <img src="assets/images/machine-megamind/custom_agents/AnalyticsAgent.webp" 
+                 alt="Scroll Lazy 2" 
+                 class="test-image" 
+                 data-lazy="assets/images/machine-megamind/custom_agents/AnalyticsAgent.webp">
+            <img src="assets/images/lair-of-blonde-bot/Lair1.webp" 
+                 alt="Scroll Lazy 3" 
+                 class="test-image" 
+                 data-lazy="assets/images/lair-of-blonde-bot/Lair1.webp">
+            <img src="assets/images/future-observatory/TeleportationTelescope.webp" 
+                 alt="Scroll Lazy 4" 
+                 class="test-image" 
+                 data-lazy="assets/images/future-observatory/TeleportationTelescope.webp">
+        </div>
+    </div>
+
+    <div class="status warning">
+        ⚠️ Open DevTools Network tab to see images loading progressively as you scroll
+    </div>
+
+    <div style="height: 50vh;"></div>
+
+    <script src="assets/js/lazy-loading.js"></script>
+    <script src="assets/js/performance-monitor.js"></script>
+    
+    <script>
+        // Update performance stats in real-time
+        function updatePerformanceStats() {
+            const statsElement = document.getElementById('stats-content');
+            
+            if (window.mxmPerformanceMonitor) {
+                const metrics = window.mxmPerformanceMonitor.getMetrics();
+                
+                statsElement.innerHTML = `
+                    <strong>Live Metrics:</strong><br>
+                    📊 Total Images: ${metrics.totalImages}<br>
+                    🚀 Lazy Loaded: ${metrics.lazyLoadedImages}<br>
+                    ⏱️ Load Time: ${metrics.windowLoadedTime ? metrics.windowLoadedTime.toFixed(0) + 'ms' : 'Loading...'}<br>
+                    📈 Loaded Images: ${metrics.imageLoadTimes.length}
+                `;
+            } else {
+                statsElement.innerHTML = 'Performance monitor initializing...';
+            }
+        }
+
+        // Update stats every second
+        setInterval(updatePerformanceStats, 1000);
+        
+        // Initial update
+        setTimeout(updatePerformanceStats, 100);
+
+        // Add scroll indicator
+        let scrollHandler = () => {
+            const scrolled = window.scrollY;
+            console.log(`📜 Scrolled ${scrolled}px - lazy loading should trigger around 50px before images enter viewport`);
+        };
+        
+        window.addEventListener('scroll', scrollHandler);
+    </script>
+</body>
+</html> 

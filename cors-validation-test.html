@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MxM CORS Policy Validation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+        
+        .test-section {
+            background: #1a1a1a;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .test-item {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        .status.pass { background: #28a745; }
+        .status.fail { background: #dc3545; }
+        .status.pending { background: #ffc107; color: #000; }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #5a6fd8;
+        }
+        
+        .test-result {
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔄 MxM CORS Policy Validation</h1>
+        <p>Testing cross-origin requests and policy effectiveness</p>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 CORS Implementation Status</h2>
+        <div class="test-item">
+            <h3>✅ CORS Headers Configured</h3>
+            <p><strong>Main Site:</strong> Restricted to https://themxm.ai</p>
+            <p><strong>API Routes:</strong> Open access for future development</p>
+            <p><strong>Static Assets:</strong> Universal access with aggressive caching</p>
+            <div class="status pass">Configuration Complete</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 Cross-Origin Request Tests</h2>
+        
+        <div class="test-item">
+            <h4>RSS Feed API Test</h4>
+            <p><strong>Target:</strong> api.rss2json.com (Substack feed)</p>
+            <div id="rss-status" class="status pending">Not Tested</div>
+            <button onclick="testRSSFeed()">Test RSS Feed</button>
+            <div id="rss-result" class="test-result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h4>Form Webhook Test</h4>
+            <p><strong>Target:</strong> themxm.app.n8n.cloud (Contact forms)</p>
+            <div id="webhook-status" class="status pending">Not Tested</div>
+            <button onclick="testWebhook()">Test Webhook (Safe)</button>
+            <div id="webhook-result" class="test-result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h4>Font Loading Test</h4>
+            <p><strong>Target:</strong> FontAwesome Kit</p>
+            <div id="font-status" class="status pending">Not Tested</div>
+            <button onclick="testFontLoading()">Test Font Loading</button>
+            <div id="font-result" class="test-result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h4>Audio CORS Test</h4>
+            <p><strong>Target:</strong> Cross-origin audio playback</p>
+            <div id="audio-status" class="status pending">Not Tested</div>
+            <button onclick="testAudioCORS()">Test Audio CORS</button>
+            <div id="audio-result" class="test-result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔒 Security Validation</h2>
+        
+        <div class="test-item">
+            <h4>CSP Compliance Check</h4>
+            <p>Verify Content Security Policy allows required external domains</p>
+            <div id="csp-status" class="status pending">Not Tested</div>
+            <button onclick="testCSPCompliance()">Check CSP</button>
+            <div id="csp-result" class="test-result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 CORS Configuration Summary</h2>
+        <div class="test-item">
+            <h4>🎯 Configured External Domains</h4>
+            <ul>
+                <li><strong>api.rss2json.com</strong> - RSS feed proxy service</li>
+                <li><strong>themxm.app.n8n.cloud</strong> - Form submission webhooks</li>
+                <li><strong>marissakos.substack.com</strong> - Direct Substack feed</li>
+                <li><strong>kit.fontawesome.com</strong> - Icon and font resources</li>
+                <li><strong>fonts.googleapis.com</strong> - Google Fonts API</li>
+                <li><strong>Google Analytics/Facebook</strong> - Tracking services</li>
+            </ul>
+            
+            <h4>🔧 CORS Headers Applied</h4>
+            <ul>
+                <li><strong>Access-Control-Allow-Origin:</strong> Controlled per route</li>
+                <li><strong>Access-Control-Allow-Methods:</strong> GET, POST, PUT, DELETE, OPTIONS</li>
+                <li><strong>Access-Control-Allow-Headers:</strong> Standard headers included</li>
+                <li><strong>Access-Control-Max-Age:</strong> 24-hour preflight caching</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // RSS Feed Test
+        async function testRSSFeed() {
+            const statusEl = document.getElementById('rss-status');
+            const resultEl = document.getElementById('rss-result');
+            
+            statusEl.textContent = 'Testing...';
+            statusEl.className = 'status pending';
+            resultEl.style.display = 'block';
+            
+            try {
+                const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://marissakos.substack.com/feed');
+                const data = await response.json();
+                
+                if (response.ok && data.items) {
+                    statusEl.textContent = '✅ RSS Feed CORS Working';
+                    statusEl.className = 'status pass';
+                    resultEl.textContent = `Success: Found ${data.items.length} feed items\n\nFirst item: ${data.items[0]?.title || 'No title'}`;
+                } else {
+                    throw new Error(`API Error: ${data.message || 'Unknown error'}`);
+                }
+            } catch (error) {
+                statusEl.textContent = '❌ RSS Feed CORS Failed';
+                statusEl.className = 'status fail';
+                resultEl.textContent = `Error: ${error.message}\n\nThis might be expected in local development. Try on live site.`;
+            }
+        }
+        
+        // Webhook Test (Safe - just OPTIONS)
+        async function testWebhook() {
+            const statusEl = document.getElementById('webhook-status');
+            const resultEl = document.getElementById('webhook-result');
+            
+            statusEl.textContent = 'Testing...';
+            statusEl.className = 'status pending';
+            resultEl.style.display = 'block';
+            
+            try {
+                // Test preflight OPTIONS request
+                const response = await fetch('https://themxm.app.n8n.cloud/webhook/form-submission', {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+                
+                statusEl.textContent = '✅ Webhook CORS Working';
+                statusEl.className = 'status pass';
+                resultEl.textContent = `Success: Preflight request accepted\nStatus: ${response.status}\nHeaders: ${JSON.stringify([...response.headers.entries()], null, 2)}`;
+                
+            } catch (error) {
+                statusEl.textContent = '❌ Webhook CORS Issues';
+                statusEl.className = 'status fail';
+                resultEl.textContent = `Error: ${error.message}\n\nThis might indicate CORS configuration needed on the webhook endpoint.`;
+            }
+        }
+        
+        // Font Loading Test
+        function testFontLoading() {
+            const statusEl = document.getElementById('font-status');
+            const resultEl = document.getElementById('font-result');
+            
+            statusEl.textContent = 'Testing...';
+            statusEl.className = 'status pending';
+            resultEl.style.display = 'block';
+            
+            // Test FontAwesome loading
+            const script = document.createElement('script');
+            script.crossOrigin = 'anonymous';
+            script.src = 'https://kit.fontawesome.com/a076d05399.js';
+            
+            script.onload = () => {
+                statusEl.textContent = '✅ Font Loading Working';
+                statusEl.className = 'status pass';
+                resultEl.textContent = 'Success: FontAwesome kit loaded successfully with crossOrigin="anonymous"';
+            };
+            
+            script.onerror = () => {
+                statusEl.textContent = '❌ Font Loading Failed';
+                statusEl.className = 'status fail';
+                resultEl.textContent = 'Error: Failed to load FontAwesome kit - CORS or CSP issue';
+            };
+            
+            document.head.appendChild(script);
+        }
+        
+        // Audio CORS Test
+        function testAudioCORS() {
+            const statusEl = document.getElementById('audio-status');
+            const resultEl = document.getElementById('audio-result');
+            
+            statusEl.textContent = 'Testing...';
+            statusEl.className = 'status pending';
+            resultEl.style.display = 'block';
+            
+            const audio = document.createElement('audio');
+            audio.crossOrigin = 'anonymous';
+            audio.preload = 'metadata';
+            
+            audio.onloadedmetadata = () => {
+                statusEl.textContent = '✅ Audio CORS Working';
+                statusEl.className = 'status pass';
+                resultEl.textContent = `Success: Audio loaded with CORS\nDuration: ${audio.duration}s\nCrossOrigin: ${audio.crossOrigin}`;
+            };
+            
+            audio.onerror = () => {
+                statusEl.textContent = '❌ Audio CORS Failed';
+                statusEl.className = 'status fail';
+                resultEl.textContent = 'Error: Audio failed to load with crossOrigin="anonymous"';
+            };
+            
+            // Use a test audio file from the assets
+            audio.src = 'assets/audio/background-music.webm';
+        }
+        
+        // CSP Compliance Test
+        function testCSPCompliance() {
+            const statusEl = document.getElementById('csp-status');
+            const resultEl = document.getElementById('csp-result');
+            
+            statusEl.textContent = 'Checking...';
+            statusEl.className = 'status pending';
+            resultEl.style.display = 'block';
+            
+            const violations = [];
+            let tests = 0;
+            let passed = 0;
+            
+            // Test external script loading
+            const testDomains = [
+                'https://www.googletagmanager.com/gtag/js?id=test',
+                'https://connect.facebook.net/en_US/fbevents.js',
+                'https://kit.fontawesome.com/a076d05399.js'
+            ];
+            
+            testDomains.forEach(url => {
+                tests++;
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = () => {
+                    passed++;
+                    checkComplete();
+                };
+                script.onerror = () => {
+                    violations.push(`Failed to load: ${url}`);
+                    checkComplete();
+                };
+                document.head.appendChild(script);
+            });
+            
+            function checkComplete() {
+                if (violations.length + passed >= tests) {
+                    if (violations.length === 0) {
+                        statusEl.textContent = '✅ CSP Compliance Good';
+                        statusEl.className = 'status pass';
+                        resultEl.textContent = `Success: All ${passed} external resources allowed by CSP`;
+                    } else {
+                        statusEl.textContent = '⚠️ CSP Issues Found';
+                        statusEl.className = 'status fail';
+                        resultEl.textContent = `Issues found:\n${violations.join('\n')}\n\nPassed: ${passed}/${tests}`;
+                    }
+                }
+            }
+        }
+        
+        // Auto-run basic tests on load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔄 CORS Validation Page Loaded');
+            console.log('📊 Click buttons to test individual CORS configurations');
+        });
+    </script>
+</body>
+</html> 

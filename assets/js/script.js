@@ -3,12 +3,13 @@
  * Basic functionality and utilities
  */
 
-// Initialize page when DOM is loaded
+// MxM Website Core Initialization
+
+// Additional universal initialization can be added here as needed
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('MxM Website loaded');
+    // Website loaded
     
-    // Add any global initialization here
-    initializeGlobalFeatures();
+    // Initialize any cross-page functionality here
 });
 
 // Global feature initialization

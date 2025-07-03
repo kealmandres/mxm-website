@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('z-index', 'auto', 'important'); // Changed from 999 to auto, CSS should handle layering
         
         img.addEventListener('load', function() {
-            (`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
+            // No console.log for successful load
         });
         
         img.addEventListener('error', function() {
-            console.error(`Failed to load Blonde Bot image #${index + 1}: ${img.src}`);
+            // No console.log for failed load
             const originalSrc = img.src;
             // Avoid infinite loop if ?t=... is already there or image truly doesn't exist
             if (!originalSrc.includes('?t=')) {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // This part might be aggressive if images are meant to lazy load via other scripts
         // Consider if the original 'force reload image' logic is still needed with error handling
         if (img.complete && img.naturalHeight === 0) {
-            console.warn(`Blonde Bot image #${index + 1} might be missing or failed to load initially: ${img.src}`);
+            // No console.warn for initial check
         }
     });
     ('Found', blondeBotImages.length, 'Blonde Bot images to monitor.');
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         blondeBotOfferImage.onerror = () => {
             // Optional: Handle error, e.g., show a default image or message
             // To prevent infinite loops if the image path is broken, don't try to reload it here without a counter/flag.
-            console.error('Blonde Bot offering image failed to load.');
+            // No console.error for failed load
         };
     } else if (blondeBotOfferImage && blondeBotOfferImage.complete) {
         // Image was already loaded (e.g. from cache)
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstBgImage = document.querySelector('.artificial-ingenious .hero-background-slideshow .hero-bg-slide:first-child');
     if (firstBgImage) {
         firstBgImage.style.opacity = '1';
-        ('First background image set to visible');
+        // No console.log for first background image set to visible
     }
 
     // Initialize Offering Card Tilt Effect
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ensure we have a fresh iframe reference
         const currentIframe = document.querySelector('.video-hero-section iframe[src*="vimeo.com"]');
         if (!currentIframe) {
-            console.error("Vimeo iframe not found on re-initialization.");
+            // No console.error for Vimeo iframe not found on re-initialization
             return;
         }
 
@@ -237,10 +237,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             vimeoPlayer.ready().catch(error => {
-                console.error('Error initializing Vimeo player:', error);
+                // No console.error for error initializing Vimeo player
             });
         } catch (e) {
-            console.error("Failed to initialize Vimeo Player.", e);
+            // No console.error for Failed to initialize Vimeo Player
         }
     }
 
@@ -253,7 +253,16 @@ document.addEventListener('DOMContentLoaded', () => {
             resizeTimeout = setTimeout(initializeVimeoPlayer, 250);
         });
     } else {
-        console.log("No Vimeo player found.");
+        // No console.log for No Vimeo player found
+    }
+
+    if (vimeoPlayer) {
+        const iframe = document.querySelector('.video-placeholder iframe');
+        if (iframe && window.persistentMusicPlayer) {
+            window.persistentMusicPlayer.setupVideoDucking();
+        }
+    } else {
+        // No Vimeo player found
     }
 }); 
 
@@ -261,21 +270,20 @@ document.addEventListener('DOMContentLoaded', () => {
 function initProcessScrollImageAnimation() {
     const processSection = document.querySelector('body.artificial-ingenious .process-section');
     if (!processSection) {
-        console.error('Process section for scroll image animation not found.');
+        // Process section for scroll image animation not found
         return;
     }
     
     // Updated to target the new fixed host layer
     const animationContainer = document.getElementById('process-scroll-animation-host');
     if (!animationContainer) {
-        console.error('Process scroll animation host (#process-scroll-animation-host) not found.');
+        // Process scroll animation host not found
         return;
     }
 
     const scrollingImage = animationContainer.querySelector('.scrolling-process-image');
     if (!scrollingImage) {
         // Image is commented out or removed - skip animation gracefully
-        console.log('Scrolling process image not found - skipping scroll animation.');
         return;
     }
 
@@ -328,7 +336,7 @@ function initProcessScrollImageAnimation() {
     } else {
         scrollingImage.onload = setupInitialPosition;
         scrollingImage.onerror = () => {
-            console.error("Scrolling process image failed to load for animation.");
+            // Scrolling process image failed to load for animation
             scrollingImage.style.visibility = 'hidden';
         };
         // Ensure it gets setup if already loaded but event missed (e.g. from cache)
@@ -350,17 +358,17 @@ function setupScrollDrivenHeroSlideshow() {
     const sections = Array.from(document.querySelectorAll('.artificial-ingenious .page-section'));
 
     if (!slideshowContainer) {
-        console.error('Hero background slideshow container (.hero-background-slideshow) not found. Ensure it is a child of body.artificial-ingenious.');
+        // Hero background slideshow container not found
         return;
     }
     if (sections.length === 0) {
-        console.error('No .page-section elements found for scroll-driven hero background slideshow.');
+        // No page sections found for scroll-driven hero background slideshow
         return;
     }
 
     const images = Array.from(slideshowContainer.querySelectorAll('.hero-bg-slide'));
     if (images.length === 0) {
-        console.error('No images (.hero-bg-slide) found for scroll-driven hero background slideshow.');
+        // No images found for scroll-driven hero background slideshow
         return;
     }
 
