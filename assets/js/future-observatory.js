@@ -243,7 +243,7 @@ function setupCrystalCubeForm() {
             
             
             // Send to n8n webhook
-            const response = await fetch('https://themxm.app.n8n.cloud/webhook/form-submission', {
+            const response = await fetch('/api/submit-form', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -104,25 +104,6 @@
       gtag('config', 'G-TGW0QRR2X6');
   </script>
   
-  <!-- Facebook Pixel - Disabled for development -->
-  <!--
-  <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'FB_PIXEL_ID');
-      fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=FB_PIXEL_ID&ev=PageView&noscript=1"
-  /></noscript>
-  -->
-
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="../assets/images/mxm-logo.ico">
 
@@ -446,9 +427,9 @@
     <script src="../assets/js/artificial-ingenious.js" defer></script>
     
     <!-- Cookie Consent Script -->
-    <script src="../assets/js/cookie-consent.js"></script>
+    <script src="../assets/js/cookie-consent.js" defer></script>
     <!-- Persistent Music Player Script -->
-    <script src="../assets/js/persistent-music-player.js"></script>
+    <script src="../assets/js/persistent-music-player.js" defer></script>
     
     <!-- Volume Display Update Script -->
     <script>
@@ -501,7 +482,7 @@
         
         
         // Send to n8n webhook
-        const response = await fetch('https://themxm.app.n8n.cloud/webhook/form-submission', {
+        const response = await fetch('/api/submit-form', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -630,7 +611,7 @@ document.getElementById('email').addEventListener('blur', function() {
 });
 </script>
 
-
+<script src="../assets/js/performance-optimizer.js" defer></script>
 
  </body>
 </html> 

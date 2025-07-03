@@ -23,32 +23,6 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://themxm.ai/privacy-policy">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TGW0QRR2X6"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-TGW0QRR2X6');
-    </script>
-    
-    <!-- Facebook Pixel -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'FB_PIXEL_ID');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=FB_PIXEL_ID&ev=PageView&noscript=1"
-    /></noscript>
-    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/images/mxm-logo.ico">
     
@@ -435,7 +409,7 @@
 
     <!-- Scripts -->
     <!-- Cookie Consent Script -->
-    <script src="../assets/js/cookie-consent.js"></script>
+    <script src="../assets/js/cookie-consent.js" defer></script>
     <!-- <script src="../assets/js/persistent-music-player.js"></script> -->
     
     <script>
@@ -475,6 +449,8 @@
             });
         });
     </script>
+    <script src="../assets/js/persistent-music-player.js" defer></script>
+    <script src="../assets/js/performance-optimizer.js" defer></script>
 </body>
 
 

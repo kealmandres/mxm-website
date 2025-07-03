@@ -102,33 +102,51 @@
         gtag('config', 'G-TGW0QRR2X6');
     </script>
     
-    <!-- Facebook Pixel -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'FB_PIXEL_ID');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=FB_PIXEL_ID&ev=PageView&noscript=1"
-    /></noscript>
-    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/mxm-logo.ico">
     
-    <!-- Consolidated CSS -->
-    <link rel="stylesheet" href="assets/css/fonts.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Persistent Music Player Styles -->
-    <link rel="stylesheet" href="assets/css/persistent-music-player.css">
-    <!-- Cookie Consent Styles -->
-    <link rel="stylesheet" href="assets/css/cookie-consent.css">
+    <!-- Preconnect to Google Fonts for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload Fonts for Performance -->
+    <link rel="preload" href="assets/fonts/UniformExtraCondensed.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="assets/fonts/UniformExtraCondensed-Bold.otf" as="font" type="font/otf" crossorigin>
+
+    <!-- Inlined Critical CSS -->
+    <style>
+      /* Critical CSS: Styles for above-the-fold content on the homepage */
+      /* Base Styles */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body, html { height: 100%; width: 100%; overflow: hidden; font-family: "Uniform Extra Condensed", sans-serif; background-color: #0a0a0f; color: rgba(255, 255, 255, 0.9); perspective: 1500px; }
+      /* Layout & Room Containers */
+      .container { width: 100%; height: 100%; position: relative; overflow: hidden; }
+      .room { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; display: flex; justify-content: center; align-items: center; text-align: center; }
+      .room.active { opacity: 1; z-index: 2; }
+      /* Background Image for Entrance Hall */
+      #entrance-hall { background-image: url('../images/rooms/entrance-hall.webp'); }
+      /* Entrance Hall Specific Styles */
+      #entrance-hall .title-container { position: absolute; top: 8%; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 20px; z-index: 10; }
+      #entrance-hall .welcome-title { text-align: center; font-family: "Uniform Extra Condensed", sans-serif; font-weight: 300; font-size: 3.5rem; letter-spacing: 3px; color: rgba(255, 255, 255, 0.95); background: linear-gradient(135deg, #ffffff 0%, rgba(120, 219, 255, 0.9) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+      #entrance-hall .home-text { font-family: "Uniform Extra Condensed", sans-serif; font-weight: 300 !important; }
+      #entrance-hall .home-logo { max-height: 150px; height: 120px; opacity: 0.6; mix-blend-mode: screen; }
+      /* Main Content Box (positioned below the fold, but styling needed) */
+      .room-content { background: rgba(20, 20, 25, 0.45); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; padding: 2rem 2.5rem; max-width: 460px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); position: absolute; top: 75%; left: 70%; transform: translate(-50%, -50%); z-index: 1000; }
+      .room-title { font-size: 1.8rem; font-weight: bold; margin-bottom: 0.5rem; color: #fff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+      .room-description { font-size: 1rem; color: rgba(255, 255, 255, 0.85); line-height: 1.6; margin-bottom: 1.5rem; }
+      .explore-btn { display: inline-block; padding: 10px 25px; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 5px; color: #fff; background-color: rgba(255, 255, 255, 0.1); text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; }
+      .explore-btn:hover { background-color: rgba(255, 255, 255, 0.9); color: #000; }
+    </style>
+
+    <!-- Deferred Stylesheets -->
+    <link rel="preload" href="assets/css/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/css/fonts.css"></noscript>
+    <link rel="preload" href="assets/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/css/main.css"></noscript>
+    <link rel="preload" href="assets/css/persistent-music-player.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/css/persistent-music-player.css"></noscript>
+    <link rel="preload" href="assets/css/cookie-consent.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/css/cookie-consent.css"></noscript>
 </head>
 <body class="persistent-music-active">
     <!-- Required Audio Element for Persistent Music Player -->
@@ -173,8 +191,12 @@
         <div id="entrance-hall" class="room active">
             <!-- Welcome title positioned in upper area -->
             <div class="title-container">
+                <picture>
+                    <source srcset="assets/images/logo.webp" type="image/webp">
+                    <source srcset="assets/images/logo.png" type="image/png">
+                    <img src="assets/images/logo.png" alt="MxM Machine Maison AI Agency Logo - House of Moguls and Entrepreneurs" class="home-logo" loading="eager">
+                </picture>
                 <h1 class="welcome-title">welcome <span class="home-text">HoME</span></h1>
-                <img src="assets/images/logo.png" alt="MxM Machine Maison AI Agency Logo - House of Moguls and Entrepreneurs" class="home-logo">
             </div>
             
             <!-- Description in glass panel positioned in bottom third -->
@@ -266,12 +288,13 @@
     
     <!-- Consolidated JavaScript -->
     <!-- <script src="assets/js/lazy-loading.js" defer></script> -->
-    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/navigation.js" defer></script>
     <!-- Replaced audio.js with persistent music player -->
-    <script src="assets/js/persistent-music-player.js"></script>
+    <script src="assets/js/persistent-music-player.js" defer></script>
     <!-- Cookie Consent Script -->
-    <script src="assets/js/cookie-consent.js"></script>
-    <script src="assets/js/quantum-effects.js"></script>
+    <script src="assets/js/cookie-consent.js" defer></script>
+    <script src="assets/js/quantum-effects.js" defer></script>
+    <script src="assets/js/performance-optimizer.js" defer></script>
     <!-- <script src="assets/js/spa-router.js"></script> -->
     
     <!-- Volume Display Update Script -->

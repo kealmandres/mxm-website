@@ -642,7 +642,7 @@
     </style>
 
     <!-- Persistent Music Player Script -->
-    <script src="../assets/js/persistent-music-player.js"></script>
+    <script src="../assets/js/persistent-music-player.js" defer></script>
     
     <!-- Volume Display Update Script -->
     <script>
@@ -693,7 +693,7 @@
         
         
         // Send to n8n webhook
-        const response = await fetch('https://themxm.app.n8n.cloud/webhook/form-submission', {
+        const response = await fetch('/api/submit-form', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -823,7 +823,7 @@ document.getElementById('email').addEventListener('blur', function() {
   </script>
 
     <!-- Cookie Consent Script -->
-    <script src="../assets/js/cookie-consent.js"></script>
+    <script src="../assets/js/cookie-consent.js" defer></script>
 
     <!-- Add CSS for form validation -->
     <style>
@@ -957,6 +957,9 @@ document.getElementById('email').addEventListener('blur', function() {
             }
         }
     </style>
+
+    <!-- Performance Optimizer Script -->
+    <script src="../assets/js/performance-optimizer.js" defer></script>
 </body>
 </html>
 
