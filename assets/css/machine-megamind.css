@@ -12,10 +12,18 @@ body.detail-page.machine-megamind {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     padding-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-left: clamp(6.5rem, 5vw, 6.5rem);
-    padding-right: clamp(6.5rem, 5vw, 6.5rem);
+    padding-left:clamp(12rem, 5vw, 3.5rem);
+    padding-right: clamp(12rem, 5vw, 3.5rem);
 }
 
+
+@media (max-width: 1080px) {
+    body.detail-page.machine-megamind {
+        padding-top: clamp(1.5rem, 5vw, 3.5rem);
+        padding-left: clamp(6rem, 5vw, 6.5rem);
+        padding-right: clamp(6rem, 5vw, 6.5rem);
+    }
+}
 
 
 @media (max-width: 768px) {
@@ -1264,3 +1272,236 @@ artificial-ingenious .bb-diagnosis-cta-image {
     text-transform: none;
 
 }
+
+
+/* Investment Section (Pricing Cards) - Updated with AI Offerings Grid Styling */
+.machine-megamind .diagnosis-section .investment-grid {
+    display: block;
+    margin-top: 2rem;
+    perspective: 1000px;
+}
+
+/* JavaScript-powered 3D Tilt Effect Variables */
+.machine-megamind .diagnosis-section .investment-card {
+    --rotateX: 0deg;
+    --rotateY: 0deg;
+}
+
+.machine-megamind .diagnosis-section .investment-card {
+    background: var(--mm-glass-bg);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid var(--mm-glass-border);
+    border-radius: var(--mm-card-border-radius);
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 40px rgba(var(--mm-accent-blue-glow), 0.1);
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+    transform-style: preserve-3d;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.machine-megamind .diagnosis-section .investment-card:last-child {
+    margin-bottom: 0;
+}
+
+.machine-megamind .diagnosis-section .investment-card.featured {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 50px rgba(255, 255, 255, 0.2);
+}
+
+.machine-megamind .diagnosis-section .investment-card:hover {
+    transform: perspective(1000px) rotateX(var(--rotateX)) rotateY(var(--rotateY)) scale3d(1.03, 1.03, 1.03);
+    z-index: 5;
+}
+
+.machine-megamind .diagnosis-section .investment-card.featured:hover {
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.4), 
+                inset 0 0 0 1.5px rgba(255,255,255,0.08),
+                0 0 60px rgba(255, 255, 255, 0.3);
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-image-wrapper {
+    flex: 0 0 65%;
+    position: relative;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    display: block;
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-text-content {
+    flex: 1 1 35%;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-title {
+    font-family: var(--mm-futuristic-font);
+    font-size: 1.8rem;
+    color: var(--mm-text-primary);
+    margin-bottom: 0.5rem;
+    font-weight: normal;
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-price {
+    font-family: var(--mm-futuristic-font);
+    font-size: 2rem;
+    color: var(--mm-text-primary);
+    margin-bottom: 1rem;
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-price span {
+    font-size: 1rem;
+    color: var(--mm-text-secondary);
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-description {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+    text-align: left;
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-features li {
+    padding: 5px 0 5px 25px;
+    position: relative;
+    font-size: 0.9rem;
+}
+
+.machine-megamind .diagnosis-section .investment-card .investment-features li::before {
+    content: '✧';
+    position: absolute;
+    left: 0;
+    color: #FFFFFF;
+    font-size: 1.2em;
+}
+
+.machine-megamind .diagnosis-section .investment-card .explore-btn {
+    display: block;
+    margin-top: auto;
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--mm-text-primary);
+    font-family: var(--mm-futuristic-font);
+    text-transform: uppercase;
+    border-radius: 50px;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.machine-megamind .diagnosis-section .investment-card .explore-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Design for Investment Cards */
+@media (max-width: 992px) {
+    /* Responsive Investment Cards */
+    .machine-megamind .diagnosis-section .investment-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-image-wrapper {
+        width: 100%;
+        max-width: none;
+        margin-right: 0;
+        margin-bottom: 25px;
+        flex-shrink: 0;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-text-content {
+        width: 100%;
+        padding-left: 0;
+        text-align: center; /* Ensure content inside is centered */
+        padding-top: 0;
+        max-width: 100%;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-title {
+        margin-top: 0;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-description {
+        text-align: center; /* Override default left-align */
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .explore-btn {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-features {
+        display: inline-block; /* Allow centering */
+        text-align: left; /* Keep the list items left-aligned */
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .machine-megamind .diagnosis-section .investment-grid {
+        margin: 25px auto;
+    }
+    
+    .machine-megamind .diagnosis-section .investment-card .investment-title {
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
+    }
+    
+    .machine-megamind .diagnosis-section .investment-card .investment-price {
+        font-size: clamp(1.6rem, 5vw, 2rem);
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-description,
+    .machine-megamind .diagnosis-section .investment-card .investment-features li {
+        font-size: 0.85rem;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-text-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .machine-megamind .diagnosis-section .investment-card .investment-description {
+        text-align: center;
+    }
+
+    .machine-megamind .diagnosis-section .investment-card .investment-features {
+        display: inline-block;
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+

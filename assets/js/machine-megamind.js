@@ -1,7 +1,7 @@
 // JavaScript for Machine Megamind page
 
 document.addEventListener('DOMContentLoaded', () => {
-    ('Machine Megamind page specific JS loaded.');
+    console.log('Machine Megamind page specific JS loaded.');
 
     // FAQ Accordion functionality (if present on Machine Megamind)
     const faqItems = document.querySelectorAll('.machine-megamind .faq-item');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('z-index', 'auto', 'important');
         
         img.addEventListener('load', function() {
-            (`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
+            console.log(`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
         });
         
         img.addEventListener('error', function() {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     if (blondeBotImages.length > 0) {
-        ('Found', blondeBotImages.length, 'Blonde Bot images to monitor on Machine Megamind page.');
+        console.log('Found', blondeBotImages.length, 'Blonde Bot images to monitor on Machine Megamind page.');
     }
 
     // Dynamic Page Background Scroll Logic
@@ -146,8 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupScrollDrivenHeroSlideshow();
     }, 100);
 
-    // Initialize Offering Card Tilt Effect (if present)
-    initOfferingCardTilt();
+    // Initialize Investment Card Tilt Effect (updated from offering card tilt)
+    initInvestmentCardTilt();
 
 }); 
 
@@ -223,7 +223,7 @@ function initProcessScrollImageAnimation() {
 
     window.addEventListener('scroll', handleAnimation, { passive: true });
     window.addEventListener('resize', handleAnimation, { passive: true });
-    ("Machine Megamind: Process scroll image animation initialized.");
+    console.log("Machine Megamind: Process scroll image animation initialized.");
 }
 
 // Scroll-Driven Hero Background Slideshow Functionality
@@ -305,43 +305,51 @@ function setupScrollDrivenHeroSlideshow() {
     console.log(`Machine Megamind: Hero background slideshow initialized with ${numImages} images.`);
 }
 
-// Function to initialize the 3D tilt effect on offering cards (if present)
-function initOfferingCardTilt() {
-    const cards = document.querySelectorAll('.machine-megamind .offering-card');
-    if (cards.length === 0) {
-        // ('Machine Megamind: No offering cards found for tilt effect. Feature not active.');
-        return;
-    }
-    const MAX_ROTATION = 2; 
+// Function to initialize the 3D tilt effect on investment cards (EXACT copy from artificial-ingenious.js)
+function initInvestmentCardTilt() {
+    const cards = document.querySelectorAll('.machine-megamind .diagnosis-section .investment-card');
+    const MAX_ROTATION = 2; // Max rotation in degrees
 
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
+            // e.offsetX/Y are relative to the padding box of the target element.
+            // This is usually what we want for calculating position within the card itself.
             const mouseX = e.offsetX - rect.width / 2;
             const mouseY = e.offsetY - rect.height / 2;
+
+            // Calculate rotation:
+            // RotateY based on mouseX position (horizontal movement -> Y-axis rotation)
+            // RotateX based on mouseY position (vertical movement -> X-axis rotation)
+            // The -1 for rotateX makes it tilt "into" the screen at the top when mouse is high,
+            // and "out" at the bottom when mouse is low.
             const rotateY = (mouseX / (rect.width / 2)) * MAX_ROTATION;
             const rotateX = -1 * (mouseY / (rect.height / 2)) * MAX_ROTATION;
+
             card.style.setProperty('--rotateX', `${rotateX}deg`);
             card.style.setProperty('--rotateY', `${rotateY}deg`);
         });
 
         card.addEventListener('mouseleave', () => {
+            // Reset the rotation when the mouse leaves the card
+            // The CSS transition will smoothly return the card to its original state
             card.style.setProperty('--rotateX', '0deg');
             card.style.setProperty('--rotateY', '0deg');
+            // We can also explicitly reset the transform if needed, but relying on CSS vars is cleaner
+            // card.style.transform = ''; // Or specific base transform if any
         });
     });
-    ("Machine Megamind: Offering card tilt effect initialized for", cards.length, "cards.");
 }
 
 // Placeholder for any specific Machine Megamind logic that might differ significantly
 // from Artificial Ingenious or is unique to this page.
 function initMachineMegamindSpecificFeatures() {
-    ("Initializing Machine Megamind specific features...");
+    console.log("Initializing Machine Megamind specific features...");
     // Example: if Machine Megamind has a unique interactive element
     // const specialElement = document.querySelector('.machine-megamind .special-interactive-element');
     // if (specialElement) {
     //     specialElement.addEventListener('click', () => {
-    //         ('Machine Megamind special element clicked!');
+    //         console.log('Machine Megamind special element clicked!');
     //     });
     // }
 }
@@ -349,4 +357,4 @@ function initMachineMegamindSpecificFeatures() {
 // Call page-specific features initializer
 document.addEventListener('DOMContentLoaded', () => {
     initMachineMegamindSpecificFeatures();
-}); 
+});

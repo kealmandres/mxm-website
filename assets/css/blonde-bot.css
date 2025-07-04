@@ -12,10 +12,18 @@ body.detail-page.artificial-ingenious {
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
     padding-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-left: clamp(7.5rem, 5vw, 6.5rem);
-    padding-right: clamp(7.5rem, 5vw, 6.5rem);
+    padding-left:clamp(12rem, 5vw, 3.5rem);
+    padding-right: clamp(12rem, 5vw, 3.5rem);
 }
 
+
+@media (max-width: 1080px) {
+    body.detail-page.artificial-ingenious {
+        padding-top: clamp(1.5rem, 5vw, 3.5rem);
+        padding-left: clamp(6rem, 5vw, 6.5rem);
+        padding-right: clamp(6rem, 5vw, 6.5rem);
+    }
+}
 
 
 @media (max-width: 768px) {
