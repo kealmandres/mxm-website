@@ -606,14 +606,14 @@ body.detail-page.subpage {
 }
 .subpage .result-label { font-size: 0.75rem; color: var(--ai-text-secondary); }
 .subpage .testimonial {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-style: italic;
     color: var(--ai-text-secondary);
     border-left: 3px solid rgba(255, 255, 255, 0.5); /* White border */
     padding-left: 15px;
     text-align: left; /* Align testimonial text to left */
 }
-.subpage .testimonial-author { font-weight: bold; margin-top: 0.5rem; display: block; }
+.subpage .testimonial-author { font-weight: normal; margin-top: 0.5rem; display: block; }
 
 /* FAQ Section */
 .subpage .faq-accordion .faq-item {

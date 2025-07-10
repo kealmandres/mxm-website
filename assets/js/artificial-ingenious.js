@@ -176,6 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Offering Card Tilt Effect
     initOfferingCardTilt();
 
+    // Initialize Testimonials Functionality
+    initTestimonialsSection();
+
     // Initialize AI Music Player - DISABLED: Using persistent music player instead
     // initAiMusicPlayer();
 
@@ -596,3 +599,266 @@ function initAiMusicPlayer() {
     });
 }
 */
+
+// Testimonials Section Functionality
+function initTestimonialsSection() {
+    const testimonialsSection = document.querySelector('.artificial-ingenious .testimonials-section');
+    const testimonialsRows = document.querySelectorAll('.artificial-ingenious .testimonials-row');
+    const testimonialsCards = document.querySelectorAll('.artificial-ingenious .testimonial-card');
+    
+    if (!testimonialsSection || testimonialsRows.length === 0) {
+        console.warn('Testimonials section not found or no testimonial rows available.');
+        return;
+    }
+
+    let isPaused = false;
+    let pauseTimeout;
+    let isTouch = false;
+
+    // Detect touch device
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    // Function to pause specific row animation
+    function pauseRowAnimation(row) {
+        row.style.animationPlayState = 'paused';
+    }
+
+    // Function to resume specific row animation
+    function resumeRowAnimation(row) {
+        row.style.animationPlayState = 'running';
+    }
+
+    // Function to pause both animations (for touch/keyboard)
+    function pauseAllAnimations() {
+        if (isPaused) return;
+        isPaused = true;
+        testimonialsRows.forEach(row => {
+            row.style.animationPlayState = 'paused';
+        });
+    }
+
+    // Function to resume both animations (for touch/keyboard)
+    function resumeAllAnimations() {
+        isPaused = false;
+        testimonialsRows.forEach(row => {
+            row.style.animationPlayState = 'running';
+        });
+    }
+
+    // Initialize animations to start immediately
+    function initializeAnimations() {
+        testimonialsRows.forEach((row, index) => {
+            row.style.animationPlayState = 'running';
+            // Ensure proper initial positioning
+            if (index === 0) {
+                // Row 1 starts at position 0
+                row.style.transform = 'translateX(0)';
+            } else {
+                // Row 2 starts off-screen left
+                row.style.transform = 'translateX(-100%)';
+            }
+        });
+    }
+
+    // Function to handle auto-resume after delay
+    function scheduleAutoResume() {
+        clearTimeout(pauseTimeout);
+        pauseTimeout = setTimeout(() => {
+            if (!isTouch) {
+                resumeAllAnimations();
+            }
+        }, 3000); // Resume after 3 seconds of no interaction
+    }
+
+    // Desktop hover events with tilt effect - individual row pausing
+    if (!isTouchDevice) {
+        testimonialsRows.forEach(row => {
+            const cardsInRow = row.querySelectorAll('.testimonial-card');
+            const MAX_ROTATION = 2; // Max rotation in degrees
+
+            // Row-level hover events
+            row.addEventListener('mouseenter', () => {
+                pauseRowAnimation(row);
+            });
+
+            row.addEventListener('mouseleave', () => {
+                resumeRowAnimation(row);
+                // Reset global pause state when mouse leaves the row
+                isPaused = false;
+            });
+
+            // Card-level tilt effects
+            cardsInRow.forEach(card => {
+                card.addEventListener('mouseleave', () => {
+                    // Reset tilt on mouse leave
+                    card.style.setProperty('--rotateX', '0deg');
+                    card.style.setProperty('--rotateY', '0deg');
+                });
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left - rect.width / 2;
+                    const mouseY = e.clientY - rect.top - rect.height / 2;
+
+                    // Calculate rotation for tilt effect
+                    const rotateY = (mouseX / (rect.width / 2)) * MAX_ROTATION;
+                    const rotateX = -1 * (mouseY / (rect.height / 2)) * MAX_ROTATION;
+
+                    card.style.setProperty('--rotateX', `${rotateX}deg`);
+                    card.style.setProperty('--rotateY', `${rotateY}deg`);
+                });
+            });
+        });
+    }
+
+    // Touch events for mobile
+    if (isTouchDevice) {
+        testimonialsCards.forEach(card => {
+            card.addEventListener('touchstart', (e) => {
+                isTouch = true;
+                pauseAllAnimations();
+                scheduleAutoResume();
+            }, { passive: true });
+
+            card.addEventListener('touchend', () => {
+                isTouch = false;
+                scheduleAutoResume();
+            }, { passive: true });
+        });
+
+        // Section-level touch events
+        testimonialsSection.addEventListener('touchstart', (e) => {
+            isTouch = true;
+            pauseAllAnimations();
+            scheduleAutoResume();
+        }, { passive: true });
+
+        testimonialsSection.addEventListener('touchend', () => {
+            isTouch = false;
+            scheduleAutoResume();
+        }, { passive: true });
+    }
+
+    // Keyboard navigation support
+    testimonialsCards.forEach(card => {
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'article');
+        card.setAttribute('aria-label', 'Customer testimonial');
+
+        card.addEventListener('focus', () => {
+            pauseAllAnimations();
+        });
+
+        card.addEventListener('blur', () => {
+            resumeAllAnimations();
+        });
+
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                // Toggle pause/resume on Enter or Space
+                if (isPaused) {
+                    resumeAllAnimations();
+                } else {
+                    pauseAllAnimations();
+                }
+            }
+        });
+    });
+
+    // Intersection Observer for performance optimization
+    const observerOptions = {
+        root: null,
+        rootMargin: '50px',
+        threshold: 0.1
+    };
+
+    const testimonialsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Section is visible, reset pause state and resume animations
+                isPaused = false;
+                clearTimeout(pauseTimeout);
+                
+                // Small delay to ensure DOM is ready and animations can resume properly
+                setTimeout(() => {
+                    resumeAllAnimations();
+                    // Force animation restart if they appear stuck
+                    testimonialsRows.forEach((row, index) => {
+                        if (row.style.animationPlayState === 'paused') {
+                            row.style.animationPlayState = 'running';
+                        }
+                    });
+                    console.log('Testimonials animations resumed after section became visible');
+                }, 100);
+            } else {
+                // Section is not visible, pause animations to save resources
+                testimonialsRows.forEach(row => {
+                    row.style.animationPlayState = 'paused';
+                });
+            }
+        });
+    }, observerOptions);
+
+    testimonialsObserver.observe(testimonialsSection);
+
+    // Handle reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    
+    function handleReducedMotion() {
+        if (prefersReducedMotion.matches) {
+            testimonialsRows.forEach(row => {
+                row.style.animationPlayState = 'paused';
+            });
+        } else {
+            resumeAllAnimations();
+        }
+    }
+
+    // Initial check and listener for reduced motion
+    handleReducedMotion();
+    prefersReducedMotion.addEventListener('change', handleReducedMotion);
+
+    // Cleanup function (useful for SPA navigation)
+    window.testimonialsCleanup = () => {
+        clearTimeout(pauseTimeout);
+        testimonialsObserver.disconnect();
+        prefersReducedMotion.removeEventListener('change', handleReducedMotion);
+    };
+
+    // Performance monitoring
+    let animationFrameId;
+    
+    function monitorPerformance() {
+        const startTime = performance.now();
+        
+        animationFrameId = requestAnimationFrame(() => {
+            const endTime = performance.now();
+            const frameTime = endTime - startTime;
+            
+            // If frame time is too high (> 16.67ms for 60fps), reduce animation complexity
+            if (frameTime > 20) {
+                testimonialsRows.forEach(row => {
+                    row.style.willChange = 'auto';
+                });
+            }
+            
+            monitorPerformance();
+        });
+    }
+
+    // Start performance monitoring
+    monitorPerformance();
+
+    // Cleanup performance monitoring on page unload
+    window.addEventListener('beforeunload', () => {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    });
+
+    // Initialize animations immediately
+    initializeAnimations();
+
+    console.log('Testimonials section initialized with enhanced touch and accessibility support.');
+}
