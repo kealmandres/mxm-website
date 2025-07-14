@@ -113,8 +113,7 @@
     <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
     <!-- Cookie Consent Styles -->
     <link rel="stylesheet" href="../assets/css/cookie-consent.css">
-  <script crossorigin="anonymous" src="https://kit.fontawesome.com/a076d05399.js">
-  </script>
+
  </head>
  <body class="detail-page artificial-ingenious persistent-music-active">
     <!-- Required Audio Element for Persistent Music Player -->
@@ -523,6 +522,43 @@
     <!-- Future Observatory Page Scripts -->
     <script src="../assets/js/future-observatory.js" defer></script>
     <script src="../assets/js/performance-optimizer.js" defer></script>
+    
+    <!-- Volume Display Update Script -->
+    <script>
+        // Update volume display in real-time
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeDisplay = document.querySelector('.volume-display');
+        
+        if (volumeSlider && volumeDisplay) {
+            volumeSlider.addEventListener('input', function() {
+                volumeDisplay.textContent = Math.round(this.value * 100) + '%';
+            });
+        }
+        
+        // Update music status label based on playback state
+        function updateMusicLabel() {
+            const label = document.querySelector('.music-status-label');
+            if (window.persistentMusicPlayer && label) {
+                const isPlaying = window.persistentMusicPlayer.isPlaying();
+                label.textContent = isPlaying ? 'MxM Mix ♪' : 'MxM Mix';
+            }
+        }
+        
+        // Update label every second
+        setInterval(updateMusicLabel, 1000);
+        
+        // Suppress Chrome Cast extension errors that are harmless
+        window.addEventListener('error', function(event) {
+            if (event.message && event.message.includes('chrome-extension://invalid/')) {
+                event.preventDefault();
+                return true;
+            }
+            if (event.filename && event.filename.includes('cast_sender.js')) {
+                event.preventDefault();
+                return true;
+            }
+        });
+    </script>
     
  </body>
 </html>

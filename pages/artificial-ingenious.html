@@ -618,6 +618,8 @@
     </footer>
     
     <!-- Scripts -->
+    <!-- Cache Busting Script - Load first to handle other assets -->
+    <script src="../assets/js/cache-buster.js"></script>
     <script src="https://player.vimeo.com/api/player.js"></script>
     <!-- <script src="../assets/js/script.js"></script>
     <script src="../assets/js/animated-transitions.js"></script>
@@ -652,6 +654,18 @@
         
         // Update label every second
         setInterval(updateMusicLabel, 1000);
+        
+        // Suppress Chrome Cast extension errors that are harmless
+        window.addEventListener('error', function(event) {
+            if (event.message && event.message.includes('chrome-extension://invalid/')) {
+                event.preventDefault();
+                return true;
+            }
+            if (event.filename && event.filename.includes('cast_sender.js')) {
+                event.preventDefault();
+                return true;
+            }
+        });
     </script>
 </body>
 </html>

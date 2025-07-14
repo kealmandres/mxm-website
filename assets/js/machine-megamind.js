@@ -1,7 +1,6 @@
 // JavaScript for Machine Megamind page
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Machine Megamind page specific JS loaded.');
 
     // FAQ Accordion functionality (if present on Machine Megamind)
     const faqItems = document.querySelectorAll('.machine-megamind .faq-item');
@@ -26,12 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('visibility', 'visible', 'important');
         img.style.setProperty('z-index', 'auto', 'important');
         
-        img.addEventListener('load', function() {
-            console.log(`Blonde Bot image #${index + 1} loaded successfully: ${img.src}`);
-        });
-        
         img.addEventListener('error', function() {
-            console.error(`Failed to load Blonde Bot image #${index + 1}: ${img.src}`);
             const originalSrc = img.src;
             if (!originalSrc.includes('?t=')) {
                  setTimeout(() => {
@@ -39,14 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 500);
             }
         });
-        
-        if (img.complete && img.naturalHeight === 0) {
-            console.warn(`Blonde Bot image #${index + 1} might be missing or failed to load initially: ${img.src}`);
-        }
     });
-    if (blondeBotImages.length > 0) {
-        console.log('Found', blondeBotImages.length, 'Blonde Bot images to monitor on Machine Megamind page.');
-    }
+    // Blonde Bot images monitoring complete
 
     // Dynamic Page Background Scroll Logic
     const dynamicBg = document.getElementById('dynamic-page-background');
@@ -77,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', handlePageBackgroundScroll);
         handlePageBackgroundScroll(); 
     } else {
-        if (!dynamicBg) console.error('Machine Megamind: #dynamic-page-background element not found.');
-        if (!heroSection) console.error('Machine Megamind: .video-hero-section element not found for dynamic background.');
+        if (!dynamicBg) return;
+        if (!heroSection) return;
     }
 
     // Video Picture-in-Picture (PiP) scroll behavior (if video hero is present)
@@ -134,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoObserver = new IntersectionObserver(observerCallback, observerOptions);
         videoObserver.observe(videoHeroWrapper); 
     } else {
-        if (!videoHeroWrapper) console.warn('Machine Megamind: .video-hero-wrapper element not found for PiP. PiP feature will be disabled.');
+        if (!videoHeroWrapper) return;
         // No error for videoHeroSectionForPip if wrapper is missing, as it's dependent.
     }
 
@@ -155,19 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
 function initProcessScrollImageAnimation() {
     const processSection = document.querySelector('body.machine-megamind .process-section');
     if (!processSection) {
-        console.warn('Machine Megamind: Process section for scroll image animation not found. Feature disabled.');
         return;
     }
     
     const animationContainer = document.getElementById('process-scroll-animation-host');
     if (!animationContainer) {
-        console.error('Machine Megamind: Process scroll animation host (#process-scroll-animation-host) not found.');
         return;
     }
 
     const scrollingImage = animationContainer.querySelector('.scrolling-process-image');
     if (!scrollingImage) {
-        console.warn('Machine Megamind: Scrolling process image element not found within #process-scroll-animation-host. Feature disabled.');
         return;
     }
 
@@ -212,7 +197,6 @@ function initProcessScrollImageAnimation() {
     } else {
         scrollingImage.onload = setupInitialPosition;
         scrollingImage.onerror = () => {
-            console.error("Machine Megamind: Scrolling process image failed to load for animation.");
             scrollingImage.style.visibility = 'hidden';
         };
         if (scrollingImage.complete && scrollingImage.naturalWidth > 0) {
@@ -223,7 +207,7 @@ function initProcessScrollImageAnimation() {
 
     window.addEventListener('scroll', handleAnimation, { passive: true });
     window.addEventListener('resize', handleAnimation, { passive: true });
-    console.log("Machine Megamind: Process scroll image animation initialized.");
+    // Process scroll image animation initialized
 }
 
 // Scroll-Driven Hero Background Slideshow Functionality
@@ -231,19 +215,13 @@ function setupScrollDrivenHeroSlideshow() {
     const slideshowContainer = document.querySelector('body.machine-megamind .hero-background-slideshow');
     const sections = Array.from(document.querySelectorAll('.machine-megamind .page-section'));
 
-    console.log('Machine Megamind: Slideshow container found:', !!slideshowContainer);
-    console.log('Machine Megamind: Sections found:', sections.length);
-
     if (!slideshowContainer || sections.length === 0) {
-        console.warn('Machine Megamind: Slideshow container or sections not found for scroll-driven background. Feature disabled.');
         return;
     }
 
     const images = Array.from(slideshowContainer.querySelectorAll('.hero-bg-slide'));
-    console.log('Machine Megamind: Images found:', images.length);
     
     if (images.length === 0) {
-        console.warn('Machine Megamind: No images found for scroll-driven hero background slideshow.');
         return;
     }
 
@@ -302,7 +280,7 @@ function setupScrollDrivenHeroSlideshow() {
     });
 
     updateSlideshowBasedOnScroll(); // Initial call
-    console.log(`Machine Megamind: Hero background slideshow initialized with ${numImages} images.`);
+    // Hero background slideshow initialized
 }
 
 // Function to initialize the 3D tilt effect on investment cards (EXACT copy from artificial-ingenious.js)
@@ -344,7 +322,7 @@ function initInvestmentCardTilt() {
 // Placeholder for any specific Machine Megamind logic that might differ significantly
 // from Artificial Ingenious or is unique to this page.
 function initMachineMegamindSpecificFeatures() {
-    console.log("Initializing Machine Megamind specific features...");
+    // Initializing Machine Megamind specific features
     
     // Initialize testimonials section
     initTestimonialsSection();
@@ -372,7 +350,6 @@ function initTestimonialsSection() {
     const testimonialsCards = document.querySelectorAll('.machine-megamind .testimonial-card');
     
     if (!testimonialsSection || testimonialsRows.length === 0) {
-        console.warn('Testimonials section not found or no testimonial rows available.');
         return;
     }
 
@@ -554,7 +531,7 @@ function initTestimonialsSection() {
                             row.style.animationPlayState = 'running';
                         }
                     });
-                    console.log('Testimonials animations resumed after section became visible');
+                    // Testimonials animations resumed after section became visible
                 }, 100);
             } else {
                 // Section is not visible, pause animations to save resources
@@ -625,5 +602,5 @@ function initTestimonialsSection() {
     // Initialize animations immediately
     initializeAnimations();
 
-    console.log('Testimonials section initialized with enhanced touch and accessibility support.');
+    // Testimonials section initialized with enhanced touch and accessibility support
 }

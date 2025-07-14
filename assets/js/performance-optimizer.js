@@ -3,7 +3,6 @@
  * This helps prioritize critical content and improves initial page load performance.
  */
 const loadThirdPartyScripts = () => {
-    console.log("User interaction detected, loading third-party scripts.");
     
     // Load Google Tag Manager
     const gtmScript = document.createElement('script');

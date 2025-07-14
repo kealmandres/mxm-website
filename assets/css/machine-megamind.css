@@ -1688,13 +1688,13 @@ artificial-ingenious .bb-diagnosis-cta-image {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-100%);
+        transform: translateX(-150%);
     }
 }
 
 @keyframes scroll-left-to-right {
     0% {
-        transform: translateX(-100%);
+        transform: translateX(-150%);
     }
     100% {
         transform: translateX(0);
@@ -1780,7 +1780,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
 
 @media (max-width: 480px) {
     .machine-megamind .testimonial-card {
-        height: clamp(280px, 37vh, 580px);
+        height: clamp(280px, 50vh, 580px);
         min-width: 200px;
         max-width: 400px;
         padding: 14px;
@@ -1794,7 +1794,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
     
     .machine-megamind .testimonials-row {
         gap: 14px;
-        animation-duration: 35s;
+        animation-duration: 25s;
     }
     
     .machine-megamind .testimonial-text {
@@ -1816,6 +1816,10 @@ artificial-ingenious .bb-diagnosis-cta-image {
     .machine-megamind .testimonial-author {
         min-height: 50px;
         padding-top: 12px;
+    }
+
+    .machine-megamind .testimonials-row-2{
+        display: none !important;
     }
 }
 

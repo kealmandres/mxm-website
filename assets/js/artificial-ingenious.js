@@ -602,12 +602,11 @@ function initAiMusicPlayer() {
 
 // Testimonials Section Functionality
 function initTestimonialsSection() {
-    const testimonialsSection = document.querySelector('.artificial-ingenious .testimonials-section');
-    const testimonialsRows = document.querySelectorAll('.artificial-ingenious .testimonials-row');
-    const testimonialsCards = document.querySelectorAll('.artificial-ingenious .testimonial-card');
+    const testimonialsSection = document.querySelector('.testimonials-rows-container');
+    const testimonialsRows = document.querySelectorAll('.testimonials-row');
+    const testimonialsCards = document.querySelectorAll('.testimonial-card');
     
     if (!testimonialsSection || testimonialsRows.length === 0) {
-        console.warn('Testimonials section not found or no testimonial rows available.');
         return;
     }
 
@@ -789,7 +788,7 @@ function initTestimonialsSection() {
                             row.style.animationPlayState = 'running';
                         }
                     });
-                    console.log('Testimonials animations resumed after section became visible');
+                    //console.log('Testimonials animations resumed after section became visible');
                 }, 100);
             } else {
                 // Section is not visible, pause animations to save resources
@@ -860,5 +859,5 @@ function initTestimonialsSection() {
     // Initialize animations immediately
     initializeAnimations();
 
-    console.log('Testimonials section initialized with enhanced touch and accessibility support.');
+    //console.log('Testimonials section initialized with enhanced touch and accessibility support.');
 }
