@@ -1,0 +1,14 @@
+{
+  "name": "mxm-website",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "start": "python -m http.server 8000",
+    "preview": "python -m http.server 8000 --directory dist"
+  },
+  "devDependencies": {
+    "node": "^18.0.0"
+  }
+}
