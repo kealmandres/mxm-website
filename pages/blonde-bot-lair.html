@@ -143,6 +143,11 @@
     <link rel="icon" type="image/x-icon" href="../assets/images/mxm-logo.ico">
     
     <link rel="stylesheet" href="../assets/css/fonts.css">
+    
+    <!-- Preload critical fonts for better performance -->
+    <link rel="preload" href="../assets/fonts/EthnocentricUltraLightItalic.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="../assets/fonts/UniformExtraCondensed.ttf" as="font" type="font/ttf" crossorigin>
+    
     <link rel="stylesheet" href="../assets/css/blonde-bot.css">
     <!-- Persistent Music Player Styles -->
     <link rel="stylesheet" href="../assets/css/persistent-music-player.css">
@@ -272,10 +277,10 @@
         </div>
     </section>
 
-	<section class="page-section process-section" data-section-type="process">
+	<section class="page-section process-section" data-section-type="process" id="book-the-bot">
         <!-- <img src="../assets/images/blonde-bot/bb-holding-cube.png" alt="Blonde Bot introducing the coaching process" class="blonde-bot-image bb-process-intro"> -->
         <h2 class="section-title" style="text-transform: uppercase; margin-bottom: 0px;">Book  </h2>
-        <h2 class="section-title t2" style="font-family: 'Ethnocentric', sans-serif;  font-weight: 150; margin-top: -2rem; margin-bottom: 2rem;">the Blonde Bot</h2>
+        <h2 class="section-title t2" style="font-family: 'Ethnocentric', 'Uniform Extra Condensed', sans-serif; font-weight: 200; font-style: italic; margin-top: -1.8rem; margin-bottom: 2rem; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;">the Blonde Bot</h2>
         <div class="container" >
             <p class="intro-text" style="margin-bottom: 3rem;">Materialise Marissa and Electrify Your Next Event</p>
            
@@ -1129,27 +1134,135 @@ document.getElementById('email').addEventListener('blur', function() {
             width: 100%;
         }
 
+        /* Tablet and Mobile Fixes */
+        @media (max-width: 1024px) {
+            body {
+                /* Fix for iOS background-attachment: fixed issue */
+                background-attachment: scroll !important;
+            }
+            
+            /* Reduce backdrop-filter blur on mobile for better performance */
+            .booking-form-container {
+                backdrop-filter: blur(15px) !important;
+                -webkit-backdrop-filter: blur(15px) !important;
+            }
+            
+            /* Ensure text elements don't have unwanted backgrounds on mobile */
+            .section-title,
+            .intro-text,
+            h1, h2, h3, h4, h5, h6, p {
+                background: transparent !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+        }
+
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                background-attachment: scroll !important;
+            }
+        }
+
         /* Responsive styles for 900px and below */
         @media (max-width: 900px) {
+            body {
+                /* Better iOS viewport handling */
+                min-height: 100vh;
+                min-height: -webkit-fill-available;
+            }
+            
             .booking-form-container {
                 max-width: 90% !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
+                padding: 2rem 1.5rem !important;
             }
             
             /* Hide the blonde bot image in the booking section */
             .process-section .blonde-bot-image.bb-room-info {
                 display: none !important;
             }
+            
+            /* Ethnocentric font fixes for mobile */
+            .section-title.t2 {
+                font-size: 1.8rem !important;
+                line-height: 1.3 !important;
+                letter-spacing: 1px !important;
+            }
         }
 
-        /* Responsive form grid */
+        /* Responsive form grid and mobile optimizations */
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .section-title.t2 {
+                font-size: 1.6rem !important;
+                margin-top: -1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .intro-text {
+                font-size: 1rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 2rem !important;
+            }
+        }
+
+        /* iPhone and small mobile devices */
+        @media (max-width: 414px) {
+            .booking-form-container {
+                padding: 1.5rem 1rem !important;
+                margin: 0.5rem auto !important;
+            }
+            
+            .section-title.t2 {
+                font-size: 1.4rem !important;
+                letter-spacing: 0.5px !important;
+            }
+            
+            .speaking-topics-list {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 1rem !important;
+            }
         }
     </style>
+
+    <!-- Font Loading Detection Script -->
+    <script>
+        // Font loading detection for better fallback
+        function checkFontLoaded() {
+            const ethnocentricElements = document.querySelectorAll('.section-title.t2');
+            ethnocentricElements.forEach(element => {
+                if (element) {
+                    // Check if Ethnocentric font is loaded
+                    const computedStyle = window.getComputedStyle(element);
+                    const fontFamily = computedStyle.getPropertyValue('font-family');
+                    
+                    // If Ethnocentric isn't loaded, apply fallback styling
+                    if (!fontFamily.includes('Ethnocentric')) {
+                        element.style.fontFamily = "'Uniform Extra Condensed', sans-serif";
+                        element.style.fontWeight = '300';
+                        element.style.fontStyle = 'normal';
+                        element.style.letterSpacing = '3px';
+                    }
+                }
+            });
+        }
+
+        // Check font loading after page load
+        window.addEventListener('load', function() {
+            setTimeout(checkFontLoaded, 100);
+        });
+
+        // Also check after DOM content loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(checkFontLoaded, 500);
+        });
+    </script>
 
     <!-- Performance Optimizer Script -->
     <script src="../assets/js/performance-optimizer.js" defer></script>

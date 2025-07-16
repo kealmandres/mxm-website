@@ -1050,7 +1050,7 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     }
     .t2{
-        margin-top: -25px !important;
+        margin-top: -20px !important;
     }
 }
 @media (max-width: 992px) {
@@ -1481,24 +1481,35 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 
 /* Machine Megamind Offering Title */
 .mm-offering-title {
-    font-family: "Ethnocentric", sans-serif;
+    font-family: "Ethnocentric", "Uniform Extra Condensed", sans-serif;
     font-size: 1.4rem;
     font-weight: 200;
+    font-style: italic;
     color: rgba(255, 255, 255, 0.95);
     margin-bottom: 0.75rem;
     letter-spacing: 1px;
     text-transform: uppercase;
+    /* iOS font rendering improvements */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* Machine Megamind Offering Description */
 .mm-offering-description {
-    font-family: "Ethnocentric", sans-serif;
+    font-family: "Ethnocentric", "Uniform Extra Condensed", sans-serif;
     font-size: 0.865rem;
+    font-weight: 200;
+    font-style: italic;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 1rem;
     text-align: left;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /* iOS font rendering improvements */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* Machine Megamind Features List */
@@ -1510,13 +1521,19 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
 }
 
 .mm-offering-features li {
-    font-family: "Ethnocentric", sans-serif;
+    font-family: "Ethnocentric", "Uniform Extra Condensed", sans-serif;
     font-size: 0.8rem;
+    font-weight: 200;
+    font-style: italic;
     color: rgba(255, 255, 255, 0.7);
     padding: 0.3rem 0;
     padding-left: 1rem;
     position: relative;
     line-height: 1.4;
+    /* iOS font rendering improvements */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     
     font-size: 1rem;
 }
@@ -2388,5 +2405,88 @@ backdrop-filter: blur(10px);      /* the glass/frost effect */
     .artificial-ingenious .testimonials-rows-container::before,
     .artificial-ingenious .testimonials-rows-container::after {
         width: 40px;
+    }
+}
+
+/* iOS Safari and Mobile Optimizations */
+@media (max-width: 1024px) {
+    body {
+        /* Fix for iOS background-attachment: fixed issue */
+        background-attachment: scroll !important;
+    }
+    
+    /* Reduce backdrop-filter blur on mobile for better performance - only apply to container elements */
+    .offering-card,
+    .glass-card,
+    .mm-offering-card {
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+    }
+    
+    /* Ensure text elements don't have unwanted backgrounds on mobile */
+    .mm-offering-title,
+    .mm-offering-description,
+    .mm-offering-features li,
+    .section-title,
+    .intro-text,
+    h1, h2, h3, h4, h5, h6, p {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+    body {
+        background-attachment: scroll !important;
+        /* Better iOS viewport handling */
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+    }
+    
+    .offering-card,
+    .glass-card,
+    .mm-offering-card {
+        /* Force hardware acceleration for smoother rendering */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+}
+
+/* Mobile font size adjustments for Ethnocentric elements */
+@media (max-width: 768px) {
+    .mm-offering-title {
+        font-size: 1.2rem !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    .mm-offering-description {
+        font-size: 0.8rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    .mm-offering-features li {
+        font-size: 0.75rem !important;
+        line-height: 1.3 !important;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 414px) {
+    .mm-offering-title {
+        font-size: 1.1rem !important;
+        letter-spacing: 0.3px !important;
+    }
+    
+    .mm-offering-description {
+        font-size: 0.75rem !important;
+    }
+    
+    .mm-offering-features li {
+        font-size: 0.7rem !important;
     }
 }
