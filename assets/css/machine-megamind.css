@@ -1072,7 +1072,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
     align-items: center;
     justify-content: space-between;
     gap: 5rem;
-    margin-bottom: 6rem;
+    margin-bottom: 4rem;
     position: relative;
 }
 
@@ -1261,6 +1261,7 @@ artificial-ingenious .bb-diagnosis-cta-image {
     background-color: rgba(255, 255, 255, 0.2);
     opacity: 0.7;
 }
+
 
 .machine-megamind h3 {
     text-transform: uppercase;
