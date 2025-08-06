@@ -59,6 +59,72 @@ function loadSubstackFeed() {
         });
 }
 
+// New function to get the very first post and place it at the top
+function loadSubstackFeedWithFirstPostFeatured() {
+    
+    fetch('https://api.rss2json.com/v1/api.json?rss_url=https://marissakos.substack.com/feed')
+        .then(r => r.json())
+        .then(data => {
+            console.log(data);
+            const feed = document.getElementById('substack-feed-1');
+            if (!feed) {
+                console.error('Substack feed-1 container not found');
+                return;
+            }
+            
+            // Get the oldest post (last item in the array)
+            if (data.items && data.items.length > 0) {
+                const oldestPost = data.items[data.items.length - 1];
+                const oldestPostHtml = createPostHTML(oldestPost, true); // true indicates it's the featured post
+                feed.innerHTML = oldestPostHtml;
+            }
+        })
+        .catch(error => {
+            console.error('RSS Feed Error:', error);
+            const feed = document.getElementById('substack-feed-1');
+            if (feed) {
+                feed.innerHTML = 'Unable to load posts';
+            }
+        });
+}
+
+// Helper function to create post HTML
+function createPostHTML(post, isFeatured = false) {
+    // Handle thumbnail with fallback
+    let thumbnailSrc = post.thumbnail || post.enclosure?.link || '';
+    
+    // If no thumbnail, try to extract from content
+    if (!thumbnailSrc && post.content) {
+        const imgMatch = post.content.match(/<img[^>]+src="([^">]+)"/);
+        if (imgMatch) {
+            thumbnailSrc = imgMatch[1];
+        }
+    }
+    
+    // Fallback to a default image if still no thumbnail
+    if (!thumbnailSrc) {
+        thumbnailSrc = '../assets/images/future-observatory/default-post-image.png';
+    }
+    
+    // Add featured class if this is the first post
+    const featuredClass = isFeatured ? ' featured-post' : '';
+    
+    return `
+        <a href="${post.link}" target="_blank">
+            <div class="mm-offering-card${featuredClass}">
+                <div class="mm-offering-text-content">
+                    <img src="${thumbnailSrc}" 
+                         alt="${post.title}"
+                         onerror="this.style.display='none';"
+                         onload="">
+                    <h3 class="mm-offering-title">${post.title}</h3>
+                    <p class="mm-offering-description">${post.description}</p>
+                </div>
+            </div>
+        </a>
+    `;
+}
+
 // Enhanced YouTube Video Detection
 function setupYouTubeDetection() {
     
@@ -392,6 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize all components
     loadSubstackFeed();
+    loadSubstackFeedWithFirstPostFeatured();
     setupYouTubeDetection();
     setupVolumeDisplay();
     setupCrystalCubeForm();
