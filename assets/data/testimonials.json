@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "updatedAt": "2025-08-08",
+  "testimonials": [
+    {
+      "id": "janine-price",
+      "text": "Marissa’s leadership as Chief of Staff is what exceptional management looks like. No matter how much chaos and uncertainty, Marissa became the steady force that held our team together. Marissa leads with both strength and empathy. She anticipated our needs, advocated fiercely for our wellbeing, and created an environment where we could do our best work despite the circumstances around us. Her communication was always clear, her support unwavering, and her problem-solving abilities extraordinary. She didn’t just manage processes - she nurtured people. Marissa has this rare gift of making everyone around her feel valued, heard, and empowered. She elevated not just our output, but our confidence and professional growth.",
+      "authorName": "Janine Price",
+      "authorTitle": "Influencer Specialist",
+      "authorCompany": "HerdMSL"
+    },
+    {
+      "id": "lorraine-hopkins",
+      "text": "When Marissa was our team’s Chief of Staff, she made everyone feel valued. She had this incredible gift for reading the room - knowing exactly when to inject humour, when to push harder, and when someone just needed a coffee and a chat. She'd champion our ideas to leadership, protect us from unnecessary politics, and somehow make even the most mundane tasks feel meaningful. She turned our dreaded Monday meetings into sessions we actually looked forward to - part strategy, part comedy show, all to bolster morale and unity. Her emotional intelligence is extremely rare and her energy is infectious. If you get the chance to work with her, prepare to be inspired",
+      "authorName": "Lorraine Hopkins",
+      "authorTitle": "Agent / Producer",
+      "authorCompany": "Artist Editions"
+    },
+    {
+      "id": "sascha-flook",
+      "text": "Marissa and I have referred each other clients for years as our businesses have grown in tandem. The referral relationship we've built is pure gold. Every client I send to MxM comes back with their minds blown, and the clients she sends my way are perfectly primed to understand the value of AI-enhanced creative services. If you want someone who'll just set up ChatGPT for you, look elsewhere. If you want someone who'll fundamentally rewire how your business thinks about and uses AI, Marissa is the key to your AI literacy. What really sets Marissa apart is her project systemisation methodology. Commanding brilliance from any LLM becomes like second nature, she does just teach you how to use AI; she demonstrates how to build interconnected AI workflows that talk to each other based on your specific needs, team and business. Compounding the power of LLM’s as the navigator to build your agentic ecosystems. I’ve seen clients go from AI-illiterate to AI-fluent in 8 weeks. Her 'mother threads' process is genuinely game-changing - it's like having a master architect design the blueprint for every AI conversation your team will ever need.",
+      "authorName": "Sascha Flook",
+      "authorTitle": "Founder & CEO",
+      "authorCompany": "Digital by Sasch"
+    },
+    {
+      "id": "scott-crawford",
+      "text": "Marissa Kos is that rare combination of intellect, instinct, and velocity. A consummate operator in both marketing and AI, she doesn’t just follow trends she bends them to her will. Her energy is relentless, her passion disarming, and her execution razor sharp. In a world full of noise, Marissa is a signal. A force to be reckoned with.",
+      "authorName": "Scott Crawford",
+      "authorTitle": "Founder & CEO",
+      "authorCompany": "3verest"
+    },
+    {
+      "id": "jonothan-chilcott",
+      "text": "Marissa at MxM has helped us when it comes to leveraging AI, AI agents, and agentic workflows, our go to AI consultant across various ventures. Marissa has helped us identify exactly where AI can streamline and enhance business processes, making automation more effective and ensuring these solutions are scalable. Marissa's deep knowledge and industry connections make her a valuable resource for businesses looking to integrate AI-driven solutions into their business. Whether you’re exploring AI agents or refining workflows with automation, I highly recommend you set up a call with Marissa to discuss all things AI.",
+      "authorName": "Jonothan Chilcott",
+      "authorTitle": "Founder",
+      "authorCompany": "Marlo Wellness"
+    },
+    {
+      "id": "sami-jarrous",
+      "text": "I’ve collaborated with Marissa on several projects, and her expertise in AI and marketing has been transformative for our business. Since working together, we’ve scaled our copy and marketing output by 2.5 to 3 times, cut down content creation time by roughly two hours a day, and completely rethought our positioning strategy for the better. I've found her insights to be sharp, actionable, and high-impact. I highly recommend her.",
+      "authorName": "Sami Jarrous",
+      "authorTitle": "Co-Founder & Co-CEO",
+      "authorCompany": "Mateship"
+    },
+    {
+      "id": "avani-malhotra",
+      "text": "Working with Marissa and the MxM team has been nothing short of amazing. The coaching has allowed us to use and leverage AI in ways we never thought possible and bring forward better solutions to our own clients as well as within the business ourselves. But here's what really impressed me, it wasn't just about the tech, Marissa's ability to understand brand mission and translate it into AI-powered systems that actually enhance creativity is brilliant. If you're on the fence about AI integration, stop overthinking it and call MxM.",
+      "authorName": "Avani Malhotra",
+      "authorTitle": "Digital strategist & Co-Founder",
+      "authorCompany": "SME Digital"
+    },
+    {
+      "id": "fiorella-bonfiglioli",
+      "text": "Working with Marissa is like having an AI oracle on speed dial. She's spent years diving deep into artificial intelligence research and emerges with insights that consistently blow minds and deliver real results. Her passion for excellence isn't just talk - it's woven into every recommendation, strategy, and solution she crafts. Marissa has this rare combination of creative vision and analytical precision that makes her both innovative and data-driven. Beyond her technical brilliance, she's simply a joy to collaborate with - the kind of person who makes complex AI challenges feel manageable and exciting. When Marissa's handling your AI strategy, rest assured, you're working with someone who genuinely cares about your success and has the tools to make it happen.",
+      "authorName": "Fiorella Bonfiglioli",
+      "authorTitle": "Founder and Director",
+      "authorCompany": "Palermo Agency"
+    },
+    {
+      "id": "tracey-mietzke",
+      "text": "I've had the privilege of watching Marissa build MxM from the ground up. From the very beginning, her vision, professionalism, and relentless drive were unmistakable. Her authentic leadership style commands respect through competence, integrity, and an infectious passion for innovation. And make no mistake — Marissa might be young in chronological age, but she’s dynamic, fearless, and a true force - you want her in your corner! Her ability to articulate complex concepts with clarity, treat everyone with genuine warmth, and maintain unwavering professionalism under pressure is remarkable. She's the kind of person who elevates every room she enters and every project she touches. Having observed her journey from those early days, I can say with absolute certainty that Marissa represents the future of business - brilliant, bold, and beautifully human.",
+      "authorName": "Tracey Mietzke",
+      "authorTitle": "COO",
+      "authorCompany": "Athas salsalero"
+    }
+  ]
+}
+
+

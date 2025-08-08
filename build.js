@@ -73,6 +73,8 @@ class AssetVersioner {
                 
                 // Save versioned file
                 fs.writeFileSync(path.join(distPath, newFileName), content);
+                // Also write an unversioned copy so any runtime-injected URLs still resolve (e.g., JS-injected CSS links)
+                fs.writeFileSync(path.join(distPath, file), content);
                 
                 // Store mapping for HTML replacement
                 const originalPath = `${outputPath}/${file}`;
@@ -164,7 +166,7 @@ class AssetVersioner {
 
     copyStaticAssets() {
         // Copy non-CSS/JS assets
-        const assetDirs = ['images', 'fonts', 'audio'];
+        const assetDirs = ['images', 'fonts', 'audio', 'data'];
         
         assetDirs.forEach(dir => {
             const srcPath = path.join('./assets', dir);
