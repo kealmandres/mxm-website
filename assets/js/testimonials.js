@@ -371,7 +371,8 @@
         const cacheKey = 'mxm_testimonials_v1';
         const cachedRaw = localStorage.getItem(cacheKey) || sessionStorage.getItem(cacheKey);
         const fallbackSrc = '/assets/data/testimonials.json';
-        const webhookUrl = 'https://n8n.srv888335.hstgr.cloud/webhook/9a2b41cf-626b-4e0b-9d45-dbf5be28f574';
+        // Use same-origin proxy to comply with CSP
+        const webhookUrl = '/api/testimonials-webhook';
 
         const normalizeWebhookItems = (json) => {
           if (!Array.isArray(json)) return [];
@@ -410,7 +411,7 @@
         fetch(webhookUrl)
           .then(r => r.ok ? r.json() : Promise.reject(new Error('Webhook response not ok')))
           .then(json => {
-            const items = normalizeWebhookItems(json);
+            const items = Array.isArray(json?.testimonials) ? json.testimonials : normalizeWebhookItems(json);
             if (items && items.length) {
               try { localStorage.setItem(cacheKey, JSON.stringify({ testimonials: items, updatedAt: new Date().toISOString() })); } catch (_) {}
               renderAndInit(items);
