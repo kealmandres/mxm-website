@@ -330,6 +330,7 @@
         while (this.firstChild) container.appendChild(this.firstChild);
         this.appendChild(container);
       }
+      // Source JSON used to seed localStorage when missing
       const src = this.getAttribute('src') || this.getAttribute('data-src') || '/assets/data/testimonials.json';
       const renderFromData = (items) => {
         if (!Array.isArray(items) || items.length === 0) return false;
@@ -365,18 +366,72 @@
 
       const tryInit = () => { this._cleanup = initTestimonialsSection(this); };
 
-      // If there are no rows yet, try to fetch JSON and render; else keep existing
+      // Always sync with webhook. If cache exists, render it immediately, then refresh from webhook and re-render.
       if (!container.querySelector('.testimonials-row')) {
-        fetch(src).then(r => r.ok ? r.json() : Promise.reject()).then(json => {
-          const items = Array.isArray(json) ? json : (json && Array.isArray(json.testimonials) ? json.testimonials : []);
+        const cacheKey = 'mxm_testimonials_v1';
+        const cachedRaw = localStorage.getItem(cacheKey) || sessionStorage.getItem(cacheKey);
+        const fallbackSrc = '/assets/data/testimonials.json';
+        const webhookUrl = 'https://n8n.srv888335.hstgr.cloud/webhook/9a2b41cf-626b-4e0b-9d45-dbf5be28f574';
+
+        const normalizeWebhookItems = (json) => {
+          if (!Array.isArray(json)) return [];
+          return json
+            .filter(i => i && (i.property_is_active === true || i.property_is_active === 'true'))
+            .map(i => ({
+              id: i.id,
+              text: i.property_text || '',
+              authorName: i.property_author || i.name || '',
+              authorTitle: i.property_title || '',
+              authorCompany: i.property_company || ''
+            }));
+        };
+
+        const renderAndInit = (items) => {
           if (!renderFromData(items)) {
             container.innerHTML = getDefaultTestimonialsMarkup();
           }
+          // Re-init animations after re-render
+          try { if (this._cleanup) this._cleanup(); } catch (_) {}
           tryInit();
-        }).catch(() => {
-          container.innerHTML = getDefaultTestimonialsMarkup();
-          tryInit();
-        });
+        };
+
+        // Render cached immediately if available
+        try {
+          if (cachedRaw) {
+            const cached = JSON.parse(cachedRaw);
+            const items = Array.isArray(cached) ? cached : (cached && Array.isArray(cached.testimonials) ? cached.testimonials : []);
+            if (items && items.length) {
+              renderAndInit(items);
+            }
+          }
+        } catch (_) {}
+
+        // Always fetch webhook to sync latest
+        fetch(webhookUrl)
+          .then(r => r.ok ? r.json() : Promise.reject(new Error('Webhook response not ok')))
+          .then(json => {
+            const items = normalizeWebhookItems(json);
+            if (items && items.length) {
+              try { localStorage.setItem(cacheKey, JSON.stringify({ testimonials: items, updatedAt: new Date().toISOString() })); } catch (_) {}
+              renderAndInit(items);
+            } else {
+              throw new Error('Webhook returned no active items');
+            }
+          })
+          .catch((err) => {
+            const primary = src || fallbackSrc;
+            fetch(primary)
+              .then(r => r.ok ? r.json() : Promise.reject())
+              .then(json => {
+                const items = Array.isArray(json) ? json : (json && Array.isArray(json.testimonials) ? json.testimonials : []);
+                try { localStorage.setItem(cacheKey, JSON.stringify({ testimonials: items, updatedAt: new Date().toISOString() })); } catch (_) {}
+                renderAndInit(items);
+              })
+              .catch((err2) => {
+                container.innerHTML = getDefaultTestimonialsMarkup();
+                tryInit();
+              });
+          });
       } else {
         tryInit();
       }
@@ -390,9 +445,10 @@
   if (!customElements.get('mxm-testimonials')) {
     customElements.define('mxm-testimonials', MxmTestimonialsElement);
   }
-  // Alias singular tag for convenience
+  // Alias singular tag for convenience - must not reuse the same constructor
   if (!customElements.get('mxm-testimonial')) {
-    customElements.define('mxm-testimonial', MxmTestimonialsElement);
+    class MxmTestimonialsElementAlias extends MxmTestimonialsElement {}
+    customElements.define('mxm-testimonial', MxmTestimonialsElementAlias);
   }
 })();
 
