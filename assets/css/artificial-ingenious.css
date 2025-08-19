@@ -511,6 +511,44 @@ body.detail-page.artificial-ingenious {
     transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
  
 }
+
+/* Centered CTA container and responsive button for process + modal */
+.artificial-ingenious .ai-cta-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 75px;
+}
+
+.artificial-ingenious .ai-cta-button {
+    font-size: 1.5rem;
+    height: 55px;
+    line-height: 1;
+    padding: 0 24px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .artificial-ingenious .ai-cta-center {
+        padding: 30px 16px;
+    }
+    .artificial-ingenious .ai-cta-button {
+        width: 100%;
+        max-width: 520px;
+        font-size: 1.05rem;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .artificial-ingenious .ai-cta-button {
+        font-size: 1rem;
+        height: 48px;
+    }
+}
 .artificial-ingenious .explore-btn:hover {
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
