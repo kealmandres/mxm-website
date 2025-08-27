@@ -1,23 +1,23 @@
 /*
 #todos
-- [x] Define a reusable initializer identical to page-specific behavior
-- [x] Provide a Web Component <mxm-testimonials> for declarative use
-- [x] Support slotting raw HTML content (cards) to preserve markup
-- [x] Auto-init animations, hover/touch pause, accessibility, perf observer
-- [x] Expose cleanup for SPA
+- [x] Simplified JS - only handles HTML structure and data fetching
+- [x] All animations now handled by CSS-only infinite scroll
+- [x] Automatic duplication for seamless loops
+- [x] Web Component support maintained
+- [x] No animation JavaScript required
 */
 
 (function () {
-  // Ensure CSS is present so pages only need to include this JS
+  // Ensure CSS is present
   (function ensureTestimonialsCssLoaded() {
     if (document.querySelector('link[data-mxm-testimonials-css], style[data-mxm-testimonials-css]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    // Use absolute path so it works from any subpage
     link.href = '/assets/css/testimonials.css';
     link.setAttribute('data-mxm-testimonials-css', 'true');
     document.head.appendChild(link);
   })();
+
   function getDefaultTestimonialsMarkup() {
     return `
       <!-- Row 1 - Scrolling Right to Left -->
@@ -58,7 +58,7 @@
             </div>
           </div>
         </div>
-        <!-- Duplicate cards for seamless infinite scroll -->
+        <!-- CSS-only infinite scroll requires duplication for seamless loop -->
         <div class="testimonial-card">
           <div class="testimonial-content">
             <p class="testimonial-text">When Marissa was our team's Chief of Staff, she made everyone feel valued. She had this incredible gift for reading the room - knowing exactly when to inject humour, when to push harder, and when someone just needed a coffee and a chat. She'd champion our ideas to leadership, protect us from unnecessary politics, and somehow make even the most mundane tasks feel meaningful. She turned our dreaded Monday meetings into sessions we actually looked forward to - part strategy, part comedy show, all to bolster morale and unity. Her emotional intelligence is extremely rare and her energy is infectious. If you get the chance to work with her, prepare to be inspired</p>
@@ -135,7 +135,7 @@
             </div>
           </div>
         </div>
-        <!-- Duplicate cards for seamless infinite scroll -->
+        <!-- CSS-only infinite scroll requires duplication for seamless loop -->
         <div class="testimonial-card">
           <div class="testimonial-content">
             <p class="testimonial-text">I've collaborated with Marissa on several projects, and her expertise in AI and marketing has been transformative for our business. Since working together, we've scaled our copy and marketing output by 2.5 to 3 times, cut down content creation time by roughly two hours a day, and completely rethought our positioning strategy for the better. I've found her insights to be sharp, actionable, and high-impact. I highly recommend her.</p>
@@ -176,153 +176,79 @@
     `;
   }
 
+  // Initialization - measure content and inject CSS vars for pixel-perfect seamless scroll
   function initTestimonialsSection(root) {
     const scope = root || document;
-    const testimonialsSection = scope.querySelector('.testimonials-rows-container');
-    const testimonialsRows = scope.querySelectorAll('.testimonials-row');
+    const container = scope.querySelector('.testimonials-rows-container');
+    if (!container) return;
+
+    const rows = Array.from(scope.querySelectorAll('.testimonials-row'));
+    if (rows.length === 0) return;
+
+    // Add accessibility attributes
     const testimonialsCards = scope.querySelectorAll('.testimonial-card');
-    if (!testimonialsSection || testimonialsRows.length === 0) return;
-
-    let isPaused = false;
-    let pauseTimeout;
-    let isTouch = false;
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    function pauseRowAnimation(row) { row.style.animationPlayState = 'paused'; }
-    function resumeRowAnimation(row) { row.style.animationPlayState = 'running'; }
-    function pauseAllAnimations() {
-      if (isPaused) return;
-      isPaused = true;
-      testimonialsRows.forEach(row => { row.style.animationPlayState = 'paused'; });
-    }
-    function resumeAllAnimations() {
-      isPaused = false;
-      testimonialsRows.forEach(row => { row.style.animationPlayState = 'running'; });
-    }
-    function initializeAnimations() {
-      testimonialsRows.forEach((row, index) => {
-        row.style.animationPlayState = 'running';
-        row.style.transform = index === 0 ? 'translateX(0)' : 'translateX(-100%)';
-      });
-    }
-    function scheduleAutoResume() {
-      clearTimeout(pauseTimeout);
-      pauseTimeout = setTimeout(() => { if (!isTouch) resumeAllAnimations(); }, 3000);
-    }
-
-    if (!isTouchDevice) {
-      testimonialsRows.forEach(row => {
-        const cardsInRow = row.querySelectorAll('.testimonial-card');
-        const MAX_ROTATION = 2;
-        row.addEventListener('mouseenter', () => { pauseRowAnimation(row); });
-        row.addEventListener('mouseleave', () => { resumeRowAnimation(row); isPaused = false; });
-        cardsInRow.forEach(card => {
-          card.addEventListener('mouseleave', () => {
-            card.style.setProperty('--rotateX', '0deg');
-            card.style.setProperty('--rotateY', '0deg');
-          });
-          card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left - rect.width / 2;
-            const mouseY = e.clientY - rect.top - rect.height / 2;
-            const rotateY = (mouseX / (rect.width / 2)) * MAX_ROTATION;
-            const rotateX = -1 * (mouseY / (rect.height / 2)) * MAX_ROTATION;
-            card.style.setProperty('--rotateX', `${rotateX}deg`);
-            card.style.setProperty('--rotateY', `${rotateY}deg`);
-          });
-        });
-      });
-    }
-
-    if (isTouchDevice) {
-      testimonialsCards.forEach(card => {
-        card.addEventListener('touchstart', () => { isTouch = true; pauseAllAnimations(); scheduleAutoResume(); }, { passive: true });
-        card.addEventListener('touchend', () => { isTouch = false; scheduleAutoResume(); }, { passive: true });
-      });
-      testimonialsSection.addEventListener('touchstart', () => { isTouch = true; pauseAllAnimations(); scheduleAutoResume(); }, { passive: true });
-      testimonialsSection.addEventListener('touchend', () => { isTouch = false; scheduleAutoResume(); }, { passive: true });
-    }
-
     testimonialsCards.forEach(card => {
       card.setAttribute('tabindex', '0');
       card.setAttribute('role', 'article');
       card.setAttribute('aria-label', 'Customer testimonial');
-      card.addEventListener('focus', () => { pauseAllAnimations(); });
-      card.addEventListener('blur', () => { resumeAllAnimations(); });
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          if (isPaused) resumeAllAnimations(); else pauseAllAnimations();
-        }
-      });
     });
 
-    const observerOptions = { root: null, rootMargin: '50px', threshold: 0.1 };
-    const testimonialsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          isPaused = false;
-          clearTimeout(pauseTimeout);
-          setTimeout(() => {
-            resumeAllAnimations();
-            testimonialsRows.forEach(row => {
-              if (row.style.animationPlayState === 'paused') row.style.animationPlayState = 'running';
-            });
-          }, 100);
-        } else {
-          testimonialsRows.forEach(row => { row.style.animationPlayState = 'paused'; });
-        }
-      });
-    }, observerOptions);
-    testimonialsObserver.observe(testimonialsSection);
+    // Measurement and animation setup
+    const setupSeamlessScroll = (row) => {
+      // Double RAF to ensure layout and fonts have applied for accurate scrollWidth
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const halfWidth = Math.max(0, Math.round((row.scrollWidth || 0) / 2));
+          // Fallback to 800px if measurement fails
+          const distancePx = halfWidth > 0 ? -halfWidth : -800;
+          row.style.setProperty('--scroll-distance', distancePx + 'px');
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    function handleReducedMotion() {
-      if (prefersReducedMotion.matches) {
-        testimonialsRows.forEach(row => { row.style.animationPlayState = 'paused'; });
-      } else {
-        resumeAllAnimations();
+          // Adaptive duration based on distance; clamped for UX consistency
+          // Speed target: ~60px/s baseline
+          const adaptiveSeconds = Math.max(20, Math.min(120, Math.round(Math.abs(distancePx) / 60)));
+          row.style.setProperty('--scroll-duration-auto', adaptiveSeconds + 's');
+        });
+      });
+    };
+
+    rows.forEach(setupSeamlessScroll);
+
+    // ResizeObserver to re-measure on layout/viewport/content changes
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const target = entry.target;
+        if (rows.includes(target)) {
+          setupSeamlessScroll(target);
+        }
       }
+    });
+
+    rows.forEach((row) => resizeObserver.observe(row));
+
+    // Optional: re-measure after fonts load (if supported)
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => rows.forEach(setupSeamlessScroll)).catch(() => {});
     }
-    handleReducedMotion();
-    prefersReducedMotion.addEventListener('change', handleReducedMotion);
 
-    let animationFrameId;
-    function monitorPerformance() {
-      const startTime = performance.now();
-      animationFrameId = requestAnimationFrame(() => {
-        const endTime = performance.now();
-        const frameTime = endTime - startTime;
-        if (frameTime > 20) {
-          testimonialsRows.forEach(row => { row.style.willChange = 'auto'; });
-        }
-        monitorPerformance();
-      });
-    }
-    monitorPerformance();
-
-    initializeAnimations();
-
+    // Cleanup function
     return function cleanup() {
-      clearTimeout(pauseTimeout);
-      testimonialsObserver.disconnect();
-      prefersReducedMotion.removeEventListener('change', handleReducedMotion);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      try { resizeObserver.disconnect(); } catch (_) {}
     };
   }
 
-  // Expose a minimal API
+  // Expose API
   window.MxmTestimonials = { init: initTestimonialsSection };
 
-  // Web Component that preserves light DOM markup inside
+  // Web Component
   class MxmTestimonialsElement extends HTMLElement {
     constructor() {
       super();
       this._cleanup = null;
     }
+
     connectedCallback() {
       this.classList.add('mxm-testimonials');
-      // Ensure expected structure exists; if not, create wrapper and move children
+      
       let container = this.querySelector('.testimonials-rows-container');
       if (!container) {
         container = document.createElement('div');
@@ -330,16 +256,17 @@
         while (this.firstChild) container.appendChild(this.firstChild);
         this.appendChild(container);
       }
-      // Source JSON used to seed localStorage when missing
+
       const src = this.getAttribute('src') || this.getAttribute('data-src') || '/assets/data/testimonials.json';
+      
       const renderFromData = (items) => {
         if (!Array.isArray(items) || items.length === 0) return false;
-        // Build two rows by splitting data roughly in half; duplicate to create seamless scroll
+        
         const midpoint = Math.ceil(items.length / 2);
         const row1 = items.slice(0, midpoint);
         const row2 = items.slice(midpoint);
 
-        function renderRow(rowItems) {
+        function renderRow(rowItems, duplicateForInfiniteScroll = true) {
           const cards = rowItems.map(t => `
             <div class="testimonial-card">
               <div class="testimonial-content">
@@ -350,8 +277,9 @@
                 </div>
               </div>
             </div>`).join('');
-          // duplicate for seamless loop
-          return cards + cards;
+          
+          // CSS-only infinite scroll requires exact duplication
+          return duplicateForInfiniteScroll ? cards + cards : cards;
         }
 
         const row1Html = renderRow(row1.length ? row1 : items);
@@ -364,14 +292,16 @@
         return true;
       };
 
-      const tryInit = () => { this._cleanup = initTestimonialsSection(this); };
+      const tryInit = () => {
+        if (typeof this._cleanup === 'function') { try { this._cleanup(); } catch (_) {} }
+        this._cleanup = initTestimonialsSection(this);
+      };
 
-      // Always sync with webhook. If cache exists, render it immediately, then refresh from webhook and re-render.
+      // Handle data loading (same as before)
       if (!container.querySelector('.testimonials-row')) {
         const cacheKey = 'mxm_testimonials_v1';
         const cachedRaw = localStorage.getItem(cacheKey) || sessionStorage.getItem(cacheKey);
         const fallbackSrc = '/assets/data/testimonials.json';
-        // Use same-origin proxy to comply with CSP
         const webhookUrl = '/api/testimonials-webhook';
 
         const normalizeWebhookItems = (json) => {
@@ -391,12 +321,10 @@
           if (!renderFromData(items)) {
             container.innerHTML = getDefaultTestimonialsMarkup();
           }
-          // Re-init animations after re-render
-          try { if (this._cleanup) this._cleanup(); } catch (_) {}
           tryInit();
         };
 
-        // Render cached immediately if available
+        // Load cached data immediately if available
         try {
           if (cachedRaw) {
             const cached = JSON.parse(cachedRaw);
@@ -407,7 +335,7 @@
           }
         } catch (_) {}
 
-        // Always fetch webhook to sync latest
+        // Always fetch latest from webhook
         fetch(webhookUrl)
           .then(r => r.ok ? r.json() : Promise.reject(new Error('Webhook response not ok')))
           .then(json => {
@@ -437,6 +365,7 @@
         tryInit();
       }
     }
+
     disconnectedCallback() {
       if (typeof this._cleanup === 'function') this._cleanup();
       this._cleanup = null;
@@ -446,11 +375,9 @@
   if (!customElements.get('mxm-testimonials')) {
     customElements.define('mxm-testimonials', MxmTestimonialsElement);
   }
-  // Alias singular tag for convenience - must not reuse the same constructor
+  
   if (!customElements.get('mxm-testimonial')) {
     class MxmTestimonialsElementAlias extends MxmTestimonialsElement {}
     customElements.define('mxm-testimonial', MxmTestimonialsElementAlias);
   }
 })();
-
-
