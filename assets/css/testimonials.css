@@ -6,6 +6,7 @@
 - [x] Include fade edges for smooth transitions
 - [x] Maintain responsive design
 - [x] Scope under .mxm-testimonials to avoid collisions
+- [x] Add testimonials CTA button styling
 */
 
 /* Root wrapper to avoid style collisions with legacy page CSS */
@@ -27,29 +28,7 @@
   transform: translateX(-50%);
 }
 
-/* Fade edges for smooth infinite scroll effect */
-.mxm-testimonials .testimonials-rows-container::before,
-.mxm-testimonials .testimonials-rows-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100px;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(to right, 
-    var(--ai-bg-primary, var(--mm-bg-primary, var(--mxm-bg-primary, #000))) 0%, 
-    transparent 100%);
-}
-
-.mxm-testimonials .testimonials-rows-container::before { 
-  left: 0; 
-}
-
-.mxm-testimonials .testimonials-rows-container::after { 
-  right: 0; 
-  transform: scaleX(-1); /* Flip gradient for right fade */
-}
+/* Fade edges removed for cleaner look */
 
 /* Rows - True seamless infinite scroll */
 .mxm-testimonials .testimonials-row {
@@ -294,8 +273,10 @@
   .mxm-testimonials .author-name { font-size: 0.85rem; }
   .mxm-testimonials .author-title { font-size: 0.7rem; }
   .mxm-testimonials .testimonial-author { min-height: 45px; padding-top: 10px; }
-  .mxm-testimonials .testimonials-rows-container::before,
-  .mxm-testimonials .testimonials-rows-container::after { width: 40px; }
+
+  .mxm-testimonials .testimonials-cta-container {
+    padding: 0 15px;
+  }
 }
 
 /* Accessibility: Respect user's motion preferences */
@@ -304,3 +285,289 @@
     animation-play-state: paused;
   }
 }
+
+/* Testimonials CTA Button Container */
+.mxm-testimonials .testimonials-cta-container {
+  width: 95vw;
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  margin-bottom: -5px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Testimonials CTA Button Styling - High specificity to override page-specific button styles */
+.mxm-testimonials .testimonials-cta-button,
+.testimonials-cta-container .testimonials-cta-button {
+  background: var(--ai-glass-bg, var(--mm-glass-bg, var(--mxm-glass-bg, rgba(25, 25, 35, 0.65)))) !important;
+  backdrop-filter: blur(12px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+  border: 2px solid var(--ai-glass-border, var(--mm-glass-border, var(--mxm-glass-border, rgba(255, 255, 255, 0.3)))) !important;
+  border-radius: var(--ai-card-border-radius, var(--mm-card-border-radius, var(--mxm-radius-lg, 18px))) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3),
+              inset 0 0 0 1px rgba(255,255,255,0.05),
+              0 0 20px rgba(255, 255, 255, 0.04),
+              0 0 40px rgba(100, 150, 255, 0.1) !important;
+  color: var(--ai-text-primary, var(--mm-text-primary, var(--mxm-text-primary, #ffffff))) !important;
+  padding: 15px 40px !important;
+  font-size: 1rem !important;
+  /* font-weight: 600 !important; */
+  letter-spacing: 0.5px !important;
+  /* text-transform: uppercase !important; */
+  cursor: pointer !important;
+  transition: all 0.35s ease-out !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+  animation: button-pulse 3s ease-in-out infinite !important;
+}
+
+/* Add subtle animation to suggest interactivity */
+.mxm-testimonials .testimonials-cta-button::before,
+.testimonials-cta-container .testimonials-cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 2s ease-in-out;
+  pointer-events: none;
+}
+
+.mxm-testimonials .testimonials-cta-button:hover::before,
+.testimonials-cta-container .testimonials-cta-button:hover::before {
+  left: 100%;
+}
+
+.mxm-testimonials .testimonials-cta-button:hover,
+.testimonials-cta-container .testimonials-cta-button:hover {
+  transform: translateY(-2px) scale(1.01) !important;
+  /* border-color: rgba(255, 255, 255, 0.4) !important; */
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35),
+              inset 0 0 0 1.5px rgba(255,255,255,0.08),
+              0 0 15px rgba(255, 255, 255, 0.08),
+              0 0 45px rgba(100, 150, 255, 0.15) !important;
+}
+
+/* Add subtle pulse animation */
+@keyframes button-pulse {
+  0%, 100% {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3),
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 20px rgba(255, 255, 255, 0.04),
+                0 0 40px rgba(100, 150, 255, 0.1);
+  }
+
+}
+
+
+.mxm-testimonials .testimonials-cta-button .play-icon,
+.testimonials-cta-container .testimonials-cta-button .play-icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  text-align: center;
+  line-height: 1;
+  position: relative;
+}
+
+.mxm-testimonials .testimonials-cta-button .play-icon::before,
+.testimonials-cta-container .testimonials-cta-button .play-icon::before {
+  content: "▶";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateX(1px);
+}
+
+.mxm-testimonials .testimonials-cta-button:hover .play-icon,
+.testimonials-cta-container .testimonials-cta-button:hover .play-icon {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.15);
+  /* box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25); */
+}
+
+/* Testimonial Button Content Styling */
+.testimonial-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.testimonial-button-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 15px 0;
+
+}
+
+.testimonial-action {
+  font-family: var(--ai-mono-font, var(--mm-mono-font, var(--mxm-font-body, ui-monospace, monospace)));
+  font-size: 0.85rem;
+  /* font-weight: 400; */
+  letter-spacing: 0.5px;
+  text-transform: none;
+}
+
+.testimonial-dash {
+  font-family: var(--ai-mono-font, var(--mm-mono-font, var(--mxm-font-body, ui-monospace, monospace)));
+  font-size: 0.85rem;
+  /* font-weight: 400; */
+  opacity: 0.8;
+  text-transform: none;
+}
+
+.testimonial-name {
+  font-family: var(--ai-futuristic-font, var(--mm-futuristic-font, var(--mxm-font-heading, sans-serif)));
+  font-size: 1.1rem;
+  /* font-weight: 600; */
+  letter-spacing: 0.5px;
+  text-transform: none;
+}
+.testimonial-author-text-1 {
+  width: 100%;
+  padding: 15px 0;
+}
+
+.testimonial-author-text {
+  border-top: 1px solid var(--ai-glass-border, var(--mm-glass-border, var(--mxm-glass-border, rgba(255, 255, 255, 0.2))));
+  width: 100%;
+  padding: 15px 0;
+}
+.testimonial-title {
+
+  font-family: var(--ai-mono-font, var(--mm-mono-font, var(--mxm-font-body, ui-monospace, monospace)));
+  /* font-weight: 400; */
+  font-size: 0.85rem;
+  opacity: 0.8;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  margin-top: 10px;
+}
+
+/* Responsive adjustments for button content */
+@media (max-width: 768px) {
+  .testimonials-cta-button {
+    padding: 20px 30px !important;
+  }
+
+  .testimonial-button-main {
+    gap: 6px;
+  }
+
+  .testimonial-title {
+    font-size: 0.75rem;
+  }
+}
+
+
+  /* Modal Background */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Content Container - Dark Glass Effect */
+.modal-content {
+    background: rgba(0, 0, 0, .85); /* Made sections semi-transparent black */
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 2% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 80%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    max-width: 1400px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.modal-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Close Button */
+.close {
+    color: rgba(255, 255, 255, 0.8);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    transition: all 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95% !important;
+    max-width: none !important;
+    margin: 10px;
+    border-radius: 12px;
+  }
+
+  .modal .close {
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    width: 30px;
+    height: 30px;
+  }
+}
+

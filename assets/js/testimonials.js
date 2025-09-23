@@ -20,6 +20,21 @@
 
   function getDefaultTestimonialsMarkup() {
     return `
+      <!-- Testimonials CTA Button -->
+      <div class="testimonials-cta-container">
+        <button onclick="openTestimonialsModal()" class="explore-btn ai-cta-button testimonials-cta-button">
+          <span class="play-icon"></span>
+          <div class="testimonial-button-content">
+            <div class="testimonial-button-main">
+              <span class="testimonial-action">View video testimonial</span>
+              <span class="testimonial-dash">—</span>
+              <span class="testimonial-name">Dain Walker</span>
+            </div>
+            <div class="testimonial-title">Founder of Rivyl Agency & Host of the Agency Podcast</div>
+          </div>
+        </button>
+      </div>
+
       <!-- Row 1 - Scrolling Right to Left -->
       <div class="testimonials-row testimonials-row-1">
         <div class="testimonial-card">
@@ -286,6 +301,22 @@
         const row2Html = renderRow(row2.length ? row2 : items);
 
         container.innerHTML = `
+          <!-- Testimonials CTA Button -->
+          <div class="testimonials-cta-container">
+            <button onclick="openTestimonialsModal()" class="testimonials-cta-button">
+              <div class="testimonial-button-content">
+                <div class="testimonial-button-main">
+                  <span class="play-icon"></span>
+                  <span class="testimonial-action">View video testimonial</span>
+                </div>
+                <div class="testimonial-author-text">
+                   <div class="testimonial-name">Dain Walker</div>
+                   <div class="testimonial-title">Founder of Rivyl Agency & Host of the Agency Podcast</div>
+                 </div>
+              </div>
+            </button>
+          </div>
+
           <div class="testimonials-row testimonials-row-1">${row1Html}</div>
           <div class="testimonials-row testimonials-row-2">${row2Html}</div>
         `;
@@ -380,4 +411,74 @@
     class MxmTestimonialsElementAlias extends MxmTestimonialsElement {}
     customElements.define('mxm-testimonial', MxmTestimonialsElementAlias);
   }
+
+  // Create and inject testimonials modal
+  function createTestimonialsModal() {
+    if (document.getElementById('testimonialsModal')) return;
+
+    const modalHTML = `
+    <div id="testimonialsModal" class="modal">
+      <div class="modal-content" style="max-width: 1200px; width: 80%; box-sizing: border-box; overflow-x: hidden;">
+        <span class="close" onclick="window.closeTestimonialsModal()">&times;</span>
+        <div class="container" style="width: 100%; box-sizing: border-box;">
+          <div class="video-hero-wrapper" style="margin-bottom: 10px;">
+            <section class="page-section video-hero-section" data-section-type="video-hero">
+              <div class="video-container">
+                <div class="video-placeholder">
+                  <iframe id="testimonialsModalVideo" src="https://player.vimeo.com/video/1121060678?h=ddaaec84b7&amp;autoplay=0&amp;loop=0&amp;title=0&amp;byline=0&amp;portrait=0" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                </div>
+              </div>
+              <div class="artistic-background-text">aRTiFICIALLY iNTELLIGENT</div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+
+  // Global modal functions
+  window.testimonialsModalPlayer = null;
+
+  window.openTestimonialsModal = function() {
+    createTestimonialsModal();
+    document.getElementById('testimonialsModal').style.display = "flex";
+
+    // Initialize Vimeo player and play video when modal opens
+    const iframe = document.getElementById('testimonialsModalVideo');
+    if (iframe && !window.testimonialsModalPlayer) {
+      window.testimonialsModalPlayer = new Vimeo.Player(iframe);
+      window.testimonialsModalPlayer.play();
+    } else if (window.testimonialsModalPlayer) {
+      window.testimonialsModalPlayer.play();
+    }
+  };
+
+  window.closeTestimonialsModal = function() {
+    const modal = document.getElementById('testimonialsModal');
+    if (modal) {
+      modal.style.display = "none";
+
+      // Pause video when modal closes
+      if (window.testimonialsModalPlayer) {
+        window.testimonialsModalPlayer.pause();
+      }
+    }
+  };
+
+  // Close modal when clicking outside or pressing Escape
+  document.addEventListener('click', function(event) {
+    const modal = document.getElementById('testimonialsModal');
+    if (event.target === modal) {
+      window.closeTestimonialsModal();
+    }
+  });
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      window.closeTestimonialsModal();
+    }
+  });
+
 })();

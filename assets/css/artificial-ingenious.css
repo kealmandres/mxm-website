@@ -1628,3 +1628,12 @@ body.detail-page.artificial-ingenious {
         width: 40px;
     }
 }
+
+
+.mxm-testimonials .testimonials-cta-button,
+.testimonials-cta-container .testimonials-cta-button { 
+
+    padding: 70px 40px !important;
+
+
+}
