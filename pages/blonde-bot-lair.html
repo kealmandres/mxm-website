@@ -276,6 +276,46 @@
             </div>
         </div>
         </div>
+        <div class="podcast-row-container" style="display: flex; gap: 1rem; justify-content: center; align-items: stretch; flex-wrap: nowrap; margin-top: 2rem; width: 100%; margin-left: auto; margin-right: auto;">
+            <div class="offering-card glass-card" style="background: rgba(70, 6, 11, 0.39);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px); flex: 1; min-width: 0; display: flex; height: 100%;">
+              <div class="pod-offering-text-content" style="padding: 2rem 1.5rem 1.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 90%;" >
+                <div class="platform-icon" style="font-size: 3rem; margin-bottom: 0.75rem; color: #FF0000; height: 3rem; display: flex; align-items: center; justify-content: center;">
+                  <i class="fab fa-youtube"></i>
+                </div>
+                  <h3 class="offering-title diagnosis-title" style="text-transform: uppercase; text-align: center; margin-bottom: 1.5rem; min-height: 3rem; display: flex; align-items: center; justify-content: center;">Agency Podcast</h3>
+                  <p class="mm-offering-description" style="font-size: .9rem; text-align: center; margin-bottom: 1.5rem; min-height: 4rem;"><span style="font-weight: bold;">Episode Title: </span> "How to Work Smarter, Not Harder with AI | Marissa Kos"</p>
+                <a href="https://www.youtube.com/watch?v=6BCU3kkaiUI" target="_blank" class="cta-button" style="text-transform: uppercase; text-align: center;">Watch Now</a>
+              </div>
+          </div>
+       <div class="offering-card glass-card" style="background: rgba(70, 6, 11, 0.39);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px); flex: 1; min-width: 0; display: flex; height: 100%;">
+          <div class="pod-offering-text-content" style="padding: 2rem 1.5rem 1.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 90%;" >
+            <div class="platform-icon" style="font-size: 3rem; margin-bottom: 0.75rem; color: #1DB954; height: 3rem; display: flex; align-items: center; justify-content: center;">
+              <i class="fab fa-spotify"></i>
+            </div>
+              <h3 class="offering-title diagnosis-title" style="text-transform: uppercase; text-align: center; margin-bottom: 1.5rem; min-height: 3rem; display: flex; align-items: center; justify-content: center;">Catching Up with CUB</h3>
+              <p class="mm-offering-description" style="font-size: .9rem; text-align: center; margin-bottom: 1.5rem; min-height: 4rem;"><span style="font-weight: bold;">Episode Title: </span> "Marissa Kos - How Founders Turn AI into Growth"</p>
+             <a href="https://open.spotify.com/episode/20VAbpOP6s1EF6cmvMbl8i?si=4ac8146c8cdc4d3c&nd=1&dlsi=f6c455226ab14bea" target="_blank" class="cta-button" style="text-transform: uppercase; text-align: center;">Listen Now</a>
+          </div>
+      </div>
+    
+      
+      <div class="offering-card glass-card" style="background: rgba(70, 6, 11, 0.39);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px); flex: 1; min-width: 0; display: flex; height: 100%;">
+        <div class="podoffering-text-content" style="padding: 2rem 1.5rem 1.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 90%;" >
+          <div class="platform-icon" style="font-size: 3rem; margin-bottom: 0.75rem; color: #FF0000; height: 3rem; display: flex; align-items: center; justify-content: center;">
+            <i class="fab fa-youtube"></i>
+          </div>
+            <h3 class="offering-title diagnosis-title" style="text-transform: uppercase; text-align: center; margin-bottom: 1.5rem; min-height: 3rem; display: flex; align-items: center; justify-content: center;">How Do I Podcast</h3>
+            <p class="mm-offering-description" style="font-size: .9rem; text-align: center; margin-bottom: 1.5rem; min-height: 4rem;"><span style="font-weight: bold;">Episode Title: </span> "How To Use AI To 10X Your Podcast FOR FREE With Marissa Kos from MxM"</p>
+            <a href="https://www.youtube.com/watch?v=f4ppmfUeqWA" target="_blank" class="cta-button" style="text-transform: uppercase; text-align: center;">Watch Now</a>
+        </div>
+    </div>
+    </div>
     </section>
 
 	<section class="page-section process-section" data-section-type="process" id="book-the-bot">
@@ -646,6 +686,264 @@
         }
         to {
           transform: translateX(-2500px);
+        }
+      }
+
+      /* Podcast Guest Appearances Grid */
+      .podcast-guest-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        padding: 2.5rem;
+      }
+
+      .podcast-guest-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        min-height: 280px;
+      }
+
+      .podcast-guest-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+
+      .platform-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        color: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+      }
+
+      .podcast-guest-card:hover .platform-icon {
+        transform: scale(1.1);
+        color: #ffffff;
+      }
+
+      .podcast-guest-card .fa-spotify {
+        color: #1DB954;
+      }
+
+      .podcast-guest-card .fa-youtube {
+        color: #FF0000;
+      }
+
+      .podcast-guest-title {
+        font-family: 'Uniform Extra Condensed', sans-serif;
+        font-size: 1rem;
+        line-height: 1.4;
+        color: #ffffff;
+        margin: 0 0 1.5rem 0;
+        flex-grow: 1;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+      }
+
+      .podcast-cta {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.85rem;
+        margin-top: auto;
+      }
+
+      /* Responsive Design for Podcast Cards */
+      @media (max-width: 1024px) {
+        .podcast-guest-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+          padding: 2rem;
+        }
+
+        .podcast-guest-card {
+          min-height: 260px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .podcast-guest-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+          padding: 1.5rem;
+        }
+
+        .podcast-guest-card {
+          padding: 1.5rem;
+          min-height: 240px;
+        }
+
+        .platform-icon {
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .podcast-guest-title {
+          font-size: 0.95rem;
+        }
+      }
+
+      @media (max-width: 414px) {
+        .podcast-guest-grid {
+          padding: 1rem;
+          gap: 1rem;
+        }
+
+        .podcast-guest-card {
+          padding: 1.2rem;
+          min-height: 220px;
+        }
+
+        .platform-icon {
+          font-size: 2rem;
+        }
+
+        .podcast-cta {
+          padding: 0.7rem 1.2rem;
+          font-size: 0.8rem;
+        }
+      }
+
+      /* Podcast Row Container - Equal Height Cards */
+      .podcast-row-container {
+        align-items: stretch !important;
+      }
+
+      .podcast-row-container .offering-card {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .podcast-row-container .offering-text-content,
+      .podcast-row-container .pod-offering-text-content,
+      .podcast-row-container .podoffering-text-content {
+        display: flex !important;
+        flex-direction: column !important;
+        flex-grow: 1 !important;
+        height: 100% !important;
+      }
+
+      .podcast-row-container .mm-offering-description {
+        flex-grow: 1 !important;
+      }
+
+      .podcast-row-container .cta-button {
+        margin-top: auto !important;
+      }
+
+      /* Responsive Podcast Row Container */
+      @media (max-width: 1420px) {
+        .podcast-row-container {
+            flex-wrap: wrap !important;
+
+          max-width: 90% !important;
+        }
+
+        .podcast-row-container .offering-card {
+            flex: 1 1 calc(50% - 0.5rem) !important;
+            min-width: 280px !important;        }
+      }
+
+      @media (max-width: 1024px) {
+        .podcast-row-container {
+          flex-wrap: wrap !important;
+          max-width: 90% !important;
+        }
+
+        .podcast-row-container .offering-card {
+          flex: 1 1 calc(50% - 0.5rem) !important;
+          min-width: 280px !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .podcast-row-container {
+          flex-direction: column !important;
+          flex-wrap: nowrap !important;
+          gap: 1.5rem !important;
+          align-items: center !important;
+          padding: 0 !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+
+        .podcast-row-container .offering-card {
+          flex: none !important;
+          min-width: auto !important;
+          width: calc(100% - 2rem) !important;
+          max-width: 500px !important;
+        }
+
+        .podcast-row-container .offering-text-content {
+          padding: 1.5rem 1rem 1.5rem 1rem !important;
+        }
+
+        .podcast-row-container .mm-offering-description {
+          font-size: 0.85rem !important;
+        }
+
+        .podcast-row-container .offering-title {
+          font-size: 1.1rem !important;
+          margin-bottom: 1rem !important;
+          min-height: 2rem !important;
+        }
+
+        .podcast-row-container .platform-icon {
+          font-size: 2.5rem !important;
+          height: 2.5rem !important;
+        }
+      }
+
+      @media (max-width: 414px) {
+        .podcast-row-container {
+          max-width: 100% !important;
+          padding: 0 !important;
+          margin-top: 1.5rem !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          align-items: center !important;
+        }
+
+        .podcast-row-container .offering-card {
+          width: calc(100% - 2rem) !important;
+          max-width: 100% !important;
+        }
+
+        .podcast-row-container .offering-text-content {
+          padding: 1.2rem 0.8rem 1.2rem 0.8rem !important;
+        }
+
+        .podcast-row-container .mm-offering-description {
+          font-size: 0.8rem !important;
+          margin-bottom: 1rem !important;
+          min-height: auto !important;
+        }
+
+        .podcast-row-container .offering-title {
+          font-size: 1rem !important;
+          margin-bottom: 0.8rem !important;
+        }
+
+        .podcast-row-container .platform-icon {
+          font-size: 2rem !important;
+          height: 2rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+
+        .podcast-row-container .cta-button {
+          padding: 0.7rem 1.2rem !important;
+          font-size: 0.8rem !important;
         }
       }
     </style>
