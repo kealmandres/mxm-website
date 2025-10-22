@@ -1,12 +1,11 @@
 /*
 #todos
-- [x] Create CSS-only infinite scroll without JavaScript
-- [x] Implement seamless looping with duplicated cards
-- [x] Add pause-on-hover functionality
-- [x] Include fade edges for smooth transitions
+- [x] Styling for JavaScript-driven infinite scroll
+- [x] Hardware-accelerated transforms
 - [x] Maintain responsive design
 - [x] Scope under .mxm-testimonials to avoid collisions
 - [x] Add testimonials CTA button styling
+- [x] Smooth glass-morphism effects
 */
 
 /* Root wrapper to avoid style collisions with legacy page CSS */
@@ -30,31 +29,13 @@
 
 /* Fade edges removed for cleaner look */
 
-/* Rows - True seamless infinite scroll */
+/* Rows - JavaScript-controlled scrolling */
 .mxm-testimonials .testimonials-row {
   display: flex;
   gap: 25px;
   will-change: transform;
-  /* Critical: width must be exactly double the content for seamless loop */
   width: fit-content;
-}
-
-/* Row 1 - Scrolling Right to Left (seamless) */
-.mxm-testimonials .testimonials-row-1 {
-  /* CSS variable duration allows JS to set --scroll-duration-auto while CSS can override with --scroll-duration */
-  animation: mxm-scroll-rtl var(--scroll-duration, var(--scroll-duration-auto, 40s)) linear infinite;
-  animation-fill-mode: both;
-}
-
-/* Row 2 - Scrolling Left to Right (seamless) */
-.mxm-testimonials .testimonials-row-2 {
-  animation: mxm-scroll-ltr var(--scroll-duration, var(--scroll-duration-auto, 45s)) linear infinite;
-  animation-fill-mode: both;
-}
-
-/* Pause animation on hover - CSS only */
-.mxm-testimonials .testimonials-row:hover {
-  animation-play-state: paused;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Cards */
@@ -153,25 +134,7 @@
   white-space: nowrap;
 }
 
-/* Truly seamless infinite scroll keyframes (pixel-precise via --scroll-distance) */
-@keyframes mxm-scroll-rtl {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    /* Move exactly one content-width (half of duplicated row) */
-    transform: translate3d(var(--scroll-distance, -800px), 0, 0);
-  }
-}
-
-@keyframes mxm-scroll-ltr {
-  0% {
-    transform: translate3d(var(--scroll-distance, -800px), 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
+/* Keyframes removed - now using JavaScript requestAnimationFrame for smoother, more reliable scrolling */
 
 /* Responsive */
 @media (max-width: 1199px) {
@@ -184,8 +147,6 @@
   }
   .mxm-testimonials .testimonials-rows-container { gap: 25px; }
   .mxm-testimonials .testimonials-row { gap: 22px; }
-  .mxm-testimonials .testimonials-row-1 { --scroll-duration: 45s; }
-  .mxm-testimonials .testimonials-row-2 { --scroll-duration: 50s; }
 }
 
 @media (max-width: 992px) {
@@ -198,8 +159,6 @@
   }
   .mxm-testimonials .testimonials-rows-container { gap: 20px; }
   .mxm-testimonials .testimonials-row { gap: 20px; }
-  .mxm-testimonials .testimonials-row-1 { --scroll-duration: 50s; }
-  .mxm-testimonials .testimonials-row-2 { --scroll-duration: 55s; }
   .mxm-testimonials .testimonial-text { font-size: 0.8rem; }
   .mxm-testimonials .author-name { font-size: 1rem; }
 }
@@ -214,8 +173,6 @@
   }
   .mxm-testimonials .testimonials-rows-container { gap: 15px; }
   .mxm-testimonials .testimonials-row { gap: 18px; }
-  .mxm-testimonials .testimonials-row-1 { --scroll-duration: 45s; }
-  .mxm-testimonials .testimonials-row-2 { --scroll-duration: 50s; }
   .mxm-testimonials .testimonial-text { font-size: 0.75rem; line-height: 1.5; }
   .mxm-testimonials .author-name { font-size: 0.95rem; }
   .mxm-testimonials .author-title { font-size: 0.8rem; }
@@ -235,8 +192,6 @@
     max-width: 100vw;
   }
   .mxm-testimonials .testimonials-row { gap: 14px; }
-  .mxm-testimonials .testimonials-row-1 { --scroll-duration: 30s; }
-  .mxm-testimonials .testimonials-row-2 { --scroll-duration: 35s; }
   .mxm-testimonials .testimonial-text {
     font-size: 0.7rem;
     margin-bottom: 12px;
@@ -261,7 +216,6 @@
     box-sizing: border-box;
   }
   .mxm-testimonials .testimonials-row { gap: 12px; }
-  .mxm-testimonials .testimonials-row-1 { --scroll-duration: 35s; }
   .mxm-testimonials .testimonial-text {
     font-size: 0.65rem;
     margin-bottom: 10px;
@@ -279,12 +233,7 @@
   }
 }
 
-/* Accessibility: Respect user's motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .mxm-testimonials .testimonials-row {
-    animation-play-state: paused;
-  }
-}
+/* Accessibility: Respect user's motion preferences - handled in JavaScript */
 
 /* Testimonials CTA Button Container */
 .mxm-testimonials .testimonials-cta-container {

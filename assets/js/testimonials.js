@@ -1,11 +1,12 @@
 /*
-#todos
-- [x] Simplified JS - only handles HTML structure and data fetching
-- [x] All animations now handled by CSS-only infinite scroll
-- [x] Automatic duplication for seamless loops
-- [x] Web Component support maintained
-- [x] No animation JavaScript required
-*/
+ * MxM Testimonials Component
+ * - Smooth infinite scrolling with requestAnimationFrame
+ * - Row 1: scrolls right-to-left (RTL)
+ * - Row 2: scrolls left-to-right (LTR)
+ * - Pause on hover
+ * - Web Component support
+ * - CSP compliant
+ */
 
 (function () {
   // Ensure CSS is present
@@ -22,7 +23,7 @@
     return `
       <!-- Testimonials CTA Button -->
       <div class="testimonials-cta-container">
-        <button onclick="openTestimonialsModal()" class="explore-btn ai-cta-button testimonials-cta-button">
+        <button class="explore-btn ai-cta-button testimonials-cta-button" data-action="open-testimonials-modal">
           <span class="play-icon"></span>
           <div class="testimonial-button-content">
             <div class="testimonial-button-main">
@@ -191,7 +192,7 @@
     `;
   }
 
-  // Initialization - measure content and inject CSS vars for pixel-perfect seamless scroll
+  // Initialization - TRUE seamless infinite scrolling with modulo
   function initTestimonialsSection(root) {
     const scope = root || document;
     const container = scope.querySelector('.testimonials-rows-container');
@@ -199,6 +200,8 @@
 
     const rows = Array.from(scope.querySelectorAll('.testimonials-row'));
     if (rows.length === 0) return;
+
+    // No need to check for existing init since cleanup handles it
 
     // Add accessibility attributes
     const testimonialsCards = scope.querySelectorAll('.testimonial-card');
@@ -208,47 +211,82 @@
       card.setAttribute('aria-label', 'Customer testimonial');
     });
 
-    // Measurement and animation setup
-    const setupSeamlessScroll = (row) => {
-      // Double RAF to ensure layout and fonts have applied for accurate scrollWidth
-      requestAnimationFrame(() => {
+    const controllers = [];
+
+    rows.forEach((row) => {
+      const isRow1 = row.classList.contains('testimonials-row-1');
+      const speed = isRow1 ? 0.5 : 0.4;
+
+      let position = 0;
+      let isPaused = false;
+      let animationId = null;
+      let loopWidth = 0;
+
+      // Measure the width for seamless looping
+      const measure = () => {
         requestAnimationFrame(() => {
-          const halfWidth = Math.max(0, Math.round((row.scrollWidth || 0) / 2));
-          // Fallback to 800px if measurement fails
-          const distancePx = halfWidth > 0 ? -halfWidth : -800;
-          row.style.setProperty('--scroll-distance', distancePx + 'px');
+          requestAnimationFrame(() => {
+            // Get half the scrollWidth (one complete set of cards)
+            loopWidth = row.scrollWidth / 2;
 
-          // Adaptive duration based on distance; clamped for UX consistency
-          // Speed target: ~60px/s baseline
-          const adaptiveSeconds = Math.max(20, Math.min(120, Math.round(Math.abs(distancePx) / 60)));
-          row.style.setProperty('--scroll-duration-auto', adaptiveSeconds + 's');
+            // Initialize starting positions
+            if (isRow1) {
+              position = 0; // Row 1 starts at 0, moves left (negative)
+            } else {
+              position = -loopWidth; // Row 2 starts offset, moves right (positive toward 0)
+            }
+          });
         });
-      });
-    };
+      };
 
-    rows.forEach(setupSeamlessScroll);
+      measure();
 
-    // ResizeObserver to re-measure on layout/viewport/content changes
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const target = entry.target;
-        if (rows.includes(target)) {
-          setupSeamlessScroll(target);
+      // SIMPLE clean animation
+      const animate = () => {
+        if (!isPaused && loopWidth > 0) {
+          // Row 1: move left (negative), Row 2: move right (positive)
+          if (isRow1) {
+            position -= speed;
+            // Reset when scrolled past one set
+            if (position <= -loopWidth) {
+              position += loopWidth;
+            }
+          } else {
+            position += speed;
+            // Reset when scrolled back to start
+            if (position >= 0) {
+              position -= loopWidth;
+            }
+          }
+
+          row.style.transform = `translate3d(${position}px, 0, 0)`;
         }
-      }
+
+        animationId = requestAnimationFrame(animate);
+      };
+
+      // Start animation
+      animationId = requestAnimationFrame(animate);
+
+      // Pause on hover
+      row.addEventListener('mouseenter', () => { isPaused = true; });
+      row.addEventListener('mouseleave', () => { isPaused = false; });
+
+      // Remeasure on resize
+      const resizeObserver = new ResizeObserver(() => {
+        measure();
+      });
+      resizeObserver.observe(row);
+
+      controllers.push({
+        stop: () => {
+          if (animationId) cancelAnimationFrame(animationId);
+          resizeObserver.disconnect();
+        }
+      });
     });
 
-    rows.forEach((row) => resizeObserver.observe(row));
-
-    // Optional: re-measure after fonts load (if supported)
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => rows.forEach(setupSeamlessScroll)).catch(() => {});
-    }
-
-    // Cleanup function
-    return function cleanup() {
-      try { resizeObserver.disconnect(); } catch (_) {}
-    };
+    return () => controllers.forEach(c => c.stop());
   }
 
   // Expose API
@@ -303,7 +341,7 @@
         container.innerHTML = `
           <!-- Testimonials CTA Button -->
           <div class="testimonials-cta-container">
-            <button onclick="openTestimonialsModal()" class="testimonials-cta-button">
+            <button class="testimonials-cta-button" data-action="open-testimonials-modal">
               <div class="testimonial-button-content">
                 <div class="testimonial-button-main">
                   <span class="play-icon"></span>
@@ -348,11 +386,17 @@
             }));
         };
 
-        const renderAndInit = (items) => {
+        const renderAndInit = (items, skipIfExists = false) => {
+          // Skip re-render if rows already exist (prevents double initialization)
+          if (skipIfExists && container.querySelector('.testimonials-row')) {
+            return;
+          }
+
           if (!renderFromData(items)) {
             container.innerHTML = getDefaultTestimonialsMarkup();
           }
-          tryInit();
+          // Use setTimeout to ensure DOM has fully rendered before initializing animations
+          setTimeout(() => tryInit(), 0);
         };
 
         // Load cached data immediately if available
@@ -366,28 +410,30 @@
           }
         } catch (_) {}
 
-        // Always fetch latest from webhook
+        // Try to fetch latest from webhook (silently fail if not available)
         fetch(webhookUrl)
           .then(r => r.ok ? r.json() : Promise.reject(new Error('Webhook response not ok')))
           .then(json => {
             const items = Array.isArray(json?.testimonials) ? json.testimonials : normalizeWebhookItems(json);
             if (items && items.length) {
               try { localStorage.setItem(cacheKey, JSON.stringify({ testimonials: items, updatedAt: new Date().toISOString() })); } catch (_) {}
-              renderAndInit(items);
+              renderAndInit(items, true); // Skip if already exists
             } else {
               throw new Error('Webhook returned no active items');
             }
           })
-          .catch((err) => {
+          .catch(() => {
+            // Webhook failed, try fallback JSON file
             const primary = src || fallbackSrc;
             fetch(primary)
               .then(r => r.ok ? r.json() : Promise.reject())
               .then(json => {
                 const items = Array.isArray(json) ? json : (json && Array.isArray(json.testimonials) ? json.testimonials : []);
                 try { localStorage.setItem(cacheKey, JSON.stringify({ testimonials: items, updatedAt: new Date().toISOString() })); } catch (_) {}
-                renderAndInit(items);
+                renderAndInit(items, true); // Skip if already exists
               })
-              .catch((err2) => {
+              .catch(() => {
+                // Both webhook and JSON failed, use default markup
                 container.innerHTML = getDefaultTestimonialsMarkup();
                 tryInit();
               });
@@ -419,7 +465,7 @@
     const modalHTML = `
     <div id="testimonialsModal" class="modal">
       <div class="modal-content" style="max-width: 1200px; width: 80%; box-sizing: border-box; overflow-x: hidden;">
-        <span class="close" onclick="window.closeTestimonialsModal()">&times;</span>
+        <span class="close" data-action="close-testimonials-modal">&times;</span>
         <div class="container" style="width: 100%; box-sizing: border-box;">
           <div class="video-hero-wrapper" style="margin-bottom: 10px;">
             <section class="page-section video-hero-section" data-section-type="video-hero">
@@ -467,8 +513,25 @@
     }
   };
 
-  // Close modal when clicking outside or pressing Escape
+  // Event delegation for all testimonial actions (CSP-compliant)
   document.addEventListener('click', function(event) {
+    // Handle modal open buttons
+    const openButton = event.target.closest('[data-action="open-testimonials-modal"]');
+    if (openButton) {
+      event.preventDefault();
+      window.openTestimonialsModal();
+      return;
+    }
+
+    // Handle modal close button
+    const closeButton = event.target.closest('[data-action="close-testimonials-modal"]');
+    if (closeButton) {
+      event.preventDefault();
+      window.closeTestimonialsModal();
+      return;
+    }
+
+    // Close modal when clicking outside
     const modal = document.getElementById('testimonialsModal');
     if (event.target === modal) {
       window.closeTestimonialsModal();
