@@ -12,7 +12,7 @@ class PersistentMusicPlayer {
         this.audio = null;
         this.audioB = null; // Second audio element for crossfading
         this.activeAudio = 'A'; // Track which audio element is active
-        this.crossfadeDuration = 6000; // 6 seconds in milliseconds
+        this.crossfadeDuration = 3000; // 3 seconds in milliseconds
         this.crossfadeInterval = null;
         this.isCrossfading = false; // Flag to track crossfading state
         this.crossfadePrepared = false; // Flag to track if crossfade is prepared
@@ -39,10 +39,13 @@ class PersistentMusicPlayer {
         this.lastCheckRestoreTime = 0;
         this.debounceDelay = 500; // 500ms debounce delay
         this.volumeChangeInProgress = false;
+
+        // Navigation protection - prevents state changes during page transitions
+        this.navigationInProgress = false;
         
-        // The canonical, unshuffled list of all tracks.
-        this.defaultPlaylist = [
-            '/assets/audio/background-music.webm',
+        // Playlist ordered by filename - no shuffle, always starts with 01
+        this.playlist = [
+            '/assets/audio/playlist/01_background-music.webm',
             '/assets/audio/playlist/02_Electric_Temptation_(1).webm',
             '/assets/audio/playlist/03_Eternal_Groove.webm',
             '/assets/audio/playlist/04_Eternal_Night_(1).webm',
@@ -69,11 +72,8 @@ class PersistentMusicPlayer {
             '/assets/audio/playlist/25_Rhythms_of_the_Night_(1)_(1).webm',
             '/assets/audio/playlist/26_Rhythms_of_the_Night_(2).webm',
             '/assets/audio/playlist/27_Velvet_Nights_(1).webm',
-            '/assets/audio/playlist/Dancing in the Light (1).webm'
+            '/assets/audio/playlist/28_Dancing_in_the_Light_(1).webm'
         ];
-        
-        // This will hold the current, shuffled version of the playlist.
-        this.playlist = [...this.defaultPlaylist];
         
         // Default state
         this.defaultState = {
@@ -82,8 +82,7 @@ class PersistentMusicPlayer {
             isPlaying: false,
             src: '',
             userInteracted: false,
-            currentTrackIndex: 0,
-            shuffleSeed: null // Used for deterministic shuffling
+            currentTrackIndex: 0
         };
         
         // Cleanup arrays to prevent memory leaks
@@ -166,25 +165,44 @@ class PersistentMusicPlayer {
                 this.state = { ...this.defaultState, ...JSON.parse(savedState) };
             } else {
                 this.state = { ...this.defaultState };
-                this.state.currentSongIndex = 0;
+                this.state.currentTrackIndex = 0;
             }
         } catch (error) {
             this.state = { ...this.defaultState };
-            this.state.currentSongIndex = 0;
+            this.state.currentTrackIndex = 0;
         }
     }
     
     saveState() {
         try {
-            // Create a fresh object to save, ensuring we don't save the entire audio element
+            // Get the currently active audio element (handles crossfade)
+            const activeAudio = this.getActiveAudio ? this.getActiveAudio() : this.audio;
+
+            // During crossfade, check if EITHER audio is playing
+            const isAudioAPlaying = this.audio && !this.audio.paused && !this.audio.ended;
+            const isAudioBPlaying = this.audioB && !this.audioB.paused && !this.audioB.ended;
+            const isPlaying = isAudioAPlaying || isAudioBPlaying || this.isCrossfading;
+
+            // If crossfading, we're transitioning to next track - save the target state
+            let trackIndex = this.state.currentTrackIndex;
+            let currentTime = activeAudio ? activeAudio.currentTime : 0;
+
+            // During crossfade, the new track (on inactive audio) is the one we want to resume
+            if (this.isCrossfading) {
+                const inactiveAudio = this.getInactiveAudio ? this.getInactiveAudio() : this.audioB;
+                // Save the next track index since crossfade is transitioning to it
+                trackIndex = (this.state.currentTrackIndex + 1) % this.playlist.length;
+                // Save the current time of the incoming track
+                currentTime = inactiveAudio ? inactiveAudio.currentTime : 0;
+            }
+
             const stateToSave = {
-                currentTime: this.audio ? this.audio.currentTime : 0,
-                volume: this.audio ? this.audio.volume : 0.5,
-                isPlaying: this.audio ? !this.audio.paused && !this.audio.ended : false,
-                src: this.audio ? this.audio.src : '',
+                currentTime: currentTime,
+                volume: this.originalVolume || 0.5,
+                isPlaying: isPlaying,
+                src: activeAudio ? activeAudio.src : '',
                 userInteracted: this.userInteracted,
-                currentTrackIndex: this.state.currentTrackIndex,
-                shuffleSeed: this.state.shuffleSeed,
+                currentTrackIndex: trackIndex
             };
             sessionStorage.setItem(this.storageKey, JSON.stringify(stateToSave));
         } catch (error) {
@@ -194,23 +212,56 @@ class PersistentMusicPlayer {
     
     applyState() {
         if (!this.audio) return;
-        
+
+        // Validate currentTrackIndex is within bounds
+        if (this.state.currentTrackIndex < 0 || this.state.currentTrackIndex >= this.playlist.length) {
+            this.state.currentTrackIndex = 0;
+        }
+
+        // Restore user interaction state
+        if (this.state.userInteracted) {
+            this.userInteracted = true;
+        }
+
+        // Set volume
         this.audio.volume = this.state.volume;
+        this.originalVolume = this.state.volume; // Also update originalVolume for ducking
         if (this.volumeSlider) {
             this.volumeSlider.value = this.state.volume;
         }
-        
+
         // Update volume display to match restored state
         this.updateVolumeDisplay();
-        
-        // Set the source from our deterministically shuffled playlist
+
+        // Get the correct track from the shuffled playlist
         const currentTrackSrc = this.playlist[this.state.currentTrackIndex];
-        if (currentTrackSrc && this.audio.src !== currentTrackSrc) {
+
+        // Normalize URLs for comparison (handle relative vs absolute paths)
+        const normalizeUrl = (url) => {
+            if (!url) return '';
+            // Extract just the path portion for comparison
+            try {
+                const urlObj = new URL(url, window.location.origin);
+                return urlObj.pathname;
+            } catch {
+                return url;
+            }
+        };
+
+        const currentAudioPath = normalizeUrl(this.audio.src);
+        const expectedPath = normalizeUrl(currentTrackSrc);
+
+        // Only change source if it's actually different
+        if (currentTrackSrc && currentAudioPath !== expectedPath) {
             this.audio.src = currentTrackSrc;
         }
 
         const setCurrentTimeAndResume = () => {
-            if (this.state.currentTime > 0 && this.audio.duration > this.state.currentTime) {
+            // Only set currentTime if valid and audio is loaded
+            if (this.state.currentTime > 0 &&
+                this.audio.duration &&
+                !isNaN(this.audio.duration) &&
+                this.audio.duration > this.state.currentTime) {
                 this.audio.currentTime = this.state.currentTime;
             }
             if (this.state.isPlaying && this.state.userInteracted) {
@@ -227,8 +278,17 @@ class PersistentMusicPlayer {
             };
             this.audio.addEventListener('canplay', listener);
             this.eventListeners.push({ element: this.audio, event: 'canplay', listener });
+
+            // Fallback timeout in case canplay doesn't fire
+            const timeout = setTimeout(() => {
+                if (this.audio.readyState < 2) {
+                    // Audio still not ready, try to load it
+                    this.audio.load();
+                }
+            }, 3000);
+            this.timeouts.push(timeout);
         }
-        
+
         this.updatePlayPauseButton();
     }
     
@@ -402,16 +462,27 @@ class PersistentMusicPlayer {
         
         // Enhanced navigation detection
         const beforeUnloadListener = () => {
+            this.navigationInProgress = true;
+
+            // If crossfading, complete it immediately to save correct state
+            if (this.isCrossfading && this.crossfadeInterval) {
+                clearInterval(this.crossfadeInterval);
+                this.crossfadeInterval = null;
+                // The saveState() will handle saving the correct track during crossfade
+            }
+
             this.saveState();
             this.forceRestoreVolume();
         };
         window.addEventListener('beforeunload', beforeUnloadListener);
         this.eventListeners.push({ element: window, event: 'beforeunload', listener: beforeUnloadListener });
-        
+
         // Handle browser back/forward navigation
         const popstateListener = () => {
+            this.navigationInProgress = true;
             this.forceRestoreVolume();
             const timeout = setTimeout(() => {
+                this.navigationInProgress = false;
                 this.forceCheckVideoState();
             }, 500);
             this.timeouts.push(timeout);
@@ -419,6 +490,32 @@ class PersistentMusicPlayer {
         window.addEventListener('popstate', popstateListener);
         this.eventListeners.push({ element: window, event: 'popstate', listener: popstateListener });
         
+        // Intercept link clicks to save state before navigation
+        const linkClickListener = (e) => {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.href.startsWith('#') && !link.href.startsWith('javascript:')) {
+                // Check if it's an internal link (same origin)
+                try {
+                    const linkUrl = new URL(link.href);
+                    if (linkUrl.origin === window.location.origin) {
+                        this.navigationInProgress = true;
+
+                        // If crossfading, stop the interval - saveState will handle the correct track
+                        if (this.isCrossfading && this.crossfadeInterval) {
+                            clearInterval(this.crossfadeInterval);
+                            this.crossfadeInterval = null;
+                        }
+
+                        this.saveState();
+                    }
+                } catch {
+                    // Invalid URL, ignore
+                }
+            }
+        };
+        document.addEventListener('click', linkClickListener, true); // Use capture phase
+        this.eventListeners.push({ element: document, event: 'click', listener: linkClickListener });
+
         // Handle hash changes (SPA navigation)
         const hashchangeListener = () => {
             const timeout = setTimeout(() => {
@@ -698,12 +795,12 @@ class PersistentMusicPlayer {
     }
     
     startStateSaving() {
-        // Save state every 5 seconds while playing
+        // Save state every 2 seconds while playing for more reliable restoration
         const interval = setInterval(() => {
-            if (this.audio && !this.audio.paused) {
+            if (this.audio && !this.audio.paused && !this.navigationInProgress) {
                 this.saveState();
             }
-        }, 5000);
+        }, 2000);
         this.intervals.push(interval);
         this.updateInterval = interval;
     }
@@ -1279,47 +1376,33 @@ class PersistentMusicPlayer {
         const timeout = setTimeout(() => this.checkRestoreVolume(), 500);
         this.timeouts.push(timeout);
     }
-    
-    seededRandom(seed) {
-        // A simple pseudo-random number generator for deterministic shuffling
-        let x = Math.sin(seed) * 10000;
-        return x - Math.floor(x);
-    }
 
-    shufflePlaylist() {
-        const seed = this.state.shuffleSeed;
-        if (seed === null) {
+    playNextSongWithCrossfade() {
+        // Skip if navigation is in progress to prevent state changes
+        if (this.navigationInProgress) {
             return;
         }
 
-        let shuffled = [...this.defaultPlaylist]; // Always start from the original order
-
-        // Shuffle the array using the seed
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(this.seededRandom(seed + i) * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        
-        this.playlist = shuffled; // Update the in-memory playlist
-    }
-
-    playNextSongWithCrossfade() {
         // If crossfade is already in progress, let it complete
         if (this.isCrossfading) {
             return;
         }
-        
+
         // If crossfade was prepared but not started, try to start it
         if (this.crossfadePrepared) {
             this.startCrossfade();
             return;
         }
-        
+
         // If no crossfade was prepared, fall back to regular next song
         this.playNextSong();
     }
-    
+
     playNextSong() {
+        // Skip if navigation is in progress to prevent state changes
+        if (this.navigationInProgress) {
+            return;
+        }
         // Clear any ongoing crossfade and reset flags
         if (this.crossfadeInterval) {
             clearInterval(this.crossfadeInterval);
@@ -1334,10 +1417,8 @@ class PersistentMusicPlayer {
         
         this.state.currentTrackIndex++;
         if (this.state.currentTrackIndex >= this.playlist.length) {
-            // The playlist has finished. Generate a new seed for a fresh shuffle.
-            this.state.shuffleSeed = Math.floor(Math.random() * 100000);
-            this.shufflePlaylist(); // Re-shuffle with the new seed
-            this.state.currentTrackIndex = 0; // Start from the beginning
+            // Playlist finished, loop back to the beginning
+            this.state.currentTrackIndex = 0;
         }
         
         const activeAudio = this.getActiveAudio();
@@ -1527,13 +1608,7 @@ class PersistentMusicPlayer {
         const nextIndex = (this.state.currentTrackIndex + 1) % this.playlist.length;
         const nextTrack = this.playlist[nextIndex];
         const inactiveAudio = this.getInactiveAudio();
-        
-        // If we're at the end of playlist, reshuffle
-        if (nextIndex === 0) {
-            this.state.shuffleSeed = Math.floor(Math.random() * 100000);
-            this.shufflePlaylist();
-        }
-        
+
         // Load next track on inactive audio element
         inactiveAudio.src = nextTrack;
         inactiveAudio.volume = 0;
