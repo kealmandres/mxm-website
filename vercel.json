@@ -4,8 +4,20 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/botbuster",
+      "destination": "https://botbustervideo.netlify.app/"
+    },
+    {
       "source": "/botbuster/:path*",
       "destination": "https://botbustervideo.netlify.app/:path*"
+    },
+    {
+      "source": "/agents",
+      "destination": "https://mxm-agent-frontend-1.onrender.com/"
+    },
+    {
+      "source": "/agents/:path*",
+      "destination": "https://mxm-agent-frontend-1.onrender.com/:path*"
     },
     { "source": "/artificial-ingenious", "destination": "/pages/artificial-ingenious.html" },
     { "source": "/machine-megamind", "destination": "/pages/machine-megamind.html" },
