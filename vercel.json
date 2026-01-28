@@ -118,6 +118,40 @@
       ]
     },
     {
+      "source": "/agents/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mxm-agent-frontend-1.onrender.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://mxm-agent-frontend-1.onrender.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://mxm-agent-frontend-1.onrender.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://mxm-agent-frontend-1.onrender.com https://mxm-agent-backend.onrender.com https://www.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/agents",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mxm-agent-frontend-1.onrender.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://mxm-agent-frontend-1.onrender.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://mxm-agent-frontend-1.onrender.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://mxm-agent-frontend-1.onrender.com https://mxm-agent-backend.onrender.com https://www.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },    
+    {
       "source": "/assets/(.*)",
       "headers": [
         {
