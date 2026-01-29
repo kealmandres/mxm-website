@@ -14,6 +14,10 @@
     {
       "source": "/botbuster/",
       "destination": "https://botbustervideo.netlify.app/"
+    },  
+    {
+      "source": "/botbuster/.netlify/functions/:path*",
+      "destination": "https://botbustervideo.netlify.app/.netlify/functions/:path*"
     },
     {
       "source": "/agents",
@@ -93,23 +97,15 @@
       ]
     },
     {
-      "source": "/botbuster/(.*)",
+      "source": "/botbuster",
       "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://*.clerk.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://player.vimeo.com https://www.youtube.com https://kit.fontawesome.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; frame-src 'self' https://player.vimeo.com https://www.youtube.com https://js.stripe.com https://*.clerk.accounts.dev; worker-src 'self' blob:; connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://*.supabase.co https://cdn.jsdelivr.net https://www.google-analytics.com https://botbustervideo.netlify.app https://api.stripe.com; object-src 'none'; base-uri 'self'"
+        },
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
-        }, 
-        {
-          "key": "Content-Security-Policy",
-          "value": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://player.vimeo.com https://www.youtube.com https://kit.fontawesome.com; connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://www.google-analytics.com"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-Requested-With, Accept, Origin"
         },
         {
           "key": "X-Frame-Options",
@@ -124,24 +120,17 @@
           "value": "strict-origin-when-cross-origin"
         }
       ]
-    },{
-      "source": "/botbuster",
+    },
+    {
+      "source": "/botbuster/(.*)",
       "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://*.clerk.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://player.vimeo.com https://www.youtube.com https://kit.fontawesome.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; frame-src 'self' https://player.vimeo.com https://www.youtube.com https://js.stripe.com https://*.clerk.accounts.dev; worker-src 'self' blob:; connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://*.supabase.co https://cdn.jsdelivr.net https://www.google-analytics.com https://botbustervideo.netlify.app https://api.stripe.com; object-src 'none'; base-uri 'self'"
+        },
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
-        }, 
-        {
-          "key": "Content-Security-Policy",
-          "value": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://player.vimeo.com https://www.youtube.com https://kit.fontawesome.com; connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://www.google-analytics.com"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-Requested-With, Accept, Origin"
         },
         {
           "key": "X-Frame-Options",
