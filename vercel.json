@@ -12,6 +12,10 @@
       "destination": "https://botbustervideo.netlify.app/:path*"
     },
     {
+      "source": "/botbuster/",
+      "destination": "https://botbustervideo.netlify.app/"
+    },
+    {
       "source": "/agents",
       "destination": "https://mxm-agent-frontend-1.onrender.com/"
     },
