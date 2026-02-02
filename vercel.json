@@ -4,6 +4,10 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/.netlify/functions/:path*",
+      "destination": "https://botbustervideo.netlify.app/.netlify/functions/:path*"
+    },
+    {
       "source": "/botbuster",
       "destination": "https://botbustervideo.netlify.app/"
     },
