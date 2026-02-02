@@ -2,14 +2,17 @@
   "framework": null,
   "buildCommand": "node build.js",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/botbuster",
+      "destination": "/botbuster/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/.netlify/functions/:path*",
       "destination": "https://botbustervideo.netlify.app/.netlify/functions/:path*"
-    },
-    {
-      "source": "/botbuster",
-  "destination": "/botbuster/"
     },
     {
       "source": "/botbuster/:path*",
