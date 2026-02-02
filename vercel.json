@@ -9,8 +9,7 @@
     },
     {
       "source": "/botbuster",
-  "destination": "/botbuster/",
-    "permanent": false
+  "destination": "/botbuster/"
     },
     {
       "source": "/botbuster/:path*",
