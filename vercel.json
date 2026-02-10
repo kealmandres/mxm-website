@@ -30,6 +30,10 @@
       "source": "/agents",
       "destination": "https://mxm-agent-frontend-1.onrender.com/"
     },
+    {
+      "source": "/api/:path*",
+      "destination": "https://mxm-agent-backend.onrender.com/:path*"
+    },
     { 
 
       "source": "/agents/:path*",
