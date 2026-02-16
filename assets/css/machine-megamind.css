@@ -11,17 +11,58 @@ body.detail-page.machine-megamind {
     font-family: "Uniform Extra Condensed", sans-serif; /* Changed font */
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
-    padding-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-left:clamp(12rem, 5vw, 3.5rem);
-    padding-right: clamp(12rem, 5vw, 3.5rem);
+    padding-top: clamp(2rem, 4vw, 2.8rem);
+    padding-left: clamp(3rem, 12vw, 12rem);   /* RESTORED: Large padding to show background */
+    padding-right: clamp(3rem, 12vw, 12rem);  /* RESTORED: Large padding to show background */
+
+}
+
+/* Scale content only, not background */
+.machine-megamind .page-section,
+.machine-megamind .room-info-section,
+.machine-megamind .offering-image,
+.machine-megamind .bb-room-info,
+.machine-megamind .process-overview-image,
+.machine-megamind img,
+.machine-megamind .testimonial-section,
+.machine-megamind .testimonial-card,
+.machine-megamind .faq-section,
+.machine-megamind .timeline-section,
+.machine-megamind .cta-section,
+.machine-megamind .offering-card,
+.machine-megamind form,
+.machine-megamind .form-container,
+.machine-megamind .container,
+.machine-megamind .return-to-maison {
+    zoom: 0.9;  /* Scale down content by 10% to fit at 100% browser zoom */
 }
 
 
 @media (max-width: 1080px) {
     body.detail-page.machine-megamind {
-        padding-top: clamp(1.5rem, 5vw, 3.5rem);
-        padding-left: clamp(6rem, 5vw, 6.5rem);
-        padding-right: clamp(6rem, 5vw, 6.5rem);
+        padding-top: clamp(1.5rem, 4vw, 2.5rem);
+        padding-left: clamp(2rem, 8vw, 6rem);
+        padding-right: clamp(2rem, 8vw, 6rem);
+
+    }
+
+    .machine-megamind .page-section,
+    .machine-megamind .room-info-section,
+    .machine-megamind .offering-image,
+    .machine-megamind .bb-room-info,
+    .machine-megamind .process-overview-image,
+    .machine-megamind img,
+    .machine-megamind .testimonial-section,
+    .machine-megamind .testimonial-card,
+    .machine-megamind .faq-section,
+    .machine-megamind .timeline-section,
+    .machine-megamind .cta-section,
+    .machine-megamind .offering-card,
+    .machine-megamind form,
+    .machine-megamind .form-container,
+    .machine-megamind .container,
+    .machine-megamind .return-to-maison {
+        zoom: 0.95;  /* Less scaling on tablets */
     }
 }
 
@@ -344,14 +385,114 @@ body.detail-page.machine-megamind {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Initial Diagnosis Section (MM-specific, copied from artificial-ingenious) */
+.machine-megamind .mm-initial-diagnosis-section {
+    position: relative;
+}
+
+.machine-megamind .mm-initial-diagnosis-section .mm-diagnosis-content-wrapper {
+    max-width: 700px;
+    margin: 1.5rem auto 0 auto;
+    padding-bottom: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 350px;
+    position: relative;
+}
+
+.machine-megamind .mm-initial-diagnosis-section .mm-diagnosis-price {
+    font-family: var(--mm-futuristic-font);
+    font-size: 2.5rem;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+    display: inline-block;
+    font-weight: normal;
+}
+
+.machine-megamind .mm-initial-diagnosis-section .mm-diagnosis-description {
+    font-size: 1rem;
+    color: var(--mm-text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.machine-megamind .mm-initial-diagnosis-section .mm-diagnosis-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+    text-align: left;
+    display: inline-block;
+    flex-grow: 1;
+}
+
+.machine-megamind .mm-initial-diagnosis-section .mm-diagnosis-features li {
+    padding: 8px 0 8px 30px;
+    position: relative;
+    font-size: 0.95rem;
+    color: var(--mm-text-secondary);
+}
+
+.machine-megamind .mm-initial-diagnosis-section .mm-diagnosis-features li::before {
+    content: '✧';
+    position: absolute;
+    left: 0;
+    color: #FFFFFF;
+    font-size: 1.3em;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.machine-megamind .mm-initial-diagnosis-section .cta-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 14px 35px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-family: var(--mm-futuristic-font);
+    text-transform: uppercase;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.machine-megamind .mm-initial-diagnosis-section .cta-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+.machine-megamind .mm-diagnosis-cta-image {
+    position: absolute;
+    width: 550px;
+    height: auto;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    border-bottom-left-radius: var(--mm-card-border-radius);
+}
+
 /* New grid layout for the "Custom AI Agents" section */
 .machine-megamind .offerings-section .offerings-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 320px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     justify-content: center;
     gap: 2rem;
     margin-top: 2rem;
-    perspective: 1000px; 
+    perspective: 1000px;
+}
+
+@media (max-width: 992px) {
+    .machine-megamind .offerings-section .offerings-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .machine-megamind .offerings-section .offerings-grid {
+        grid-template-columns: 1fr;
+    } 
 }
 
 /* New card styles for the "Custom AI Agents" section */

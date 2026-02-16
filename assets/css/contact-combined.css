@@ -11,17 +11,77 @@ body.detail-page.artificial-ingenious {
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll from wide elements / animations */
     /* overflow-y: auto; Ensure vertical scrolling is enabled */
-    padding-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-left:clamp(12rem, 5vw, 3.5rem);
-    padding-right: clamp(12rem, 5vw, 3.5rem);
+    padding-top: clamp(2rem, 4vw, 2.8rem);
+    padding-left: clamp(3rem, 12vw, 12rem);   /* RESTORED: Large padding to show background */
+    padding-right: clamp(3rem, 12vw, 12rem);  /* RESTORED: Large padding to show background */
+
+}
+
+/* Scale content only, not background */
+.artificial-ingenious .page-section,
+.artificial-ingenious .room-info-section,
+.artificial-ingenious .offering-image,
+.artificial-ingenious .bb-room-info,
+.artificial-ingenious .process-overview-image,
+.artificial-ingenious img,
+.artificial-ingenious .testimonial-section,
+.artificial-ingenious .testimonial-card,
+.artificial-ingenious .faq-section,
+.artificial-ingenious .timeline-section,
+.artificial-ingenious .cta-section,
+.artificial-ingenious .offering-card,
+.artificial-ingenious form,
+.artificial-ingenious .form-container,
+.artificial-ingenious .container,
+.artificial-ingenious .return-to-maison {
+    zoom: 0.9;  /* Scale down content by 10% to fit at 100% browser zoom */
+}
+
+/* Contact page specific overrides */
+.artificial-ingenious .blonde-bot-contact-intro {
+    zoom: 0.75;  /* Reduce blonde bot intro image to 75% */
+}
+
+.artificial-ingenious .contact-form-container {
+    zoom: 1.0;  /* Keep form at full size (override global 0.9) */
 }
 
 
 @media (max-width: 1080px) {
     body.detail-page.artificial-ingenious {
-        padding-top: clamp(1.5rem, 5vw, 3.5rem);
-        padding-left: clamp(6rem, 5vw, 6.5rem);
-        padding-right: clamp(6rem, 5vw, 6.5rem);
+        padding-top: clamp(1.5rem, 4vw, 2.5rem);
+        padding-left: clamp(2rem, 8vw, 6rem);
+        padding-right: clamp(2rem, 8vw, 6rem);
+
+    }
+
+    .artificial-ingenious .page-section,
+    .artificial-ingenious .room-info-section,
+    .artificial-ingenious .offering-image,
+    .artificial-ingenious .bb-room-info,
+    .artificial-ingenious .process-overview-image,
+    .artificial-ingenious img,
+    .artificial-ingenious .testimonial-section,
+    .artificial-ingenious .testimonial-card,
+    .artificial-ingenious .faq-section,
+    .artificial-ingenious .timeline-section,
+    .artificial-ingenious .cta-section,
+    .artificial-ingenious .offering-card,
+    .artificial-ingenious form,
+    .artificial-ingenious .form-container,
+    .artificial-ingenious .container,
+    .artificial-ingenious .return-to-maison {
+        zoom: 0.95;  /* Less scaling on tablets */
+    }
+
+    /* Contact page specific overrides */
+    .artificial-ingenious .blonde-bot-contact-intro {
+        zoom: 0.8;  /* Reduce blonde bot intro image to 80% on tablets */
+    }
+
+    .artificial-ingenious .contact-form-container {
+        zoom: 1.0;  /* Keep form at full size on tablets */
+    }
     }
 }
 

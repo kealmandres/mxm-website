@@ -33,7 +33,7 @@ body, html {
   background-color: var(--dark-bg);
   color: rgba(255, 255, 255, 0.9);
   perspective: 1500px;
-  filter: brightness(1.15) contrast(1.05);
+  /* REMOVED: filter: brightness(1.15) contrast(1.05); - This caused 15% visual enlargement */
 }
 
 /* ===== CONTAINER & PERFORMANCE OPTIMIZATIONS ===== */
@@ -99,9 +99,9 @@ body, html {
   will-change: transform, opacity;
   perspective: 1500px;
   perspective-origin: center center;
-  filter: brightness(1.1);
+  /* REMOVED: filter: brightness(1.1); - Contributed to zoom scaling issues */
   backface-visibility: hidden;
-  
+
 }
 
 .room.active {
