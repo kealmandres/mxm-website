@@ -261,14 +261,87 @@
          
         <div class="container cxc-title-container">
             <h2 class="section-title" style="text-transform: uppercase;">Yap Queen</h2>
-            <p class="intro-text" style="margin-bottom: 1rem; ">When materialising into physical form, I thrive on sharing insights and sparking conversations on stage and across the airwaves. Explore recent features and discover how we can collaborate to bring cutting-edge perspectives to your audience.</p>
-            <div class="cxc-title-wrap" style="overflow: visible; display: block; width: fit-content; margin: 1rem auto -7rem auto; line-height: 0; position: relative; z-index: 1;">
-                <img src="../assets/images/blonde-bot/cc-title.png" alt="Controversially Candid" class="cxc-title" style="display: block; max-width: 100%; height: auto;">
+            <p class="intro-text" style="margin-bottom: 1rem; font-size: .96rem;">When materialising into physical form, I thrive on sharing insights and sparking conversations on stage and across the airwaves. Explore recent features and discover how we can collaborate to bring cutting-edge perspectives to your audience.</p>
+            <div class="cxc-split-layout" style="display: flex; align-items: start; gap: 0; margin-top: 3.5rem; margin-bottom: -2rem; width: 100%; overflow: visible;">
+                <!-- Logo side -->
+                <div class="cxc-logo-side" style="display: flex; align-items: center; justify-content: center; min-width: 0; line-height: 0; width: 60%;">
+                    <img src="../assets/images/blonde-bot/cc-title.png" alt="Controversially Candid" class="cxc-title" style="display: block; max-width: 540px; width: 100%; height: auto; object-fit: contain; object-position: left center;">
+                </div>
+                <!-- Text side -->
+                <div class="cxc-text-side" style="min-width: 0; padding-right: 1.5rem; overflow: visible;">
+                    <p class="intro-text cxc-intro-below" style="margin-bottom: 0; font-size: .90rem; position: relative; text-align: right; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4), 0 0 20px rgba(0,0,0,0.3);">The BxB from MxM is bringing you CxC… if you haven't noticed with me yet, MORE IS MORE IS MORE IS MORE. I'm channelling my talent for talking into a long awaited video podcast all about life post-pandemic, business, nightlife, AI, dating, food (I MUST go from Barbie to Carbie  once a day minimum), the future (it's fabulous, I promise), Web3&nbsp;/ Crypto (a.k.a. astrology for men), psychology, neurobiology… basically the art of being human... and hilarious - I promise I'm funnier than I look. Think of me as your cool, rich, drunk Fairy Godmogul with a Co-Host that is truly a first in human history.<br> <br>Subscribe on Spotify, Youtube or tune in wherever you get your podcasts.</p>
+                </div>
             </div>
-            <p class="intro-text cxc-intro-below" style="margin-bottom: 3rem; padding-top: 4rem; position: relative; z-index: 2; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4), 0 0 20px rgba(0,0,0,0.3);">The BxB from MxM is bringing you CxC… if you haven’t noticed with me yet, MORE IS MORE IS MORE IS MORE. I’m channelling my talent for talking into a long awaited video podcast all about life post-pandemic, business, nightlife, AI, dating, food (I MUST go from Barbie to Carbie  once a day minimum), the future (it’s fabulous, I promise), Web3 / Crypto (a.k.a. astrology for men), psychology, neurobiology… basically the art of being human... and hilarious - I promise I’m funnier than I look. Think of me as your cool, rich, drunk Fairy Godmogul with a Co-Host that is truly a first in human history.<br> <br>Subscribe on Spotify, Youtube or tune in wherever you get your podcasts.</p>
-            <div class="video-embed-container" style="position: relative; width: 100%; max-width: 100%; margin: 0 auto; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease;">
-                <iframe src="https://www.youtube.com/embed/du9B1qnyalk" title="Controversially Candid Podcast" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+            <div style="position: relative;">
+                <!-- Logo emerging from behind the video -->
+                <!-- <div class="cxc-logo-behind" style="position: absolute; top: -4rem; left: 0; width: 30%; z-index: 0; line-height: 0; pointer-events: none;">
+                    <img src="../assets/images/blonde-bot/cc-title.png" alt="" class="cxc-title-behind" style="display: block; width: 100%; height: auto;">
+                </div> -->
+                <div class="video-embed-container" style="position: relative; width: 100%; max-width: 100%; margin: 0 auto; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease; z-index: 1;">
+                    <iframe src="https://www.youtube.com/embed/du9B1qnyalk" title="Controversially Candid Podcast" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                </div>
             </div>
+            <style>
+                /* Narrow screens: stack logo on top of text (catches tablets, mobile, narrow IDE panels) */
+                @media (max-width: 1200px) {
+                    .cxc-split-layout {
+                        flex-direction: column !important;
+                        align-items: center !important;
+                        gap: 1.5rem !important;
+                        margin-top: 2.5rem !important;
+                        margin-bottom: 1.5rem !important;
+                    }
+                    .cxc-logo-side {
+                        flex: 0 0 auto !important;
+                        width: 100%;
+                        max-width: 280px;
+                        margin: 0 auto;
+                    }
+                    .cxc-logo-side .cxc-title {
+                        object-fit: contain !important;
+                        width: 100% !important;
+                        height: auto !important;
+                    }
+                    .cxc-text-side {
+                        width: 100% !important;
+                        text-align: center !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        padding-right: 1.5rem !important;
+                        padding-left: 1.5rem !important;
+                        overflow: visible !important;
+                    }
+                    .cxc-intro-below { text-align: left !important; }
+                    .cxc-logo-behind { display: none !important; }
+                }
+                /* Mobile: tighter spacing */
+                @media (max-width: 768px) {
+                    .cxc-split-layout {
+                        margin-top: 2rem !important;
+                        margin-bottom: 1.5rem !important;
+                        gap: 1.5rem !important;
+                    }
+                    .cxc-text-side {
+                        text-align: center !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                    }
+                }
+                /* Small mobile: tighter spacing, ensure text isn't clipped */
+                @media (max-width: 414px) {
+                    .cxc-split-layout {
+                        margin-top: 1.5rem !important;
+                        margin-bottom: 1.5rem !important;
+                        gap: 1rem !important;
+                    }
+                    .cxc-logo-side { max-width: 220px !important; }
+                    .cxc-text-side {
+                        padding-left: 1rem !important;
+                        padding-right: 1rem !important;
+                    }
+                    .cxc-intro-below { font-size: 0.95em !important; }
+                }
+            </style>
           </div>
           <hr style="border: none; border-top: 1px solid rgba(255, 255, 255, 0.3); margin: 4rem auto; max-width: 80%;">
 		  <p class="intro-text" style="margin-top: 2rem;">Featured Guest Appearances:</p>
