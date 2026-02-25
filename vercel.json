@@ -28,16 +28,16 @@
     },
     {
       "source": "/agents",
-      "destination": "https://mxm-agent-frontend-1.onrender.com/"
+      "destination": "https://mxm-agent-platform-frontend.onrender.com/"
     },
     {
       "source": "/api/:path*",
-      "destination": "https://mxm-agent-backend.onrender.com/:path*"
+      "destination": "https://mxm-agent-platform-api.onrender.com/:path*"
     },
     { 
 
       "source": "/agents/:path*",
-"destination": "https://mxm-agent-frontend-1.onrender.com/agents/:path*"
+"destination": "https://mxm-agent-platform-frontend.onrender.com/agents/:path*"
     },
     { "source": "/artificial-ingenious", "destination": "/pages/artificial-ingenious.html" },
     { "source": "/machine-megamind", "destination": "/pages/machine-megamind.html" },
@@ -163,7 +163,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mxm-agent-frontend-1.onrender.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://mxm-agent-frontend-1.onrender.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://mxm-agent-frontend-1.onrender.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://mxm-agent-frontend-1.onrender.com https://mxm-agent-backend.onrender.com https://www.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mxm-agent-platform-frontend.onrender.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://mxm-agent-platform-frontend.onrender.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://mxm-agent-platform-frontend.onrender.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://mxm-agent-platform-frontend.onrender.com https://mxm-agent-platform-api.onrender.com https://www.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
         },
         {
           "key": "X-Frame-Options",
@@ -180,7 +180,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mxm-agent-frontend-1.onrender.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://mxm-agent-frontend-1.onrender.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://mxm-agent-frontend-1.onrender.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://mxm-agent-frontend-1.onrender.com https://mxm-agent-backend.onrender.com https://www.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mxm-agent-platform-frontend.onrender.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://mxm-agent-platform-frontend.onrender.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://mxm-agent-platform-frontend.onrender.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://mxm-agent-platform-frontend.onrender.com https://mxm-agent-platform-api.onrender.com https://www.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
         },
         {
           "key": "X-Frame-Options",
