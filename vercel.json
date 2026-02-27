@@ -21,7 +21,7 @@
     {
       "source": "/botbuster/",
       "destination": "https://botbustervideo.netlify.app/"
-    },  
+    },
     {
       "source": "/botbuster/.netlify/functions/:path*",
       "destination": "https://botbustervideo.netlify.app/.netlify/functions/:path*"
@@ -31,13 +31,16 @@
       "destination": "https://mxm-agents.netlify.app/"
     },
     {
+      "source": "/_next/:path*",
+      "destination": "https://mxm-agents.netlify.app/_next/:path*"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://mxm-agent-backend.onrender.com/:path*"
     },
-    { 
-
+    {
       "source": "/agents/:path*",
-"destination": "https://mxm-agents.netlify.app/agents/:path*"
+      "destination": "https://mxm-agents.netlify.app/agents/:path*"
     },
     { "source": "/artificial-ingenious", "destination": "/pages/artificial-ingenious.html" },
     { "source": "/machine-megamind", "destination": "/pages/machine-megamind.html" },
@@ -78,10 +81,10 @@
           "key": "Access-Control-Max-Age",
           "value": "86400"
         },
-         {
-           "key": "Content-Security-Policy",
-           "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://player.vimeo.com https://www.youtube.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; frame-src 'self' https://player.vimeo.com https://www.youtube.com https://www.facebook.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://api.rss2json.com https://themxm.app.n8n.cloud https://marissakos.substack.com; object-src 'none'; base-uri 'self'; form-action 'self' https://themxm.app.n8n.cloud; frame-ancestors 'self'"
-         },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://player.vimeo.com https://www.youtube.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; frame-src 'self' https://player.vimeo.com https://www.youtube.com https://www.facebook.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net https://api.rss2json.com https://themxm.app.n8n.cloud https://marissakos.substack.com; object-src 'none'; base-uri 'self'; form-action 'self' https://themxm.app.n8n.cloud; frame-ancestors 'self'"
+        },
         {
           "key": "X-Frame-Options",
           "value": "SAMEORIGIN"
@@ -139,7 +142,7 @@
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://*.clerk.accounts.dev https://*.clerk.com https://*.themxm.ai https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://player.vimeo.com https://www.youtube.com https://kit.fontawesome.com https://js.stripe.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com; img-src 'self' data: https: blob: https://*.themxm.ai; frame-src 'self' https://player.vimeo.com https://www.youtube.com https://js.stripe.com https://*.clerk.accounts.dev https://*.clerk.com https://*.themxm.ai https://challenges.cloudflare.com; worker-src 'self' blob:; connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://*.themxm.ai https://clerk-telemetry.com https://*.supabase.co wss://*.supabase.co https://*.cloudinary.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.google-analytics.com https://botbustervideo.netlify.app https://api.stripe.com https://n8n.srv888335.hstgr.cloud https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'"
-        },        
+        },
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
@@ -191,7 +194,7 @@
           "value": "nosniff"
         }
       ]
-    },    
+    },
     {
       "source": "/assets/(.*)",
       "headers": [
