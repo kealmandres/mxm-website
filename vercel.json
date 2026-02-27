@@ -35,6 +35,10 @@
       "destination": "https://mxm-agents.netlify.app/_next/:path*"
     },
     {
+      "source": "/fonts/:path*",
+      "destination": "https://mxm-agents.netlify.app/fonts/:path*"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://mxm-agent-backend.onrender.com/:path*"
     },
