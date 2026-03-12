@@ -31,12 +31,8 @@
       "destination": "https://mxm-agents.netlify.app/"
     },
     {
-      "source": "/admin",
+      "source": "/agents/admin",
       "destination": "https://mxm-agents.netlify.app/admin/"
-    },
-    {
-      "source": "/admin/:path*",
-      "destination": "https://mxm-agents.netlify.app/admin/:path*"
     },
     {
       "source": "/_next/:path*",
@@ -203,7 +199,7 @@
       ]
     },
     {
-      "source": "/admin/(.*)",
+      "source": "/agents/admin",
       "headers": [
         {
           "key": "Content-Security-Policy",
