@@ -31,12 +31,32 @@
       "destination": "https://mxm-agents.netlify.app/"
     },
     {
+      "source": "/admin",
+      "destination": "https://mxm-agents.netlify.app/admin/"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://mxm-agents.netlify.app/admin/:path*"
+    },
+    {
       "source": "/_next/:path*",
       "destination": "https://mxm-agents.netlify.app/_next/:path*"
     },
     {
       "source": "/fonts/:path*",
       "destination": "https://mxm-agents.netlify.app/fonts/:path*"
+    },
+    {
+      "source": "/BG7.webp",
+      "destination": "https://mxm-agents.netlify.app/BG7.webp"
+    },
+    {
+      "source": "/favicon.svg",
+      "destination": "https://mxm-agents.netlify.app/favicon.svg"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "https://mxm-agents.netlify.app/favicon.svg"
     },
     {
       "source": "/api/:path*",
@@ -167,6 +187,23 @@
     },
     {
       "source": "/agents/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mxm-agents.netlify.app https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://mxm-agents.netlify.app https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://mxm-agents.netlify.app; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://mxm-agents.netlify.app https://mxm-agent-backend.onrender.com https://www.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/admin/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
