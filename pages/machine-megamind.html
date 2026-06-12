@@ -364,15 +364,21 @@
                 </div>
             </div>
             <div style="display: flex; justify-content: center; margin-top: 2rem;">
-                <a href="/agents" 
+                <button 
+                    onclick="openModal('LisenceWalkthroughModal')" 
+                    class="explore-btn" 
+                    style="font-size: 1.5rem; width: 400px; display: flex; justify-content: center; align-items: center; height: 55px; padding: 0; line-height: 1;">
+                    LAUNCH CUSTOM AGENTS
+                </button>  
+                <!-- <a href="/agents" 
                     class="explore-btn" 
                     style="font-size: 1.5rem; width: 400px; display: flex; justify-content: center; align-items: center; height: 55px; padding: 0; line-height: 1; text-decoration: none; box-sizing: border-box;">
                     LAUNCH CUSTOM AGENTS
-                </a>  
+                </a>   -->
             </div>
             <!-- <div class="section-divider"></div> -->
 
-            <h2 class="section-title" style="">NEURAL ENGINES</h2>
+            <h2 class="section-title">NEURAL ENGINES</h2>
             <div style="font-family: inherit; color: #AAAAAA; opacity: 0.7; filter: blur(0.4px); margin-top: -1.5rem; margin-bottom: 0.45rem; letter-spacing: 2px; text-align: center; width: 100%;">(AGENTIC WORKFLOWS)</div>
             <p class="intro-text">The true power of AI emerges when multiple agents work together in seamless workflows, creating end-to-end solutions that transform entire business processes. 'Agentic' will feel 'angelic' when you experience the level of support and proactivity your battalion brings.</p>
             
@@ -380,7 +386,7 @@
             <img src="../assets/images/machine-megamind/AW2.webp" alt="Agentic Workflow 2" class="section-image" loading="lazy">
             <img src="../assets/images/machine-megamind/AW1.webp" alt="Agentic Workflow 3" class="section-image" loading="lazy">
 
-            <!-- <div class="offerings-grid" style="padding: 0px; margin-top: 2rem;">
+            <div class="offerings-grid" style="padding: 0px; margin-top: 2rem;">
                 <div class="offering-card">
                     <div class="offering-text-content">
                         <h3 class="offering-title" style="font-weight: 300;">Marketing Ecosystem Workflow</h3>
@@ -402,32 +408,30 @@
                 </div>
             </div>
 
-                <div class="offerings-grid" style="display: flex; justify-content: space-around; margin-top: -70px; margin-bottom: 1rem;">
-                    <div class="offering-card" style="padding-top: 5px; text-align: center;">
-                        <div class="offering-text-content">
-                            <img src="../assets/images/machine-megamind/ai_in_action.webp" alt="Agentic AI in Action" class="offering-images" loading="lazy" style="width: clamp(15rem, 100%, 580px); height: auto; margin-bottom: -50px; vertical-align: bottom;">
-                
-                            <button onclick="openModal('timelineModal_2')"
-                                    class="explore-btn"
-                                    style="font-size: 1.5rem; width: 400px; text-align: center; display: flex; justify-content: center; align-items: center;">
-                                AGENTIC AI IN ACTION
-                            </button>
-                        </div>
-                    </div>
-                
-                    <div class="offering-card" style="padding-top: 5px; text-align: center;">
-                        <div class="offering-text-content" style="margin-top: -40px;"> 
-                            <img src="../assets/images/machine-megamind/spotlightv2.webp" alt="Workflow Spotlight" class="offering-images" loading="lazy" style="width: clamp(15rem, 100%, 580px); height: auto; margin-bottom: -50px; transform: scaleX(-1); vertical-align: bottom; ">
-                
-                            <button onclick="openModal('timelineModal_3')"
-                                    class="explore-btn"
-                                    style="font-size: 1.5rem; width: 400px; text-align: center; display: flex; justify-content: center; align-items: center; z-index: 10002;">
-                                WORKFLOW SPOTLIGHT
-                            </button>
-                        </div>
+            <div class="offerings-grid" style="display: flex; justify-content: space-around; margin-top: -70px; margin-bottom: 1rem;">
+                <div class="offering-card" style="padding-top: 5px; text-align: center;">
+                    <div class="offering-text-content">
+                        <img src="../assets/images/machine-megamind/ai_in_action.webp" alt="Agentic AI in Action" class="offering-images" loading="lazy" style="width: clamp(15rem, 100%, 580px); height: auto; margin-bottom: -50px; vertical-align: bottom;">
+            
+                        <button onclick="openModal('timelineModal_2')"
+                                class="explore-btn"
+                                style="font-size: 1.5rem; width: 400px; text-align: center; display: flex; justify-content: center; align-items: center;">
+                            AGENTIC AI IN ACTION
+                        </button>
                     </div>
                 </div>
-                 -->
+            
+                <div class="offering-card" style="padding-top: 5px; text-align: center;">
+                    <div class="offering-text-content" style="margin-top: -40px;"> 
+                        <img src="../assets/images/machine-megamind/spotlightv2.webp" alt="Workflow Spotlight" class="offering-images" loading="lazy" style="width: clamp(15rem, 100%, 580px); height: auto; margin-bottom: -50px; transform: scaleX(-1); vertical-align: bottom; ">
+            
+                        <button onclick="openModal('timelineModal_3')"
+                                class="explore-btn"
+                                style="font-size: 1.5rem; width: 400px; text-align: center; display: flex; justify-content: center; align-items: center; z-index: 10002;">
+                            WORKFLOW SPOTLIGHT
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -475,8 +479,6 @@
                         </ul>
                     </div>
                 </div>
-                
-                
         </div>
     </section>
 
@@ -612,7 +614,7 @@
                         </p>
                     </div>
                 </div>
-                 <div class="faq-item">
+                <div class="faq-item">
                     <div class="faq-question">
                         <h3 class="faq-question-title">What information do you need during the "Architect" phase?</h3>
                         <div class="accordion-icon">+</div>
@@ -672,7 +674,7 @@
     <script src="../assets/js/performance-optimizer.js" defer></script>
 
      <!-- Add this CSS to your stylesheet -->
-     <style>
+    <style>
         /* Modal Background */
         .modal {
             display: none;
@@ -733,7 +735,7 @@
             color: #fff;
             transform: scale(1.1);
         }
-        </style>
+    </style>
     
     <!-- Wrap your timeline section in this modal structure -->
     <div id="timelineModal" class="modal">
@@ -745,8 +747,8 @@
                     <p class="intro-text">Our 12-week process ensures a smooth, successful integration of AI agents and workflows where your MaCHiNE MEGaMiND metamorphosises "business as usual" into "business as unreal"... seriously, once you go bot you never go back.</p>
         
                     <div class="timeline-steps" style="padding: 0 5%; box-sizing: border-box;margin-top: 5.5rem;">
-                         <!-- Step 1: Discovery & Design -->
-                         <div class="timeline-step">
+                        <!-- Step 1: Discovery & Design -->
+                        <div class="timeline-step">
                             <div class="timeline-step-main-content">
                                 <div class="timeline-step-number">01</div>
                                 <div class="timeline-step-content">
@@ -873,52 +875,85 @@
                     <p class="intro-text">How our agents collaborate in an end-to-end content marketing workflow:</p>
                     <img src="../assets/images/machine-megamind/workflow-spotlight.webp" alt="Workflow Spotlight" class="section-image" loading="lazy">
         
-<div class="spotlight-categories" style="
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 20px;
-    max-width: 1500px;
-    margin: 0 auto;
-    align-content: center;
-    margin-top: 2.5rem;
-">
-  <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px; margin-left: 20px;">
-    <h3 style="font-weight: 300;">Strategy Agent</h3>
-    <ul style="margin-left: -20px; max-width: 350px; font-weight: 300;">
-      <li style="font-weight: 300;">Analyzes market trends and competitor content</li>
-      <li style="font-weight: 300;">Recommends content themes and topics</li>
-      <li style="font-weight: 300;">Sets KPIs and performance targets</li>
-    </ul>
-  </div>
-  <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px;">
-    <h3 style="font-weight: 300;">Creation Agents</h3>
-    <ul style="margin-left: -20px; max-width: 350px;">
-        <li>Research Agent: Gathers relevant data and sources</li>
-      <li>Writing Agent: Drafts content based on brand voice</li>
-      <li>Design Agent: Creates visual assets and formatting</li>
-    </ul>
-  </div>
-  <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px;">
-    <h3 style="font-weight: 300;">Distribution Agents</h3>
-    <ul style="margin-left: -20px; max-width: 350px;">
-        <li>Channel Agent: Optimises content for each platform</li>
-      <li>Scheduling Agent: Posts at optimal times</li>
-      <li>Engagement Agent: Replies to comments and messages</li>
-    </ul>
-  </div>
-  <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px;">
-    <h3 style="font-weight: 300;">Analytics Agents</h3>
-    <ul style="margin-left: -20px; max-width: 350px;">
-        <li>Tracking Agent: Monitors performance metrics</li>
-      <li>Insight Agent: Identifies successful patterns</li>
-      <li>Reporting Agent: Delivers digestible analytics</li>
-    </ul>
-  </div>
-</div>
+                    <div class="spotlight-categories" style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-around;
+                        gap: 20px;
+                        max-width: 1500px;
+                        margin: 0 auto;
+                        align-content: center;
+                        margin-top: 2.5rem;
+                    ">
+                    <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px; margin-left: 20px;">
+                        <h3 style="font-weight: 300;">Strategy Agent</h3>
+                        <ul style="margin-left: -20px; max-width: 350px; font-weight: 300;">
+                        <li style="font-weight: 300;">Analyzes market trends and competitor content</li>
+                        <li style="font-weight: 300;">Recommends content themes and topics</li>
+                        <li style="font-weight: 300;">Sets KPIs and performance targets</li>
+                        </ul>
+                    </div>
+                    <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px;">
+                        <h3 style="font-weight: 300;">Creation Agents</h3>
+                        <ul style="margin-left: -20px; max-width: 350px;">
+                            <li>Research Agent: Gathers relevant data and sources</li>
+                        <li>Writing Agent: Drafts content based on brand voice</li>
+                        <li>Design Agent: Creates visual assets and formatting</li>
+                        </ul>
+                    </div>
+                    <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px;">
+                        <h3 style="font-weight: 300;">Distribution Agents</h3>
+                        <ul style="margin-left: -20px; max-width: 350px;">
+                            <li>Channel Agent: Optimises content for each platform</li>
+                        <li>Scheduling Agent: Posts at optimal times</li>
+                        <li>Engagement Agent: Replies to comments and messages</li>
+                        </ul>
+                    </div>
+                    <div class="category" style="flex: 1 1 calc(25% - 20px); box-sizing: border-box; min-width: 200px;">
+                        <h3 style="font-weight: 300;">Analytics Agents</h3>
+                        <ul style="margin-left: -20px; max-width: 350px;">
+                            <li>Tracking Agent: Monitors performance metrics</li>
+                        <li>Insight Agent: Identifies successful patterns</li>
+                        <li>Reporting Agent: Delivers digestible analytics</li>
+                        </ul>
+                    </div>
+                    </div>
 
 
-                </div>     </section>
+                </div>     
+            </section>
+        </div>
+    </div>
+
+    <div id="LisenceWalkthroughModal" style="display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+        <div class="modal-content" style="max-width: 1200px; width: 100%; max-height: 90vh; overflow-y: auto; box-sizing: border-box;">
+            
+            <span class="close" onclick="closeModal('LisenceWalkthroughModal')">&times;</span>
+
+            <h2 style="margin:0 0 8px 0; font-size:1.4rem;">Before you dive in</h2>
+            <p style="margin:0 0 16px 0; font-size:0.95rem;">Take a quick look at this walkthrough to get the most out of Custom Agents.</p>
+
+            <div style="width:100%; max-height: 50vh; aspect-ratio:16/9; border-radius:8px; overflow:hidden; margin:0 auto 16px; max-width: 100%;">
+                <iframe
+                    src="https://www.youtube.com/embed/EpZN1hxukkg"
+                    style="width:100%; height:100%; border:none; display:block;"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 1rem;">
+                <a href="/agents" 
+                    class="explore-btn" 
+                    style="font-size: 1.5rem; width: 400px; display: flex; justify-content: center; align-items: center; height: 55px; padding: 0; line-height: 1; text-decoration: none; box-sizing: border-box;">
+                    GO TO CUSTOM AGENTS
+                </a>
+
+                <span onclick="closeModal('LisenceWalkthroughModal')" style="text-align:center; font-size:0.85rem; color:#888; text-decoration:underline; cursor:pointer;">
+                    Skip for now
+                </span>
+            </div>
         </div>
     </div>
     
