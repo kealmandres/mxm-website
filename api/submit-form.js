@@ -1,13 +1,6 @@
 // /api/submit-form.js
 
 export default async function handler(request, response) {
-  // --- DEBUGGING STEP ---
-  // Log all available environment variables to the vercel dev terminal
-  console.log('--- AVAILABLE ENVIRONMENT VARIABLES ---');
-  console.log(process.env);
-  console.log('------------------------------------');
-  // --- END DEBUGGING STEP ---
-  
   // 1. Check for POST request and correct Content-Type
   if (request.method !== 'POST') {
     return response.status(405).json({ message: 'Method Not Allowed' });
@@ -39,14 +32,15 @@ export default async function handler(request, response) {
 
     // 4. Send the response from n8n back to the client
     if (!n8nResponse.ok) {
-      console.error('Error from n8n webhook:', responseData);
+      console.error('Error from n8n webhook, status:', n8nResponse.status);
       return response.status(n8nResponse.status).json({ message: 'Error submitting form.', details: responseData });
     }
 
     return response.status(200).json(responseData);
 
   } catch (error) {
-    console.error('Error proxying request to n8n:', error);
+    // Log only the error name: the full error object can include the webhook URL
+    console.error('Error proxying request to n8n:', error.name);
     return response.status(500).json({ message: 'An internal server error occurred.' });
   }
 } 

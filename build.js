@@ -87,9 +87,10 @@ class AssetVersioner {
     }
 
     copyHtmlFiles() {
-        // Copy root HTML files
+        // Copy root HTML files (dev/test pages are not published)
+        const excludedHtml = ['cors-validation-test.html', 'performance-test.html', 'schema-validation-test.html', 'debug-assets.html', 'test.html'];
         const rootHtmlFiles = fs.readdirSync('./')
-            .filter(file => file.endsWith('.html'));
+            .filter(file => file.endsWith('.html') && !excludedHtml.includes(file));
         
         rootHtmlFiles.forEach(file => {
             this.copyAndUpdateHtml('./', file, '');
@@ -186,7 +187,7 @@ class AssetVersioner {
         }
 
         // Copy any other important files
-        const filesToCopy = ['robots.txt', 'sitemap.xml', '.env'];
+        const filesToCopy = ['robots.txt', 'sitemap.xml'];
         filesToCopy.forEach(file => {
             if (fs.existsSync(file)) {
                 fs.copyFileSync(file, path.join(this.distDir, file));
