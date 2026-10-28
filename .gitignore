@@ -27,3 +27,6 @@ dist-ssr
 # Secrets
 .env
 .env.*
+
+# Brag launch-video output
+brag-output*/
