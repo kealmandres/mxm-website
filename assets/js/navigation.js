@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         'consults-coded': 'data-visualization',
         'blonde-bot-lair': 'signature-text',
         'future-observatory': 'time-portal',
-        'success-gallery': 'gallery-frames',
         'chat-chamber': 'chat-bubble'
     };
     
