@@ -321,7 +321,8 @@ body.detail-page.machine-megamind {
     position: relative;
     z-index: 3; /* Ensure video is above slideshow and artistic text */
 }
-.machine-megamind .video-hero-section .video-placeholder iframe {
+.machine-megamind .video-hero-section .video-placeholder iframe,
+.machine-megamind .video-hero-section .video-placeholder video {
     border-radius: 0; /* Full bleed */
 }
 .machine-megamind .artistic-background-text {
@@ -353,7 +354,8 @@ body.detail-page.machine-megamind {
 
 .machine-megamind .video-hero-section.video-pip-mode .video-container,
 .machine-megamind .video-hero-section.video-pip-mode .video-placeholder,
-.machine-megamind .video-hero-section.video-pip-mode iframe {
+.machine-megamind .video-hero-section.video-pip-mode iframe,
+.machine-megamind .video-hero-section.video-pip-mode video {
     width: 100%;
     height: 100%;
     border-radius: 0; 
