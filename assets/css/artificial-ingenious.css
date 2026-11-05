@@ -339,7 +339,8 @@ body.detail-page.artificial-ingenious {
     position: relative;
     z-index: 3;
 }
-.artificial-ingenious .video-hero-section .video-placeholder iframe {
+.artificial-ingenious .video-hero-section .video-placeholder iframe,
+.artificial-ingenious .video-hero-section .video-placeholder video {
     border-radius: 0;
 }
 .artificial-ingenious .artistic-background-text {
@@ -371,7 +372,8 @@ body.detail-page.artificial-ingenious {
 
 .artificial-ingenious .video-hero-section.video-pip-mode .video-container,
 .artificial-ingenious .video-hero-section.video-pip-mode .video-placeholder,
-.artificial-ingenious .video-hero-section.video-pip-mode iframe {
+.artificial-ingenious .video-hero-section.video-pip-mode iframe,
+.artificial-ingenious .video-hero-section.video-pip-mode video {
     width: 100%;
     height: 100%;
     border-radius: 0;
