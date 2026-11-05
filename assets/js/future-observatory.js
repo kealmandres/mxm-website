@@ -462,7 +462,16 @@ document.addEventListener('DOMContentLoaded', function() {
     setupYouTubeDetection();
     setupVolumeDisplay();
     setupCrystalCubeForm();
-    
+
+    // Hero video autoplay: try with sound, fall back to muted if the browser blocks it
+    const heroVideo = document.querySelector('.video-hero-wrapper .video-placeholder video');
+    if (heroVideo) {
+        heroVideo.play().catch(() => {
+            heroVideo.muted = true;
+            heroVideo.play().catch(() => {});
+        });
+    }
+
 });
 
 // Cleanup function for when user navigates away

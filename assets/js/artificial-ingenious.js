@@ -182,92 +182,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize AI Music Player - DISABLED: Using persistent music player instead
     // initAiMusicPlayer();
 
-    // Vimeo Player PiP and Music Interaction Control
-    const vimeoIframe = document.querySelector('.video-hero-section iframe[src*="vimeo.com"]');
-    const persistentPlayer = window.persistentMusicPlayer; // Use persistent music player instead
-    const pipBreakpoint = 768; // The width (in px) below which PiP is disabled
-    let vimeoPlayer;
-
-    function initializeVimeoPlayer() {
-        // Ensure we have a fresh iframe reference
-        const currentIframe = document.querySelector('.video-hero-section iframe[src*="vimeo.com"]');
-        if (!currentIframe) {
-            // No console.error for Vimeo iframe not found on re-initialization
-            return;
-        }
-
-        const isNarrow = window.innerWidth < pipBreakpoint;
-        let currentSrc = new URL(currentIframe.src);
-        const hasPipDisabled = currentSrc.searchParams.get('pip') === '0';
-
-        let needsUpdate = false;
-        if (isNarrow && !hasPipDisabled) {
-            currentSrc.searchParams.set('pip', '0');
-            needsUpdate = true;
-        } else if (!isNarrow && hasPipDisabled) {
-            currentSrc.searchParams.delete('pip');
-            needsUpdate = true;
-        }
-
-        // Only update src if needed to avoid unnecessary reloads
-        if (needsUpdate) {
-            currentIframe.src = currentSrc.toString();
-        }
-
-        // Now, initialize the player API on the potentially updated iframe
-        try {
-            vimeoPlayer = new Vimeo.Player(currentIframe);
-            
-            vimeoPlayer.on('play', () => {
-                // Duck volume of persistent music player when video plays (instead of pausing)
-                if (persistentPlayer && persistentPlayer.duckVolume) {
-                    persistentPlayer.duckVolume();
-                }
-            });
-
-            vimeoPlayer.on('pause', (data) => {
-                // Check if should restore volume when video pauses (if not at end)
-                if (persistentPlayer && data.percent < 1 && persistentPlayer.checkRestoreVolume) {
-                    persistentPlayer.checkRestoreVolume();
-                }
-            });
-
-            vimeoPlayer.on('ended', () => {
-                // Check if should restore volume when video ends
-                if (persistentPlayer && persistentPlayer.checkRestoreVolume) {
-                    persistentPlayer.checkRestoreVolume();
-                }
-            });
-            
-            vimeoPlayer.ready().catch(error => {
-                // No console.error for error initializing Vimeo player
-            });
-        } catch (e) {
-            // No console.error for Failed to initialize Vimeo Player
-        }
-    }
-
-    if (vimeoIframe) {
-        initializeVimeoPlayer();
-        // Use a debounced resize handler to avoid spamming re-initializations
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(initializeVimeoPlayer, 250);
+    // Hero video autoplay: try with sound, fall back to muted if the browser blocks it
+    const heroVideo = document.querySelector('.video-hero-wrapper .video-placeholder video');
+    if (heroVideo) {
+        heroVideo.play().catch(() => {
+            heroVideo.muted = true;
+            heroVideo.play().catch(() => {});
         });
-    } else {
-        // No console.log for No Vimeo player found
     }
-
-    if (vimeoPlayer) {
-        const iframe = document.querySelector('.video-placeholder iframe');
-        if (iframe && window.persistentMusicPlayer) {
-            window.persistentMusicPlayer.setupVideoDucking();
-        }
-    } else {
-        // No Vimeo player found
-    }
-}); 
+});
 
 // NEW Scrolling Image Animation for Process Section
 function initProcessScrollImageAnimation() {

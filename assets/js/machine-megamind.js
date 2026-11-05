@@ -137,7 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Investment Card Tilt Effect (updated from offering card tilt)
     initInvestmentCardTilt();
 
-}); 
+    // Hero video autoplay: try with sound, fall back to muted if the browser blocks it
+    const heroVideo = document.querySelector('.video-hero-wrapper .video-placeholder video');
+    if (heroVideo) {
+        heroVideo.play().catch(() => {
+            heroVideo.muted = true;
+            heroVideo.play().catch(() => {});
+        });
+    }
+
+});
 
 // Scrolling Image Animation for Process Section (if present)
 function initProcessScrollImageAnimation() {
