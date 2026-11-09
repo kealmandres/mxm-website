@@ -471,7 +471,7 @@
             <section class="page-section video-hero-section" data-section-type="video-hero">
               <div class="video-container">
                 <div class="video-placeholder">
-                  <iframe id="testimonialsModalVideo" src="https://player.vimeo.com/video/1121060678?h=ddaaec84b7&amp;autoplay=0&amp;loop=0&amp;title=0&amp;byline=0&amp;portrait=0" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                  <video id="testimonialsModalVideo" src="/assets/videos/testimonials-v1.mp4" poster="/assets/videos/testimonials-v1-poster.jpg" controls playsinline preload="none" width="100%" height="100%" style="position:absolute;top:0;left:0;width:100%;height:100%;"><track kind="captions" srclang="en" label="English" src="/assets/videos/testimonials-v1.vtt"></video>
                 </div>
               </div>
               <div class="artistic-background-text">aRTiFICIALLY iNTELLIGENT</div>
@@ -485,19 +485,14 @@
   }
 
   // Global modal functions
-  window.testimonialsModalPlayer = null;
-
   window.openTestimonialsModal = function() {
     createTestimonialsModal();
     document.getElementById('testimonialsModal').style.display = "flex";
 
-    // Initialize Vimeo player and play video when modal opens
-    const iframe = document.getElementById('testimonialsModalVideo');
-    if (iframe && !window.testimonialsModalPlayer) {
-      window.testimonialsModalPlayer = new Vimeo.Player(iframe);
-      window.testimonialsModalPlayer.play();
-    } else if (window.testimonialsModalPlayer) {
-      window.testimonialsModalPlayer.play();
+    // Play video when modal opens
+    const video = document.getElementById('testimonialsModalVideo');
+    if (video) {
+      video.play().catch(() => {});
     }
   };
 
@@ -507,8 +502,9 @@
       modal.style.display = "none";
 
       // Pause video when modal closes
-      if (window.testimonialsModalPlayer) {
-        window.testimonialsModalPlayer.pause();
+      const video = document.getElementById('testimonialsModalVideo');
+      if (video) {
+        video.pause();
       }
     }
   };

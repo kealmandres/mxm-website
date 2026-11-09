@@ -354,7 +354,8 @@ body.detail-page.artificial-ingenious {
     position: relative;
     z-index: 3; /* Ensure video is above slideshow and artistic text */
 }
-.artificial-ingenious .video-hero-section .video-placeholder iframe {
+.artificial-ingenious .video-hero-section .video-placeholder iframe,
+.artificial-ingenious .video-hero-section .video-placeholder video {
     border-radius: 0; /* Full bleed */
 }
 .artificial-ingenious .artistic-background-text {
@@ -401,7 +402,8 @@ body.detail-page.artificial-ingenious {
 
 .artificial-ingenious .video-hero-section.video-pip-mode .video-container,
 .artificial-ingenious .video-hero-section.video-pip-mode .video-placeholder,
-.artificial-ingenious .video-hero-section.video-pip-mode iframe {
+.artificial-ingenious .video-hero-section.video-pip-mode iframe,
+.artificial-ingenious .video-hero-section.video-pip-mode video {
     width: 100%;
     height: 100%;
     border-radius: 0; /* Ensure iframe corners don't stick out if parent is rounded (though PiP is rounded here) */

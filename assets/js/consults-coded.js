@@ -93,7 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (firstBgImage) {
         firstBgImage.style.opacity = '1';
     }
-}); 
+
+    // Hero video autoplay: try with sound, fall back to muted if the browser blocks it
+    const heroVideo = document.querySelector('.video-hero-wrapper .video-placeholder video');
+    if (heroVideo) {
+        heroVideo.play().catch(() => {
+            heroVideo.muted = true;
+            heroVideo.play().catch(() => {});
+        });
+    }
+});
 
 // Scroll-Driven Hero Background Slideshow Functionality
 function setupScrollDrivenHeroSlideshow() {

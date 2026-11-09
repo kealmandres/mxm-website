@@ -167,7 +167,7 @@ class AssetVersioner {
 
     copyStaticAssets() {
         // Copy non-CSS/JS assets
-        const assetDirs = ['images', 'fonts', 'audio', 'data'];
+        const assetDirs = ['images', 'fonts', 'audio', 'data', 'videos'];
         
         assetDirs.forEach(dir => {
             const srcPath = path.join('./assets', dir);
