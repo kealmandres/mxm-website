@@ -4,8 +4,8 @@
 //   node scripts/publish-article.mjs --find "<words in the title>"
 //
 // Follows docs/blog-section-spec.md. Writes future-observatory/blog/<slug>/index.html from
-// templates/observatory-article.html, rebuilds the blog list page, and updates sitemap.xml,
-// llms.txt and llms-full.txt. Reads Notion only; never writes back, commits or pushes.
+// templates/observatory-article.html, rebuilds the blog list page and the blog section of the
+// Future Observatory room, and updates sitemap.xml, llms.txt and llms-full.txt. Reads Notion only; never writes back, commits or pushes.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -21,6 +21,7 @@ const NOTION_VERSION = '2022-06-28';
 const SITE = 'https://www.themxm.ai';
 const BLOG_DIR = 'future-observatory/blog';
 const BLOG_URL = `${SITE}/${BLOG_DIR}/`;
+const ROOM_PAGE = 'pages/future-observatory.html';
 const HERO_DIR = 'assets/images/observatory';
 const IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/avif': 'avif', 'image/gif': 'gif' };
 // In-text links copy the Lair of the Blonde Bot page's link (white, bold, white underline); the hover rule is in the template
@@ -242,12 +243,24 @@ function rebuildIndex() {
         `            <p>${a.description}</p>`,
         '          </article>',
     ].join('\n')).join('\n');
-    const indexPath = path.join(dir, 'index.html');
-    const html = fs.readFileSync(indexPath, 'utf8').replace(
-        /(<!-- articles:start[^>]*-->\n)[\s\S]*?(\s*<!-- articles:end -->)/,
-        `$1${list || '          <p>No articles have been published yet.</p>'}$2`);
-    fs.writeFileSync(indexPath, html);
+    fillMarkers(path.join(dir, 'index.html'), list);
+    // The Future Observatory room shows the four latest as glass cards in its blog section
+    const cards = articles.slice(0, 4).map(a => [
+        '          <article style="flex: 1 1 45%; min-width: 280px; box-sizing: border-box; padding: 18px 20px; border: 1px solid var(--ai-glass-border); border-radius: 10px">',
+        `            <h3 style="text-align: center; margin: 0 0 0.75rem"><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h3>`,
+        `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
+        `            <p style="margin-bottom: 0">${a.description}</p>`,
+        '          </article>',
+    ].join('\n')).join('\n');
+    fillMarkers(file(ROOM_PAGE), cards);
     return articles.length;
+}
+
+function fillMarkers(filePath, html) {
+    const page = fs.readFileSync(filePath, 'utf8');
+    const markers = /(<!-- articles:start[^>]*-->\n)[\s\S]*?(\s*<!-- articles:end -->)/;
+    if (!markers.test(page)) fail(`Stopped: ${path.relative(ROOT, filePath)} has no articles:start/end markers.`);
+    fs.writeFileSync(filePath, page.replace(markers, `$1${html || '          <p>No articles have been published yet.</p>'}$2`));
 }
 
 function upsertSitemap(loc, lastmod) {
@@ -444,6 +457,7 @@ ${existing ? 'Updated' : 'Published'}: ${title}
   dateModified:  ${today}
   files written: ${pagePath}
 ${hero ? `                 ${hero.path}\n` : ''}                 ${BLOG_DIR}/index.html (${count} article${count === 1 ? '' : 's'})
+                 ${ROOM_PAGE} (the ${Math.min(count, 4)} latest)
                  sitemap.xml
                  llms.txt
                  llms-full.txt
