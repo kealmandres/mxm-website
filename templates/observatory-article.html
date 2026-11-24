@@ -66,7 +66,8 @@
       }
       /* The opening panel (title and direct answer) has equal space above and below */
       .artificial-ingenious article > .page-section:first-child {
-        padding-top: var(--ai-section-padding-vertical);
+        padding-top: calc(var(--ai-section-padding-vertical) / 2);
+        padding-bottom: calc(var(--ai-section-padding-vertical) / 2);
       }
       .artificial-ingenious article > .page-section:first-child h1 {
         margin-top: 0;
