@@ -237,7 +237,7 @@ function rebuildIndex() {
     // the description comes back out of the meta tag already HTML-escaped; the JSON-LD headline does not
     const list = articles.map(a => [
         '          <article>',
-        `            <h2><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h2>`,
+        `            <h2 style="text-align: center"><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h2>`,
         `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
         `            <p>${a.description}</p>`,
         '          </article>',
