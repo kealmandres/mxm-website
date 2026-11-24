@@ -60,8 +60,4 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  <url>
-    <loc>https://www.themxm.ai/future-observatory/blog/</loc>
-    <lastmod>2026-11-24</lastmod>
-  </url>
 </urlset> 

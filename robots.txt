@@ -3,6 +3,7 @@ Allow: /
 
 # Sitemap location
 Sitemap: https://themxm.ai/sitemap.xml
+Sitemap: https://www.themxm.ai/future-observatory/blog/sitemap.xml
 
 # Disallow sensitive pages if any
 Disallow: /debug-assets.html

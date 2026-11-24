@@ -107,22 +107,6 @@ class AssetVersioner {
                 this.copyAndUpdateHtml('./pages', file, 'pages');
             });
         }
-
-        // Copy the Observatory blog (future-observatory/blog/<slug>/index.html), keeping nested paths
-        this.copyHtmlTree('future-observatory');
-    }
-
-    copyHtmlTree(dir) {
-        if (!fs.existsSync(dir)) return;
-        fs.readdirSync(dir, { withFileTypes: true }).forEach(entry => {
-            const rel = path.join(dir, entry.name);
-            if (entry.isDirectory()) {
-                this.copyHtmlTree(rel);
-            } else if (entry.name.endsWith('.html')) {
-                fs.mkdirSync(path.join(this.distDir, dir), { recursive: true });
-                this.copyAndUpdateHtml(dir, entry.name, dir);
-            }
-        });
     }
 
     copyAndUpdateHtml(srcDir, fileName, distSubDir) {
@@ -203,7 +187,7 @@ class AssetVersioner {
         }
 
         // Copy any other important files
-        const filesToCopy = ['robots.txt', 'sitemap.xml', 'llms.txt', 'llms-full.txt'];
+        const filesToCopy = ['robots.txt', 'sitemap.xml'];
         filesToCopy.forEach(file => {
             if (fs.existsSync(file)) {
                 fs.copyFileSync(file, path.join(this.distDir, file));

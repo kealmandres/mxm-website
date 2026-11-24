@@ -1,38 +1,27 @@
-// The shared core for Observatory articles: read an approved draft from Notion, check it, and
-// build every site file the article touches. Used by scripts/publish-article.mjs (writes to disk)
-// and api/publish-article.js (opens a pull request on GitHub).
+// The Observatory blog, built from Notion: find the published articles, check each draft, and
+// render every page and file the blog serves. Used by api/blog.js, which serves them on request
+// with a 5-minute cache, so an article goes live when its draft is set to Approved.
 //
-// Follows docs/blog-section-spec.md. Never writes to Notion. File access goes through the
-// `read(path)` and `list(dir)` functions the caller passes in, so the same code works on disk
-// and against GitHub.
-import crypto from 'node:crypto';
+// Follows docs/blog-section-spec.md. Reads Notion only; never writes to it.
 
 export const DATABASE_ID = 'c1517c91325c4e769dfbee6dfac19d94'; // Observatory review queue
 export const TITLE_PROP = 'Title';
 export const STATUS_PROP = 'Status';
 export const TYPE_PROP = 'Type';
 export const HERO_PROP = 'Hero image';
+export const PUBLISHED_PROP = 'Published on';
 const NOTION_VERSION = '2022-06-28';
 
 export const SITE = 'https://www.themxm.ai';
-export const BLOG_DIR = 'future-observatory/blog';
-export const BLOG_URL = `${SITE}/${BLOG_DIR}/`;
-export const ROOM_PAGE = 'pages/future-observatory.html';
-export const HERO_DIR = 'assets/images/observatory';
-const TEMPLATE = 'templates/observatory-article.html';
-const IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/avif': 'avif', 'image/gif': 'gif' };
+export const BLOG_PATH = '/future-observatory/blog/';
+export const BLOG_URL = `${SITE}${BLOG_PATH}`;
 // In-text links copy the Lair of the Blonde Bot page's link (white, bold, white underline); the hover rule is in the template
 const LINK_ATTRS = 'class="room-description-link" style="color: #fff; text-decoration: none; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.9);"';
 
-const LLMS_HEADER = `# The MaCHiNE MaiSON
-
-> MxM (The MaCHiNE MaiSON) is Australia's first AI agency. Founded in Sydney in 2021 by Marissa Kos, MxM turns AI from a threat into a team's greatest asset: we make people AI-fluent, then build the agents they run on.
-`;
-
-// A refusal or a check that failed: the draft is not publishable as it stands.
+// A check that failed: the draft cannot go on the site as it stands.
 export class StopError extends Error {}
 
-export const sydneyToday = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+const sydneyDate = iso => new Date(iso).toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
 
 // ---------- Notion ----------
 
@@ -71,50 +60,80 @@ export const propText = prop => prop?.type === 'title' ? plain(prop.title)
     : prop?.type === 'status' ? prop.status?.name ?? ''
     : '';
 
-// Reads one draft and runs every check. Throws StopError when it may not be published.
-export async function loadDraft(client, pageId) {
-    const page = await client.request('GET', `pages/${pageId}`);
-    if (page.parent?.database_id?.replace(/-/g, '') !== DATABASE_ID) throw new StopError('Refusing: that page is not in the Observatory review queue.');
-    for (const name of [TITLE_PROP, STATUS_PROP, TYPE_PROP, HERO_PROP]) {
-        if (!page.properties[name]) throw new StopError(`The review queue has no "${name}" property.`);
-    }
-    const title = propText(page.properties[TITLE_PROP]).trim();
-    const status = propText(page.properties[STATUS_PROP]);
-    const type = propText(page.properties[TYPE_PROP]);
-    if (status !== 'Approved') throw new StopError(`Refusing: "${title}" has ${STATUS_PROP} "${status || 'empty'}", not "Approved".`);
-    if (type !== 'Article') throw new StopError(`Refusing: "${title}" has ${TYPE_PROP} "${type || 'empty'}", not "Article"; only articles go on the blog.`);
-
-    const c = convert(await client.children(page.id));
-    if (c.unhandled.length) throw new StopError(`Stopped: these blocks are not handled, so nothing was written:\n${c.unhandled.map(u => `  - ${u}`).join('\n')}`);
-    if (!c.answer) throw new StopError('Stopped: the draft has no direct answer paragraph.');
-    const words = c.answer.text.split(/\s+/).filter(Boolean).length;
-    if (words < 20 || words > 80) throw new StopError(`Stopped: the direct answer is ${words} words; the spec asks for 20 to 80.`);
-    if (!c.faqItems.length) throw new StopError('Stopped: the draft has no FAQ (H3 questions under a "Frequently asked questions" heading, or toggles).');
-    if (c.faqItems.some(f => !f.text)) throw new StopError('Stopped: an FAQ question has no answer.');
-    if (c.front?.author && c.front.author !== 'Marissa Kos') throw new StopError(`Stopped: the draft's author is "${c.front.author}"; the byline and Person schema are for Marissa Kos.`);
-    const slug = slugify(title);
-    if (!slug) throw new StopError('Stopped: the title gives an empty slug.');
-
-    const heroFiles = page.properties[HERO_PROP].files ?? [];
-    if (heroFiles.length > 1) throw new StopError(`Stopped: ${HERO_PROP} has ${heroFiles.length} files; the page takes one.`);
-    return { page, title, slug, c, heroFile: heroFiles[0] ?? null };
+// Every page in the review queue with Status Approved and Type Article, newest first.
+export async function publishedPages(client) {
+    const pages = [];
+    let cursor;
+    do {
+        const res = await client.request('POST', `databases/${DATABASE_ID}/query`, {
+            filter: { and: [
+                { property: STATUS_PROP, select: { equals: 'Approved' } },
+                { property: TYPE_PROP, select: { equals: 'Article' } },
+            ] },
+            page_size: 100,
+            ...(cursor ? { start_cursor: cursor } : {}),
+        });
+        pages.push(...res.results);
+        cursor = res.has_more ? res.next_cursor : null;
+    } while (cursor);
+    return pages;
 }
 
-// Hero image: the draft's "Hero image" file, copied into the site (Notion file links expire within the hour).
-// No file means no image on the page. The draft's hero_image description is its alt text.
-// The file name carries a content hash because /assets/ is served with a one-year immutable cache.
-export async function fetchHero(draft) {
-    const f = draft.heroFile;
-    if (!f) return null;
-    const res = await fetch(f.type === 'external' ? f.external.url : f.file.url);
-    const contentType = (res.headers.get('content-type') ?? '').split(';')[0].trim();
-    const ext = IMAGE_TYPES[contentType];
-    if (!res.ok || !ext) throw new StopError(`Stopped: could not download ${HERO_PROP} "${f.name}" as an image (${res.status}, ${contentType || 'no type'}).`);
-    const alt = draft.c.front?.hero_image?.trim();
-    if (!alt) throw new StopError(`Stopped: ${HERO_PROP} is set but the draft has no hero_image description to use as alt text.`);
-    const bytes = Buffer.from(await res.arrayBuffer());
-    const hash = crypto.createHash('md5').update(bytes).digest('hex').slice(0, 8);
-    return { bytes, path: `${HERO_DIR}/${draft.slug}-${hash}.${ext}`, alt };
+export const pageSlug = page => slugify(propText(page.properties[TITLE_PROP]).trim());
+
+// The draft's blocks, converted and checked. Throws StopError when it cannot go on the site.
+export function checkDraft(page, blocks) {
+    const title = propText(page.properties[TITLE_PROP]).trim();
+    const c = convert(blocks);
+    if (c.unhandled.length) throw new StopError(`"${title}": these blocks are not handled:\n${c.unhandled.map(u => `  - ${u}`).join('\n')}`);
+    if (!c.answer) throw new StopError(`"${title}": no direct answer paragraph.`);
+    const words = c.answer.text.split(/\s+/).filter(Boolean).length;
+    if (words < 20 || words > 80) throw new StopError(`"${title}": the direct answer is ${words} words; the spec asks for 20 to 80.`);
+    if (!c.faqItems.length) throw new StopError(`"${title}": no FAQ (H3 questions under a "Frequently asked questions" heading, or toggles).`);
+    if (c.faqItems.some(f => !f.text)) throw new StopError(`"${title}": an FAQ question has no answer.`);
+    if (c.front?.author && c.front.author !== 'Marissa Kos') throw new StopError(`"${title}": the author is "${c.front.author}"; the byline and Person schema are for Marissa Kos.`);
+    const slug = slugify(title);
+    if (!slug) throw new StopError(`"${title}": the title gives an empty slug.`);
+    const heroFiles = page.properties[HERO_PROP]?.files ?? [];
+    if (heroFiles.length > 1) throw new StopError(`"${title}": ${HERO_PROP} has ${heroFiles.length} files; the page takes one.`);
+    const heroAlt = c.front?.hero_image?.trim();
+    if (heroFiles.length && !heroAlt) throw new StopError(`"${title}": ${HERO_PROP} is set but the draft has no hero_image description to use as alt text.`);
+
+    // Published on is set by a Notion automation at approval; before that, the draft's creation date
+    const datePublished = page.properties[PUBLISHED_PROP]?.date?.start?.slice(0, 10) ?? sydneyDate(page.created_time);
+    const edited = sydneyDate(page.last_edited_time);
+    return {
+        title, slug, c,
+        url: `${BLOG_URL}${slug}/`,
+        datePublished,
+        dateModified: edited > datePublished ? edited : datePublished,
+        description: esc(firstSentence(c.answer.text)),
+        hero: heroFiles.length ? { src: `${BLOG_PATH}${slug}/hero`, alt: heroAlt } : null,
+    };
+}
+
+// The current download link for a page's hero image (Notion's links expire within the hour).
+export function heroLink(page) {
+    const f = page.properties[HERO_PROP]?.files?.[0];
+    return f ? (f.type === 'external' ? f.external.url : f.file.url) : null;
+}
+
+// Every published article that passes the checks, newest first. A draft that fails is left
+// out and reported in `skipped`, so one bad draft never takes the blog down.
+export async function publishedArticles(client) {
+    const articles = [];
+    const skipped = [];
+    // ponytail: one Notion call per article on each uncached request; add a Summary property or a store if the list grows large
+    for (const page of await publishedPages(client)) {
+        try {
+            articles.push(checkDraft(page, await client.children(page.id)));
+        } catch (e) {
+            if (!(e instanceof StopError)) throw e;
+            skipped.push(e.message);
+        }
+    }
+    articles.sort((a, b) => b.datePublished.localeCompare(a.datePublished) || a.title.localeCompare(b.title));
+    return { articles, skipped };
 }
 
 // ---------- conversion ----------
@@ -271,49 +290,26 @@ function parseFrontMatter(text) {
     return out;
 }
 
-// ---------- page and site files ----------
+// ---------- pages and files ----------
 
 const jsonLd = obj => JSON.stringify(obj, null, 2).replace(/</g, '\\u003c').replace(/^/gm, '      ');
 const longDate = d => new Date(`${d}T00:00:00Z`).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 const firstSentence = s => (s.match(/^.*?[.!?](?=\s|$)/) ?? [s])[0];
 
-export function readArticle(html) {
-    const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
-        .map(m => JSON.parse(m[1])).find(o => o['@type'] === 'Article');
-    const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1];
-    return ld && { title: ld.headline, url: ld.mainEntityOfPage['@id'], datePublished: ld.datePublished, description };
-}
-
-// Every file the article touches, built from the current site files.
-//   read(path) -> the file's text, or null when it does not exist
-//   list(dir)  -> [{ name, type: 'file' | 'dir' }], or [] when the folder does not exist
-// Returns { writes: { path: string | Buffer }, deletes: [path], ... } and changes nothing itself.
-export async function buildFiles({ draft, hero, read, list, today }) {
-    const { title, slug, c } = draft;
-    const url = `${BLOG_URL}${slug}/`;
-    const pagePath = `${BLOG_DIR}/${slug}/index.html`;
-    const writes = {};
-    const deletes = [];
-    const need = async path => {
-        const text = await read(path);
-        if (text === null) throw new Error(`${path} is missing from the site.`);
-        return text;
-    };
-
-    const previous = await read(pagePath);
-    const existing = previous ? readArticle(previous) : null;
-    const datePublished = existing?.datePublished ?? today;
-
+// One article page, from templates/observatory-article.html.
+export function renderArticle(a, template) {
+    const { c } = a;
+    const heroUrl = a.hero && `${SITE}${a.hero.src}`;
     const article = {
         '@context': 'https://schema.org',
         '@type': 'Article',
-        headline: title,
-        datePublished,
-        dateModified: today,
+        headline: a.title,
+        datePublished: a.datePublished,
+        dateModified: a.dateModified,
         author: { '@type': 'Person', name: 'Marissa Kos', url: `${SITE}/blonde-bot-lair` },
         publisher: { '@type': 'Organization', name: 'The MaCHiNE MaiSON', url: `${SITE}/` },
-        ...(hero ? { image: `${SITE}/${hero.path}` } : {}),
-        mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+        ...(heroUrl ? { image: heroUrl } : {}),
+        mainEntityOfPage: { '@type': 'WebPage', '@id': a.url },
     };
     const faqPage = {
         '@context': 'https://schema.org',
@@ -325,111 +321,72 @@ export async function buildFiles({ draft, hero, read, list, today }) {
         })),
     };
     const values = {
-        TITLE: esc(title), DESCRIPTION: esc(firstSentence(c.answer.text)), URL: url,
-        HERO: hero ? `            <img src="/${hero.path}" alt="${esc(hero.alt)}" style="width: 100%; height: auto" />\n` : '',
-        HERO_META: hero ? `    <meta property="og:image" content="${SITE}/${hero.path}" />\n    <meta name="twitter:image" content="${SITE}/${hero.path}" />\n` : '',
-        DATE_PUBLISHED: datePublished, DATE_MODIFIED: today,
-        DATE_PUBLISHED_TEXT: longDate(datePublished), DATE_MODIFIED_TEXT: longDate(today),
+        TITLE: esc(a.title), DESCRIPTION: a.description, URL: a.url,
+        HERO: a.hero ? `            <img src="${a.hero.src}" alt="${esc(a.hero.alt)}" style="width: 100%; height: auto" />\n` : '',
+        HERO_META: heroUrl ? `    <meta property="og:image" content="${heroUrl}" />\n    <meta name="twitter:image" content="${heroUrl}" />\n` : '',
+        DATE_PUBLISHED: a.datePublished, DATE_MODIFIED: a.dateModified,
+        DATE_PUBLISHED_TEXT: longDate(a.datePublished), DATE_MODIFIED_TEXT: longDate(a.dateModified),
         ANSWER: c.answer.html, BODY: c.body, FAQ: c.faqHtml,
         ARTICLE_JSONLD: jsonLd(article), FAQ_JSONLD: jsonLd(faqPage),
     };
-    const html = (await need(TEMPLATE)).replace(/{{([A-Z_]+)}}/g, (m, k) => {
+    return template.replace(/{{([A-Z_]+)}}/g, (m, k) => {
         if (!(k in values)) throw new Error(`Template placeholder ${m} has no value.`);
         return values[k];
     });
-    writes[pagePath] = html;
+}
 
-    // Replace this article's previous hero (if any) with the current one
-    const oldHero = new RegExp(`^${slug}-[0-9a-f]{8}\\.[a-z]+$`);
-    for (const f of await list(HERO_DIR)) {
-        const p = `${HERO_DIR}/${f.name}`;
-        if (f.type === 'file' && oldHero.test(f.name) && p !== hero?.path) deletes.push(p);
-    }
-    if (hero) writes[hero.path] = hero.bytes;
-
-    // The blog list and the room's four latest, from every article page including this one
-    const articles = [readArticle(html)];
-    for (const d of await list(BLOG_DIR)) {
-        if (d.type !== 'dir' || d.name === slug) continue;
-        const other = await read(`${BLOG_DIR}/${d.name}/index.html`);
-        const a = other && readArticle(other);
-        if (a) articles.push(a);
-    }
-    articles.sort((a, b) => b.datePublished.localeCompare(a.datePublished) || a.title.localeCompare(b.title));
-    // the description comes back out of the meta tag already HTML-escaped; the JSON-LD headline does not
-    const items = articles.map(a => [
+// The blog list page: every article, from templates/observatory-blog.html.
+export function renderList(articles, shell) {
+    return fillMarkers(shell, articles.map(a => [
         '          <article>',
         `            <h2 style="text-align: center"><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h2>`,
         `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
         `            <p>${a.description}</p>`,
         '          </article>',
-    ].join('\n')).join('\n');
-    writes[`${BLOG_DIR}/index.html`] = fillMarkers(`${BLOG_DIR}/index.html`, await need(`${BLOG_DIR}/index.html`), items);
-    const cards = articles.slice(0, 4).map(a => [
+    ].join('\n')).join('\n') || '          <p>No articles have been published yet.</p>');
+}
+
+// The Future Observatory room with its four latest articles as glass cards.
+// `articles` null means Notion could not be reached: the section shows only its View all button.
+export function renderRoom(articles, room) {
+    if (!articles) return fillMarkers(room, '');
+    return fillMarkers(room, articles.slice(0, 4).map(a => [
         '          <article style="flex: 1 1 45%; min-width: 280px; box-sizing: border-box; padding: 18px 20px; border: 1px solid var(--ai-glass-border); border-radius: 10px">',
         `            <h3 style="text-align: center; margin: 0 0 0.75rem"><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h3>`,
         `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
         `            <p style="margin-bottom: 0">${a.description}</p>`,
         '          </article>',
-    ].join('\n')).join('\n');
-    writes[ROOM_PAGE] = fillMarkers(ROOM_PAGE, await need(ROOM_PAGE), cards);
-
-    writes['sitemap.xml'] = upsertSitemap(upsertSitemap(await need('sitemap.xml'), url, today), BLOG_URL, today);
-    writes['llms.txt'] = upsertLlms(await read('llms.txt'), url, `- [${title}](${url}): ${firstSentence(c.answer.text)}\n`, findLlmsLine);
-    const fullText = articleText(`<p>${c.answer.html}</p>\n${c.body}\n<h2>Frequently asked questions</h2>\n${c.faqItems.map(f => `<h3>${esc(f.question)}</h3>\n${f.html}`).join('\n')}`);
-    writes['llms-full.txt'] = upsertLlms(await read('llms-full.txt'), url, `### ${title}\n\nSource: ${url}\n\n${fullText}\n\n`, findLlmsFullBlock);
-
-    const notes = [];
-    if (c.proposedUrl && c.proposedUrl.replace(/\/?$/, '/') !== url) notes.push(`The draft's "Proposed URL" (${c.proposedUrl}) differs from the URL built from the title.`);
-    if (!hero) notes.push(`The draft has no ${HERO_PROP} in Notion, so the page has no image (the spec's essentials ask for one).`);
-
-    return { writes, deletes, slug, url, pagePath, updated: Boolean(existing), datePublished, today, count: articles.length, notes };
+    ].join('\n')).join('\n') || '          <p>No articles have been published yet.</p>');
 }
 
-function fillMarkers(path, page, html) {
+// The blog sitemap: the list page and every article, each with its real last change.
+export function renderSitemap(articles) {
+    const urls = [
+        { loc: BLOG_URL, lastmod: articles.map(a => a.dateModified).sort().pop() },
+        ...articles.map(a => ({ loc: a.url, lastmod: a.dateModified })),
+    ];
+    return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u =>
+        `  <url>\n    <loc>${u.loc}</loc>\n${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ''}  </url>\n`).join('')}</urlset>\n`;
+}
+
+// llms.txt: the base file from templates/, with one line per article under "## Future Observatory".
+export function renderLlms(articles, base) {
+    return base.trimEnd() + '\n' + articles.map(a => `- [${a.title}](${a.url}): ${firstSentence(a.c.answer.text)}\n`).join('');
+}
+
+// llms-full.txt: the base file from templates/, with each article's full text.
+export function renderLlmsFull(articles, base) {
+    return base.trimEnd() + '\n' + articles.map(a => {
+        const { c } = a;
+        const text = articleText(`<p>${c.answer.html}</p>\n${c.body}\n<h2>Frequently asked questions</h2>\n${c.faqItems.map(f => `<h3>${esc(f.question)}</h3>\n${f.html}`).join('\n')}`);
+        return `\n### ${a.title}\n\nSource: ${a.url}\n\n${text}\n`;
+    }).join('');
+}
+
+function fillMarkers(page, html) {
     const markers = /(<!-- articles:start[^>]*-->\n)[\s\S]*?(\s*<!-- articles:end -->)/;
-    if (!markers.test(page)) throw new Error(`${path} has no articles:start/end markers.`);
-    return page.replace(markers, `$1${html || '          <p>No articles have been published yet.</p>'}$2`);
-}
-
-function upsertSitemap(xml, loc, lastmod) {
-    const block = `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>\n`;
-    const existing = new RegExp(`  <url>\\s*<loc>${loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</loc>[\\s\\S]*?</url>\\n`);
-    return existing.test(xml) ? xml.replace(existing, block) : xml.replace('</urlset>', `${block}</urlset>`);
-}
-
-// Puts `entry` in the "## Future Observatory" section of an llms file, replacing the old entry for `url`.
-function upsertLlms(text, url, entry, findOld) {
-    text ??= `${LLMS_HEADER}\n## Future Observatory\n`;
-    if (!text.includes('\n## Future Observatory\n')) text = `${text.trimEnd()}\n\n## Future Observatory\n`;
-    const old = findOld(text, url);
-    if (old) {
-        text = text.slice(0, old.start) + entry + text.slice(old.end);
-    } else {
-        const start = text.indexOf('\n## Future Observatory\n') + 1;
-        const next = text.indexOf('\n## ', start + 1);
-        const end = next === -1 ? text.length : next + 1;
-        const section = text.slice(start, end).trimEnd();
-        const sep = entry.startsWith('- ') ? '\n' : '\n\n';
-        text = `${text.slice(0, start)}${section}${sep}${entry}${next === -1 ? '' : '\n'}${text.slice(end)}`;
-    }
-    return text.trimEnd() + '\n';
-}
-
-function findLlmsLine(text, url) {
-    const i = text.indexOf(`](${url})`);
-    if (i === -1) return null;
-    const start = text.lastIndexOf('\n', i) + 1;
-    const end = text.indexOf('\n', i);
-    return { start, end: end === -1 ? text.length : end + 1 };
-}
-
-function findLlmsFullBlock(text, url) {
-    const i = text.indexOf(`\nSource: ${url}\n`);
-    if (i === -1) return null;
-    const start = text.lastIndexOf('\n### ', i) + 1;
-    const next = text.slice(i + 1).search(/\n#{2,3} /);
-    return { start, end: next === -1 ? text.length : i + 1 + next + 1 };
+    if (!markers.test(page)) throw new Error('The page has no articles:start/end markers.');
+    return page.replace(markers, (m, start, end) => `${start}${html}${end}`);
 }
 
 // Plain text of the article for llms-full.txt, from the rendered HTML.
