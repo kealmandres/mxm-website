@@ -6,6 +6,7 @@
 // Follows docs/blog-section-spec.md. Writes future-observatory/blog/<slug>/index.html from
 // templates/observatory-article.html, rebuilds the blog list page, and updates sitemap.xml,
 // llms.txt and llms-full.txt. Reads Notion only; never writes back, commits or pushes.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -14,14 +15,16 @@ const DATABASE_ID = 'c1517c91325c4e769dfbee6dfac19d94'; // Observatory review qu
 const TITLE_PROP = 'Title';
 const STATUS_PROP = 'Status';
 const TYPE_PROP = 'Type';
+const HERO_PROP = 'Hero image';
 const NOTION_VERSION = '2022-06-28';
 
 const SITE = 'https://www.themxm.ai';
 const BLOG_DIR = 'future-observatory/blog';
 const BLOG_URL = `${SITE}/${BLOG_DIR}/`;
-// ponytail: one shared hero until drafts carry a real image file; the draft's hero_image is a description only
-const HERO_SRC = '/assets/images/rooms/observatory-2.webp';
-const HERO_ALT = 'The Future Observatory: a domed hall of lit columns beneath a ceiling of star charts.';
+const HERO_DIR = 'assets/images/observatory';
+const IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/avif': 'avif', 'image/gif': 'gif' };
+// In-text links copy the Lair of the Blonde Bot page's link (white, bold, white underline); the hover rule is in the template
+const LINK_ATTRS = 'class="room-description-link" style="color: #fff; text-decoration: none; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.9);"';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const file = rel => path.join(ROOT, rel);
@@ -96,7 +99,7 @@ export function convert(blocks) {
         if (a.strikethrough) s = `<s>${s}</s>`;
         if (t.href) {
             if (isPrivateLink(t.href)) unhandled.push(`link to a Notion page "${t.plain_text}"`);
-            else s = `<a href="${esc(t.href)}">${s}</a>`;
+            else s = `<a href="${esc(t.href)}" ${LINK_ATTRS}>${s}</a>`;
         }
         return s;
     }).join('');
@@ -165,7 +168,7 @@ export function convert(blocks) {
     const body = sections.map(s => [
         '        <section class="page-section">',
         '          <div class="container">',
-        s.heading ? `            <h2 class="section-title">${s.heading}</h2>` : null,
+        s.heading ? `            <h2 class="section-title" style="text-transform: uppercase">${s.heading}</h2>` : null,
         render(s.blocks, '            ').trimEnd(),
         '          </div>',
         '        </section>',
@@ -234,7 +237,7 @@ function rebuildIndex() {
     // the description comes back out of the meta tag already HTML-escaped; the JSON-LD headline does not
     const list = articles.map(a => [
         '          <article>',
-        `            <h2><a href="${a.url}">${esc(a.title)}</a></h2>`,
+        `            <h2><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h2>`,
         `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
         `            <p>${a.description}</p>`,
         '          </article>',
@@ -317,7 +320,7 @@ async function main() {
     const db = await notion('GET', `databases/${DATABASE_ID}`);
     console.log(`Review queue "${plain(db.title)}" properties:`);
     for (const [name, p] of Object.entries(db.properties)) console.log(`  - ${name} (${p.type})`);
-    for (const name of [TITLE_PROP, STATUS_PROP, TYPE_PROP]) {
+    for (const name of [TITLE_PROP, STATUS_PROP, TYPE_PROP, HERO_PROP]) {
         if (!db.properties[name]) fail(`The review queue has no "${name}" property; update the constants at the top of this script.`);
     }
 
@@ -361,6 +364,25 @@ async function main() {
     const datePublished = existing?.datePublished ?? today;
     const description = esc(firstSentence(c.answer.text));
 
+    // Hero image: the draft's "Hero image" file, copied into the site (Notion file links expire within the hour).
+    // No file means no image on the page. The draft's hero_image description is its alt text.
+    // The file name carries a content hash because /assets/ is served with a one-year immutable cache.
+    const heroFiles = page.properties[HERO_PROP].files ?? [];
+    if (heroFiles.length > 1) fail(`Stopped: ${HERO_PROP} has ${heroFiles.length} files; the page takes one.`);
+    let hero = null;
+    if (heroFiles.length) {
+        const f = heroFiles[0];
+        const res = await fetch(f.type === 'external' ? f.external.url : f.file.url);
+        const contentType = (res.headers.get('content-type') ?? '').split(';')[0].trim();
+        const ext = IMAGE_TYPES[contentType];
+        if (!res.ok || !ext) fail(`Stopped: could not download ${HERO_PROP} "${f.name}" as an image (${res.status}, ${contentType || 'no type'}).`);
+        const alt = c.front?.hero_image?.trim();
+        if (!alt) fail(`Stopped: ${HERO_PROP} is set but the draft has no hero_image description to use as alt text.`);
+        const bytes = Buffer.from(await res.arrayBuffer());
+        const hash = crypto.createHash('md5').update(bytes).digest('hex').slice(0, 8);
+        hero = { bytes, path: `${HERO_DIR}/${slug}-${hash}.${ext}`, alt };
+    }
+
     const article = {
         '@context': 'https://schema.org',
         '@type': 'Article',
@@ -369,7 +391,7 @@ async function main() {
         dateModified: today,
         author: { '@type': 'Person', name: 'Marissa Kos', url: `${SITE}/blonde-bot-lair` },
         publisher: { '@type': 'Organization', name: 'The MaCHiNE MaiSON', url: `${SITE}/` },
-        image: `${SITE}${HERO_SRC}`,
+        ...(hero ? { image: `${SITE}/${hero.path}` } : {}),
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     };
     const faqPage = {
@@ -383,7 +405,8 @@ async function main() {
     };
     const values = {
         TITLE: esc(title), DESCRIPTION: description, URL: url,
-        HERO_SRC, HERO_URL: `${SITE}${HERO_SRC}`, HERO_ALT: esc(HERO_ALT),
+        HERO: hero ? `            <img src="/${hero.path}" alt="${esc(hero.alt)}" style="width: 100%; height: auto" />\n` : '',
+        HERO_META: hero ? `    <meta property="og:image" content="${SITE}/${hero.path}" />\n    <meta name="twitter:image" content="${SITE}/${hero.path}" />\n` : '',
         DATE_PUBLISHED: datePublished, DATE_MODIFIED: today,
         DATE_PUBLISHED_TEXT: longDate(datePublished), DATE_MODIFIED_TEXT: longDate(today),
         ANSWER: c.answer.html, BODY: c.body, FAQ: c.faqHtml,
@@ -397,6 +420,11 @@ async function main() {
 
     fs.mkdirSync(path.dirname(file(pagePath)), { recursive: true });
     fs.writeFileSync(file(pagePath), html);
+    // Replace this article's previous hero (if any) with the current one
+    fs.mkdirSync(file(HERO_DIR), { recursive: true });
+    const oldHero = new RegExp(`^${slug}-[0-9a-f]{8}\\.[a-z]+$`);
+    for (const name of fs.readdirSync(file(HERO_DIR))) if (oldHero.test(name)) fs.rmSync(file(`${HERO_DIR}/${name}`));
+    if (hero) fs.writeFileSync(file(hero.path), hero.bytes);
     const count = rebuildIndex();
     upsertSitemap(url, today);
     upsertSitemap(BLOG_URL, today);
@@ -408,14 +436,14 @@ async function main() {
     if (c.proposedUrl && c.proposedUrl.replace(/\/?$/, '/') !== url) {
         console.log(`\nNote: the draft's "Proposed URL" (${c.proposedUrl}) differs from the URL built from the title.`);
     }
-    if (c.front?.hero_image) console.log('\nNote: the draft\'s hero_image is a description, not an image file; the page uses the shared Observatory hero.');
+    if (!hero) console.log(`\nNote: the draft has no ${HERO_PROP} in Notion, so the page has no image (the spec's essentials ask for one).`);
     console.log(`
 ${existing ? 'Updated' : 'Published'}: ${title}
   slug:          ${slug}
   datePublished: ${datePublished}
   dateModified:  ${today}
   files written: ${pagePath}
-                 ${BLOG_DIR}/index.html (${count} article${count === 1 ? '' : 's'})
+${hero ? `                 ${hero.path}\n` : ''}                 ${BLOG_DIR}/index.html (${count} article${count === 1 ? '' : 's'})
                  sitemap.xml
                  llms.txt
                  llms-full.txt
