@@ -47,17 +47,21 @@
         border-bottom-color: #fff;
         text-shadow: 0 0 8px rgba(255,255,255,0.5);
       }
-      /* Equal space above and below each section's content: the room rule pads only the bottom */
-      .artificial-ingenious main .page-section {
-        padding-top: var(--ai-section-padding-vertical);
-      }
-      .artificial-ingenious main .page-section .container > :first-child,
-      .artificial-ingenious main .page-section .container > :first-child > :first-child {
-        margin-top: 0;
-      }
+      /* Section spacing as on the Future Observatory room: drop the last item's own margin
+         so only the room's bottom padding sits below the content */
       .artificial-ingenious main .page-section .container > :last-child,
       .artificial-ingenious main .page-section .container > :last-child > :last-child {
         margin-bottom: 0;
+      }
+      /* Keep the footer at the bottom of short pages (every other body child is position: fixed) */
+      body.detail-page.artificial-ingenious {
+        min-height: 100vh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+      .artificial-ingenious main {
+        flex: 1 0 auto;
       }
     </style>
   </head>
