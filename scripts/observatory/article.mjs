@@ -15,6 +15,8 @@ const NOTION_VERSION = '2022-06-28';
 export const SITE = 'https://www.themxm.ai';
 export const BLOG_PATH = '/future-observatory/blog/';
 export const BLOG_URL = `${SITE}${BLOG_PATH}`;
+// The Future Observatory room's own image, the card thumbnail for an article without a hero image
+const ROOM_IMAGE = '/assets/images/rooms/observatory-2.webp';
 // In-text links copy the Lair of the Blonde Bot page's link (white, bold, white underline); the hover rule is in the template
 const LINK_ATTRS = 'class="room-description-link" style="color: #fff; text-decoration: none; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.9);"';
 
@@ -353,12 +355,18 @@ export function renderRoom(articles, room) {
     // One full-width row per article, so the section is even at any count. The whole card is the
     // link and wears the room's button class (.explore-btn), so it has the SUBSCRIBE button's glass
     // background, border and hover glow; background and border are left to the class for that reason.
-    const p = 'margin: 0 auto; max-width: none; text-align: center';
+    // Each card leads with a 16:9 thumbnail (the article's hero image, or the room's own image when
+    // it has none, so every row matches) and the text beside it; on narrow screens the image wraps
+    // above the text. The thumbnail's alt is empty: the title right beside it already names the card.
+    const p = 'margin: 0; max-width: none; text-align: left';
     return fillMarkers(room, articles.slice(0, 4).map(a => [
-        `          <a href="${a.url}" class="explore-btn" style="display: block; width: 100%; box-sizing: border-box; margin: 0; padding: 20px 28px; border-radius: 16px; text-transform: none; letter-spacing: normal">`,
-        `            <h3 style="margin: 0 0 0.5rem; font-size: 1.35rem; font-weight: normal">${esc(a.title)}</h3>`,
-        `            <p style="${p}; margin-bottom: 0.5rem; font-size: 0.85rem; opacity: 0.8"><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
-        `            <p style="${p}; margin-bottom: 0">${a.description}</p>`,
+        `          <a href="${a.url}" class="explore-btn" style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; width: 100%; box-sizing: border-box; margin: 0; padding: 16px; border-radius: 16px; text-transform: none; letter-spacing: normal; text-align: left">`,
+        `            <img src="${a.hero?.src ?? ROOM_IMAGE}" alt="" width="1600" height="900" loading="lazy" style="flex: 1 1 200px; max-width: 260px; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; margin: 0 auto" />`,
+        '            <div style="flex: 999 1 260px; min-width: 0">',
+        `              <h3 style="margin: 0 0 0.4rem; font-size: 1.35rem; font-weight: normal; text-align: left">${esc(a.title)}</h3>`,
+        `              <p style="${p}; margin-bottom: 0.4rem; font-size: 0.85rem; opacity: 0.8"><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
+        `              <p style="${p}">${a.description}</p>`,
+        '            </div>',
         '          </a>',
     ].join('\n')).join('\n') || '          <p>No articles have been published yet.</p>');
 }

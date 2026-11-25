@@ -128,6 +128,8 @@ assert.equal(r.status, 200);
 assert.match(r.body, new RegExp(`<a href="${URL_}" class="explore-btn"`), 'each card is one link with the button class');
 assert.ok(!/<a [^>]*class="explore-btn"[^>]*>(?:(?!<\/a>)[\s\S])*<a /.test(r.body), 'no link inside a card');
 assert.ok(r.body.includes('Teleportation Telescope'), 'the rest of the room is unchanged');
+assert.match(r.body, /<img src="\/future-observatory\/blog\/what-is-a-test\/hero" alt=""/, 'a card shows its hero image');
+assert.match(r.body, /<img src="\/assets\/images\/rooms\/observatory-2\.webp" alt=""/, 'a card without one shows the room image');
 
 const sm = await get({ view: 'sitemap' });
 assert.match(sm.headers['content-type'], /xml/);
