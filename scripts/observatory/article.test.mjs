@@ -125,7 +125,8 @@ assert.ok(list.body.includes('<p>Agentic AI is AI that runs the process instead 
 
 const r = await get({ view: 'room' });
 assert.equal(r.status, 200);
-assert.match(r.body, new RegExp(`<a href="${URL_}" class="explore-btn"`), 'each card is one link with the button class');
+assert.match(r.body, /<a href="\/future-observatory\/blog\/what-is-a-test\/" class="explore-btn"/, 'each card is one site-relative link with the button class');
+assert.ok(!/<a href="https:\/\/www\.themxm\.ai/.test(list.body + r.body), 'links within the site stay on the site being viewed');
 assert.ok(!/<a [^>]*class="explore-btn"[^>]*>(?:(?!<\/a>)[\s\S])*<a /.test(r.body), 'no link inside a card');
 assert.ok(r.body.includes('Teleportation Telescope'), 'the rest of the room is unchanged');
 assert.match(r.body, /<img src="\/future-observatory\/blog\/what-is-a-test\/hero" alt=""/, 'a card shows its hero image');

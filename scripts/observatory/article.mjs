@@ -107,6 +107,7 @@ export function checkDraft(page, blocks) {
     return {
         title, slug, c,
         url: `${BLOG_URL}${slug}/`,
+        path: `${BLOG_PATH}${slug}/`, // for links within the site, so they stay on the site being viewed
         datePublished,
         dateModified: edited > datePublished ? edited : datePublished,
         description: esc(firstSentence(c.answer.text)),
@@ -341,7 +342,7 @@ export function renderArticle(a, template) {
 export function renderList(articles, shell) {
     return fillMarkers(shell, articles.map(a => [
         '          <article>',
-        `            <h2 style="text-align: center"><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h2>`,
+        `            <h2 style="text-align: center"><a href="${a.path}" ${LINK_ATTRS}>${esc(a.title)}</a></h2>`,
         `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
         `            <p>${a.description}</p>`,
         '          </article>',
@@ -360,7 +361,7 @@ export function renderRoom(articles, room) {
     // above the text. The thumbnail's alt is empty: the title right beside it already names the card.
     const p = 'margin: 0; max-width: none; text-align: left';
     return fillMarkers(room, articles.slice(0, 4).map(a => [
-        `          <a href="${a.url}" class="explore-btn" style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; width: 100%; box-sizing: border-box; margin: 0; padding: 16px; border-radius: 16px; text-transform: none; letter-spacing: normal; text-align: left">`,
+        `          <a href="${a.path}" class="explore-btn" style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; width: 100%; box-sizing: border-box; margin: 0; padding: 16px; border-radius: 16px; text-transform: none; letter-spacing: normal; text-align: left">`,
         `            <img src="${a.hero?.src ?? ROOM_IMAGE}" alt="" width="1600" height="900" loading="lazy" style="flex: 1 1 200px; max-width: 260px; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; margin: 0 auto" />`,
         '            <div style="flex: 999 1 260px; min-width: 0">',
         `              <h3 style="margin: 0 0 0.4rem; font-size: 1.35rem; font-weight: normal; text-align: left">${esc(a.title)}</h3>`,
