@@ -351,7 +351,7 @@ export function renderList(articles, shell) {
 export function renderRoom(articles, room) {
     if (!articles) return fillMarkers(room, '');
     return fillMarkers(room, articles.slice(0, 4).map(a => [
-        '          <article style="flex: 1 1 45%; min-width: 280px; box-sizing: border-box; padding: 18px 20px; border: 1px solid var(--ai-glass-border); border-radius: 10px">',
+        '          <article style="flex: 0 1 calc(50% - 0.75rem); min-width: min(280px, 100%); box-sizing: border-box; padding: 18px 20px; border: 1px solid var(--ai-glass-border); border-radius: 10px">',
         `            <h3 style="text-align: center; margin: 0 0 0.75rem"><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h3>`,
         `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
         `            <p style="margin-bottom: 0">${a.description}</p>`,
