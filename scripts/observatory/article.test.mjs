@@ -121,7 +121,8 @@ const list = await get({ view: 'list' });
 assert.equal(list.status, 200);
 assert.ok(list.body.indexOf('What is a test?') < list.body.indexOf('An older one?'), 'newest first');
 assert.ok(!list.body.includes('A broken one?'), 'a failing draft is left out');
-assert.ok(list.body.includes('<p>Agentic AI is AI that runs the process instead of just answering the question.</p>'), 'description is the first sentence');
+assert.ok(list.body.includes('>Agentic AI is AI that runs the process instead of just answering the question.</p>'), 'description is the first sentence');
+assert.match(list.body, /<a href="\/future-observatory\/blog\/what-is-a-test\/" class="explore-btn"/, 'the list uses the same cards as the room');
 
 const r = await get({ view: 'room' });
 assert.equal(r.status, 200);

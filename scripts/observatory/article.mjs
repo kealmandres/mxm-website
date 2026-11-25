@@ -338,29 +338,15 @@ export function renderArticle(a, template) {
     });
 }
 
-// The blog list page: every article, from templates/observatory-blog.html.
-export function renderList(articles, shell) {
-    return fillMarkers(shell, articles.map(a => [
-        '          <article>',
-        `            <h2 style="text-align: center"><a href="${a.path}" ${LINK_ATTRS}>${esc(a.title)}</a></h2>`,
-        `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
-        `            <p>${a.description}</p>`,
-        '          </article>',
-    ].join('\n')).join('\n') || '          <p>No articles have been published yet.</p>');
-}
-
-// The Future Observatory room with its four latest articles as glass cards.
-// `articles` null means Notion could not be reached: the section shows only its View all button.
-export function renderRoom(articles, room) {
-    if (!articles) return fillMarkers(room, '');
-    // One full-width row per article, so the section is even at any count. The whole card is the
-    // link and wears the room's button class (.explore-btn), so it has the SUBSCRIBE button's glass
-    // background, border and hover glow; background and border are left to the class for that reason.
-    // Each card leads with a 16:9 thumbnail (the article's hero image, or the room's own image when
-    // it has none, so every row matches) and the text beside it; on narrow screens the image wraps
-    // above the text. The thumbnail's alt is empty: the title right beside it already names the card.
+// One article card, used by the room's Answer Almanac and the blog list page. The whole card is the
+// link and wears the room's button class (.explore-btn), so it has the SUBSCRIBE button's glass
+// background, border and hover glow; background and border are left to the class for that reason.
+// It leads with a 16:9 thumbnail (the article's hero image, or the room's own image when it has
+// none, so every row matches) with the text beside it; on narrow screens the image wraps above the
+// text. The thumbnail's alt is empty: the title right beside it already names the card.
+function card(a) {
     const p = 'margin: 0; max-width: none; text-align: left';
-    return fillMarkers(room, articles.slice(0, 4).map(a => [
+    return [
         `          <a href="${a.path}" class="explore-btn" style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; width: 100%; box-sizing: border-box; margin: 0; padding: 16px; border-radius: 16px; text-transform: none; letter-spacing: normal; text-align: left">`,
         `            <img src="${a.hero?.src ?? ROOM_IMAGE}" alt="" width="1600" height="900" loading="lazy" style="flex: 1 1 200px; max-width: 260px; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; margin: 0 auto" />`,
         '            <div style="flex: 999 1 260px; min-width: 0">',
@@ -369,7 +355,21 @@ export function renderRoom(articles, room) {
         `              <p style="${p}">${a.description}</p>`,
         '            </div>',
         '          </a>',
-    ].join('\n')).join('\n') || '          <p>No articles have been published yet.</p>');
+    ].join('\n');
+}
+const NONE_YET = '          <p>No articles have been published yet.</p>';
+
+// The blog list page: every article as a card, from templates/observatory-blog.html.
+export function renderList(articles, shell) {
+    return fillMarkers(shell, articles.map(card).join('\n') || NONE_YET);
+}
+
+// The Future Observatory room with its four latest articles, one full-width card each, so the
+// section is even at any count. `articles` null means Notion could not be reached: the section
+// shows only its View all button.
+export function renderRoom(articles, room) {
+    if (!articles) return fillMarkers(room, '');
+    return fillMarkers(room, articles.slice(0, 4).map(card).join('\n') || NONE_YET);
 }
 
 // The blog sitemap: the list page and every article, each with its real last change.
