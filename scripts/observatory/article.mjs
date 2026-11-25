@@ -325,7 +325,8 @@ export function renderArticle(a, template) {
     };
     const values = {
         TITLE: esc(a.title), DESCRIPTION: a.description, URL: a.url,
-        HERO: a.hero ? `            <img src="${a.hero.src}" alt="${esc(a.hero.alt)}" style="width: 100%; height: auto" />\n` : '',
+        // The frame holds the 16:9 space with a shimmering skeleton until the image loads (template CSS)
+        HERO: a.hero ? `            <div class="hero-frame">\n              <img src="${a.hero.src}" alt="${esc(a.hero.alt)}" width="1600" height="900" onload="this.classList.add('is-loaded')" onerror="this.parentNode.style.display='none'" />\n            </div>\n` : '',
         HERO_META: heroUrl ? `    <meta property="og:image" content="${heroUrl}" />\n    <meta name="twitter:image" content="${heroUrl}" />\n` : '',
         DATE_PUBLISHED: a.datePublished, DATE_MODIFIED: a.dateModified,
         DATE_PUBLISHED_TEXT: longDate(a.datePublished), DATE_MODIFIED_TEXT: longDate(a.dateModified),

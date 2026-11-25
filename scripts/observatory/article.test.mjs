@@ -107,6 +107,7 @@ assert.equal(ld[0].mainEntityOfPage['@id'], URL_);
 assert.equal(ld[0].datePublished, '2026-11-25');
 assert.equal(ld[0].image, 'https://www.themxm.ai/future-observatory/blog/what-is-a-test/hero');
 assert.match(art.body, /<img src="\/future-observatory\/blog\/what-is-a-test\/hero" alt="A marble hall"/);
+assert.match(art.body, /<div class="hero-frame">\s*<img src="\/future-observatory\/blog\/what-is-a-test\/hero"/, 'the hero sits in its skeleton frame');
 assert.match(art.body, new RegExp(`<link rel="canonical" href="${URL_}"`));
 
 const hero = await get({ view: 'hero', slug: 'what-is-a-test' });
