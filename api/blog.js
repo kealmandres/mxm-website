@@ -29,19 +29,18 @@ const template = name => fs.readFileSync(path.join(process.cwd(), 'templates', n
 
 export default async function handler(req, res) {
     const { view, slug } = req.query;
-    if (!process.env.NOTION_TOKEN) {
-        console.error('blog: NOTION_TOKEN is not set.');
-        return res.status(500).send('Server configuration error.');
-    }
-    const client = notionClient(process.env.NOTION_TOKEN);
     const send = (type, body, cache = CACHE) => {
         res.setHeader('Content-Type', type);
         res.setHeader('Cache-Control', cache);
         return res.status(200).send(body);
     };
+    const client = process.env.NOTION_TOKEN ? notionClient(process.env.NOTION_TOKEN) : null;
+    if (!client) console.error('blog: NOTION_TOKEN is not set.');
 
     try {
+        // The room is an existing page: it always loads, with no article cards if Notion is unavailable
         if (view === 'room') return send('text/html; charset=utf-8', await room(req, client));
+        if (!client) return res.status(500).send('Server configuration error.');
 
         if (view === 'article' || view === 'hero') {
             const page = (await publishedPages(client)).find(p => pageSlug(p) === slug);
@@ -86,7 +85,7 @@ async function room(req, client) {
     if (!built.ok) throw new Error(`Fetching the built room page failed: ${built.status}`);
     let articles = null;
     try {
-        ({ articles } = await publishedArticles(client));
+        if (client) ({ articles } = await publishedArticles(client));
     } catch (e) {
         console.error('blog: room without articles:', e);
     }

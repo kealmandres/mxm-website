@@ -153,4 +153,12 @@ const roomDown = await get({ view: 'room' });
 assert.equal(roomDown.status, 200, 'the room still loads when Notion is down');
 assert.ok(roomDown.body.includes('VIEW ALL ARTICLES'));
 
+// With no Notion token configured, the room still loads (without cards); the blog pages report it
+delete process.env.NOTION_TOKEN;
+notionDown = false;
+const roomNoToken = await get({ view: 'room' });
+assert.equal(roomNoToken.status, 200, 'the room loads even without a Notion token');
+assert.ok(roomNoToken.body.includes('Teleportation Telescope') && roomNoToken.body.includes('VIEW ALL ARTICLES'));
+assert.equal((await get({ view: 'list' })).status, 500);
+
 console.log('observatory blog: all checks passed');
