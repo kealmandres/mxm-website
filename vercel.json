@@ -2,6 +2,9 @@
   "framework": null,
   "buildCommand": "node build.js",
   "outputDirectory": "dist",
+  "functions": {
+    "api/blog.js": { "includeFiles": "templates/**", "maxDuration": 30 }
+  },
   "redirects": [
     {
       "source": "/botbuster",
@@ -85,7 +88,15 @@
     { "source": "/artificial-ingenious", "destination": "/pages/artificial-ingenious.html" },
     { "source": "/machine-megamind", "destination": "/pages/machine-megamind.html" },
     { "source": "/consults-coded", "destination": "/pages/consults-coded.html" },
-    { "source": "/future-observatory", "destination": "/pages/future-observatory.html" },
+    { "source": "/future-observatory", "destination": "/api/blog?view=room" },
+    { "source": "/future-observatory/blog", "destination": "/api/blog?view=list" },
+    { "source": "/future-observatory/blog/", "destination": "/api/blog?view=list" },
+    { "source": "/future-observatory/blog/sitemap.xml", "destination": "/api/blog?view=sitemap" },
+    { "source": "/future-observatory/blog/:slug/hero", "destination": "/api/blog?view=hero&slug=:slug" },
+    { "source": "/future-observatory/blog/:slug", "destination": "/api/blog?view=article&slug=:slug" },
+    { "source": "/future-observatory/blog/:slug/", "destination": "/api/blog?view=article&slug=:slug" },
+    { "source": "/llms.txt", "destination": "/api/blog?view=llms" },
+    { "source": "/llms-full.txt", "destination": "/api/blog?view=llms-full" },
     { "source": "/blonde-bot-lair", "destination": "/pages/blonde-bot-lair.html" },
     { "source": "/contact", "destination": "/pages/contact.html" },
     { "source": "/coming-soon", "destination": "/pages/coming-soon.html" },

@@ -1,0 +1,17 @@
+# The MaCHiNE MaiSON
+
+> MxM (The MaCHiNE MaiSON) is Australia's first AI agency. Founded in Sydney in 2021 by Marissa Kos, MxM turns AI from a threat into a team's greatest asset: we make people AI-fluent, then build the agents they run on.
+
+## Pages
+
+- [Home](https://www.themxm.ai/): MxM (The MaCHiNE MaiSON), Australia's first AI agency.
+- [aRTIFICIAL iNGENIOUS](https://www.themxm.ai/artificial-ingenious): AI coaching that delivers real literacy, not prompt templates.
+- [Bespoke AI agents and Neural Engines](https://www.themxm.ai/machine-megamind): agentic ecosystems built around how a business actually works.
+- [CONSULTS CODED](https://www.themxm.ai/consults-coded): strategy for businesses and personal brands.
+- [Future Observatory](https://www.themxm.ai/future-observatory): MxM's futurism wing (Peroxide x Prophecies).
+- [The Lair of the Blonde Bot](https://www.themxm.ai/blonde-bot-lair): where you'll find Marissa Kos.
+- [Contact](https://www.themxm.ai/contact): get in touch with MxM.
+
+## Future Observatory
+
+- [Answer Almanac](https://www.themxm.ai/future-observatory/blog/): Dispatches from your digital diplomat: DEMYSTIFaiNG all your questions about AI, one straight answer per article.
