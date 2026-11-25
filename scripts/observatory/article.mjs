@@ -350,12 +350,16 @@ export function renderList(articles, shell) {
 // `articles` null means Notion could not be reached: the section shows only its View all button.
 export function renderRoom(articles, room) {
     if (!articles) return fillMarkers(room, '');
+    // One full-width row per article, so the section is even at any count. The whole card is the
+    // link and wears the room's button class (.explore-btn), so it has the SUBSCRIBE button's glass
+    // background, border and hover glow; background and border are left to the class for that reason.
+    const p = 'margin: 0 auto; max-width: none; text-align: center';
     return fillMarkers(room, articles.slice(0, 4).map(a => [
-        '          <article style="flex: 0 1 calc(50% - 0.75rem); min-width: min(280px, 100%); box-sizing: border-box; padding: 18px 20px; border: 1px solid var(--ai-glass-border); border-radius: 10px">',
-        `            <h3 style="text-align: center; margin: 0 0 0.75rem"><a href="${a.url}" ${LINK_ATTRS}>${esc(a.title)}</a></h3>`,
-        `            <p><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
-        `            <p style="margin-bottom: 0">${a.description}</p>`,
-        '          </article>',
+        `          <a href="${a.url}" class="explore-btn" style="display: block; width: 100%; box-sizing: border-box; margin: 0; padding: 20px 28px; border-radius: 16px; text-transform: none; letter-spacing: normal">`,
+        `            <h3 style="margin: 0 0 0.5rem; font-size: 1.35rem; font-weight: normal">${esc(a.title)}</h3>`,
+        `            <p style="${p}; margin-bottom: 0.5rem; font-size: 0.85rem; opacity: 0.8"><time datetime="${a.datePublished}">${longDate(a.datePublished)}</time></p>`,
+        `            <p style="${p}; margin-bottom: 0">${a.description}</p>`,
+        '          </a>',
     ].join('\n')).join('\n') || '          <p>No articles have been published yet.</p>');
 }
 

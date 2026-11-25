@@ -125,7 +125,8 @@ assert.ok(list.body.includes('<p>Agentic AI is AI that runs the process instead 
 
 const r = await get({ view: 'room' });
 assert.equal(r.status, 200);
-assert.match(r.body, new RegExp(`<h3 style="text-align: center; margin: 0 0 0.75rem"><a href="${URL_}"`));
+assert.match(r.body, new RegExp(`<a href="${URL_}" class="explore-btn"`), 'each card is one link with the button class');
+assert.ok(!/<a [^>]*class="explore-btn"[^>]*>(?:(?!<\/a>)[\s\S])*<a /.test(r.body), 'no link inside a card');
 assert.ok(r.body.includes('Teleportation Telescope'), 'the rest of the room is unchanged');
 
 const sm = await get({ view: 'sitemap' });
